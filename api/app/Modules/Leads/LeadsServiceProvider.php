@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Modules\Leads;
+
+use Illuminate\Support\ServiceProvider;
+
+class LeadsServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        //
+    }
+}

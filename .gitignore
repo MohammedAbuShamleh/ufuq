@@ -1,0 +1,9 @@
+# Each of web/, admin/ and api/ has its own .gitignore.
+
+# Source asset bundle: its files live in web/public or are uploaded through the dashboard.
+/ufuq-assets.zip
+
+# Local editor and agent settings
+/.claude/
+/.vscode/
+/.idea/
