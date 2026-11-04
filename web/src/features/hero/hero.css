@@ -1,10 +1,19 @@
 /*
  * Hero: a tall section whose stage sticks while --p (0→1, set from scroll)
- * scales the arch past the screen. --aw is the arch width.
+ * scales the arch past the screen.
+ *
+ * --aw is the arch width: as wide as the layout wants (--aw-max), but never
+ * so wide that the arch reaches the words above it (--aw-room). The room is
+ * read off .hx-stage, the height left under the words, so a title that wraps
+ * or grows shrinks the arch instead of running into it. On desktop the
+ * arch's red top stays 0.5rem under the words (its box less the 21% hidden
+ * below the screen); only the thin outline's tip may pass behind them.
  */
 .hx {
   --p: 0;
-  --aw: min(42vw, 67vh);
+  --aw-max: min(42vw, 67vh);
+  --aw-room: max(0px, (100cqh - 0.5rem) * 1.083);
+  --aw: min(var(--aw-max), var(--aw-room));
   position: relative;
   height: 250vh;
   margin-top: calc(var(--nav-h) * -1);
@@ -15,15 +24,26 @@
   position: relative;
   z-index: 5;
 }
+/* The words flow from the top; the stage takes the rest of the screen. */
 .hx-stick {
   position: sticky;
   top: 0;
   height: 100vh;
   height: 100svh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-top: calc(var(--nav-h) + 1vh);
 }
 
 /* The arch */
+.hx-stage {
+  position: relative;
+  order: 3;
+  flex: 1 1 0;
+  min-height: 0;
+  container-type: size;
+}
 .hx-rig {
   position: absolute;
   left: 50%;
@@ -71,9 +91,7 @@
 
 /* The words */
 .hx-copy {
-  position: absolute;
-  inset-inline: 0;
-  top: calc(var(--nav-h) + 1vh);
+  position: relative;
   z-index: 3;
   text-align: center;
   opacity: calc(1 - var(--p) * 3.2);
@@ -89,10 +107,17 @@
   height: 1.5px;
   background: currentColor;
 }
+/*
+ * The hamza and tanween of «أفقاً» rise into the descenders of «برمجيات»
+ * at any line height under 1.36; 1.45 leaves a few pixels between them at
+ * every size. The negative margin takes back the extra leading above the
+ * first line and below the last, so only the gap between the lines grows.
+ */
 .hx-title {
   font-size: clamp(2.4rem, 4.6vw, 4.6rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.45;
+  margin-block: -0.15em;
 }
 .hx-title span {
   display: block;
@@ -323,7 +348,7 @@ html.motion-off .mo-ic::after {
 
 @media (min-width: 961px) and (max-height: 820px) {
   .hx {
-    --aw: min(40vw, 64vh);
+    --aw-max: min(40vw, 64vh);
   }
   .hx-title {
     font-size: clamp(2.2rem, 4.2vw, 3.9rem);
@@ -331,7 +356,7 @@ html.motion-off .mo-ic::after {
 }
 @media (min-width: 961px) and (min-aspect-ratio: 2/1) {
   .hx {
-    --aw: min(36vw, 60vh);
+    --aw-max: min(36vw, 60vh);
   }
 }
 @media (max-width: 1100px) {
@@ -339,23 +364,28 @@ html.motion-off .mo-ic::after {
     display: none;
   }
 }
+/*
+ * Phones and tablets: the buttons join the flow under the words, so they sit
+ * under the line above them however it wraps. Here the whole arch, outline
+ * tip included, stays 1rem under them, with 9vh beneath it.
+ */
 @media (max-width: 960px) {
   .hx {
-    --aw: min(80vw, 42vh);
+    --aw-max: min(80vw, 42vh);
+    --aw-room: max(0px, (100cqh - 9vh - 1rem) * 0.84);
     height: 150vh;
     margin-bottom: -10vh;
   }
-  .hx-copy {
-    top: calc(var(--nav-h) + 1.5vh);
+  .hx-stick {
+    padding-top: calc(var(--nav-h) + 1.5vh);
   }
   .hx-title {
-    font-size: clamp(2.2rem, 10vw, 3.6rem);
-    line-height: 1.12;
+    font-size: clamp(2.2rem, min(10vw, 6.6vh), 3.6rem);
   }
   .hx-niche {
     font-size: 1rem;
-    padding: 0 1.5rem;
-    white-space: nowrap;
+    padding: 0 1rem;
+    text-wrap: balance;
   }
   .hx-rig {
     bottom: 9vh;
@@ -364,9 +394,11 @@ html.motion-off .mo-ic::after {
     bottom: calc(var(--aw) * -0.02);
   }
   .hx-side {
-    inset-inline: 1.5rem;
+    position: relative;
+    inset: auto;
+    order: 2;
     width: auto;
-    top: calc(70px + 2vh + 12rem);
+    margin: 1.1rem 1.5rem 0;
     text-align: center;
   }
   .hx-side p {
@@ -387,7 +419,7 @@ html.motion-off .mo-ic::after {
 }
 @media (max-width: 960px) and (max-height: 780px) {
   .hx {
-    --aw: min(70vw, 36vh);
+    --aw-max: min(70vw, 36vh);
   }
 }
 

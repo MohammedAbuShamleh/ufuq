@@ -58,22 +58,25 @@ export function Hero({ tagline }: { tagline: string | null }) {
   return (
     <section ref={ref} className="hx" id="hero" aria-labelledby="hero-title">
       <div className="hx-stick">
-        <div className="hx-rig" aria-hidden="true">
-          <ArchClip className="hx-clip">
-            <Image
-              className="pc"
-              src="/illustrations/hero-gate.png"
-              width={1122}
-              height={1402}
-              alt=""
-              preload
-              sizes="(max-width: 960px) 80vw, 42vw"
-            />
-          </ArchClip>
-          <svg className="hx-outline" viewBox="0 0 300 340" preserveAspectRatio="none">
-            <path className="l" d="M150 -16 C74 6 -16 56 -16 146 V340" vectorEffect="non-scaling-stroke" />
-            <path className="r" d="M150 -16 C226 6 316 56 316 146 V340" vectorEffect="non-scaling-stroke" />
-          </svg>
+        {/* The arch's room: the height the words leave under them (see --aw-room). */}
+        <div className="hx-stage">
+          <div className="hx-rig" aria-hidden="true">
+            <ArchClip className="hx-clip">
+              <Image
+                className="pc"
+                src="/illustrations/hero-gate.png"
+                width={1122}
+                height={1402}
+                alt=""
+                preload
+                sizes="(max-width: 960px) 80vw, 42vw"
+              />
+            </ArchClip>
+            <svg className="hx-outline" viewBox="0 0 300 340" preserveAspectRatio="none">
+              <path className="l" d="M150 -16 C74 6 -16 56 -16 146 V340" vectorEffect="non-scaling-stroke" />
+              <path className="r" d="M150 -16 C226 6 316 56 316 146 V340" vectorEffect="non-scaling-stroke" />
+            </svg>
+          </div>
         </div>
 
         <div className="hx-copy">
