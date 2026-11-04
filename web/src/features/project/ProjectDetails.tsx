@@ -4,8 +4,22 @@ import type { ProjectDetail, Testimonial } from '@/lib/types'
 import { countryName, SECTOR_LABEL, TYPE_LABEL } from '../work/labels'
 import './project.css'
 
-/** Who it was built for, where, and what kind of work it is. */
+type Figure = { value: string; label: string | null }
+
+/** The highlighted figures first, then the others, each figure once. */
+function figuresOf(project: ProjectDetail): Figure[] {
+  const seen = new Set<string>()
+  return [...project.featured_facts, ...project.facts].filter((f) => {
+    const key = `${f.value}\n${f.label}`
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
+/** The project's figures, then who it was built for, where, and what kind of work it is. */
 export function ProjectFacts({ project }: { project: ProjectDetail }) {
+  const figures = figuresOf(project)
   const facts = [
     { label: 'العميل', value: project.client_name },
     { label: 'القطاع', value: SECTOR_LABEL[project.sector] },
@@ -16,6 +30,16 @@ export function ProjectFacts({ project }: { project: ProjectDetail }) {
   return (
     <section className="pp-facts" aria-label="عن المشروع">
       <div className="wrap">
+        {figures.length > 0 && (
+          <ul className="pp-figures">
+            {figures.map((f) => (
+              <li key={`${f.value}\n${f.label}`}>
+                <b>{f.value}</b>
+                {f.label && <span>{f.label}</span>}
+              </li>
+            ))}
+          </ul>
+        )}
         <dl className="pp-facts-in">
           {facts.map((f) => (
             <div key={f.label}>

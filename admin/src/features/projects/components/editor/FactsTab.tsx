@@ -16,7 +16,7 @@ export function FactsTab({ values, set, errors }: TabProps) {
 
   return (
     <div className="grid gap-6">
-      <Panel title="أرقام بارزة" description="حتى رقمين يظهران بجانب العنوان في طريقة العرض «واجهة وشاشات»، مثل «١٤ حالة لكل مشروع».">
+      <Panel title="أرقام بارزة" description="حتى رقمين يظهران بجانب العنوان في الرئيسية بطريقة العرض «واجهة وشاشات»، مثل «١٤ حالة لكل مشروع». وفي صفحة المشروع تأتي أولاً مع باقي الأرقام.">
         {featured.map((fact, i) => (
           <div key={i} className="grid items-start gap-3 rounded-field border border-line p-3 sm:grid-cols-[9rem_1fr_auto]">
             <TextField label="الرقم" required max={32} placeholder="١٤" value={fact.value} onChange={(v) => set('featured_facts', featured.map((f, j) => (j === i ? { ...f, value: v } : f)))} error={errors[`featured_facts.${i}.value`]} />
@@ -40,7 +40,7 @@ export function FactsTab({ values, set, errors }: TabProps) {
         )}
       </Panel>
 
-      <Panel title="أرقام أخرى" description={`حتى ${formatNumber(MAX_FACTS)} أرقام، مثل «+٤٠٠٠ مستفيد». محفوظة مع المشروع، ولا تظهر في الموقع حالياً.`}>
+      <Panel title="أرقام أخرى" description={`حتى ${formatNumber(MAX_FACTS)} أرقام، مثل «+٤٠٠٠ مستفيد». تظهر في صفحة المشروع بعد الأرقام البارزة، والرقم المكرّر بينهما يظهر مرة واحدة.`}>
         {facts.map((fact, i) => (
           <div key={fact.id ?? `new-${i}`} className="grid items-start gap-3 rounded-field border border-line p-3 sm:grid-cols-[9rem_1fr_auto]">
             <TextField label="الرقم" required max={32} placeholder="+٤٠٠٠" value={fact.value} onChange={(v) => set('facts', facts.map((f, j) => (j === i ? { ...f, value: v } : f)))} error={errors[`facts.${i}.value`]} />

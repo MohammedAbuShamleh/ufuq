@@ -47,7 +47,9 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
             <Link className="sx-go pp-back" href="/work">
               <Arrow className="ico-arrow back" /> كل الأعمال
             </Link>
-            <FeaturedProject project={project} heading="h1" contactHref={similarHref(project.type)} />
+            {/* Every figure, the highlighted ones first, is listed once in ProjectFacts below,
+                so the title row here does not repeat them. */}
+            <FeaturedProject project={{ ...project, featured_facts: [] }} heading="h1" contactHref={similarHref(project.type)} />
           </div>
         </section>
 

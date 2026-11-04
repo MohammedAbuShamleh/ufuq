@@ -7,9 +7,35 @@
   margin-bottom: 1.4rem;
 }
 
-/* ---------- Client, sector, country, kind ---------- */
+/* ---------- Figures, then client, sector, country, kind ---------- */
 .pp-facts {
   padding-top: 1.5rem;
+}
+/* Same columns as the row under it, so each figure sits over a fact. */
+.pp-figures {
+  list-style: none;
+  margin: 0;
+  padding: 0.6rem 0 1.8rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.6rem 1rem;
+}
+.pp-figures li {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+}
+.pp-figures b {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  line-height: 1;
+  color: var(--accent);
+}
+.pp-figures span {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--muted);
 }
 .pp-facts-in {
   margin: 0;
@@ -112,8 +138,11 @@
   .pp-top {
     padding-top: 6rem;
   }
-  .pp-facts-in {
+  .pp-facts-in,
+  .pp-figures {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .pp-facts-in {
     row-gap: 1.4rem;
   }
   .pp-steps {

@@ -136,7 +136,8 @@ Each featured project has a layout of its own, chosen in the dashboard (`feature
 `phones` (a dark band with the first three phone screens), `sheet` (copy and points, then
 every desktop screen opening full size in a `<dialog>`) and `reel` (a stage that plays the
 videos while it is in view, one chip per screen). `features/featured/FeaturedProjects.tsx`
-maps the layout to its component; a project page opens with the same layout. Each screen's
+maps the layout to its component; a project page opens with the same layout, and lists all its
+figures (`featured_facts` first, then `facts`, each once) above the client details. Each screen's
 `label` is its thumbnail text, phone caption or chip. Uploaded images go through
 `next/image` with a loader that picks the API's own webp widths, so nothing is resized twice.
 
