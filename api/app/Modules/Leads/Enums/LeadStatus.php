@@ -16,4 +16,26 @@ enum LeadStatus: string
             self::Closed => false,
         };
     }
+
+    /** The one step forward, derived from canTransitionTo so the two never disagree. */
+    public function next(): ?self
+    {
+        foreach (self::cases() as $case) {
+            if ($this->canTransitionTo($case)) {
+                return $case;
+            }
+        }
+
+        return null;
+    }
+
+    /** How the dashboard names the status in messages. */
+    public function label(): string
+    {
+        return match ($this) {
+            self::New => 'جديدة',
+            self::Contacted => 'تم التواصل',
+            self::Closed => 'مغلقة',
+        };
+    }
 }

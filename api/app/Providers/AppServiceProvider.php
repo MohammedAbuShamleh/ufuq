@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Support\Content\ContentChanged;
+use App\Support\Content\FlushPublicCache;
 use App\Support\Media\RecordImageDimensions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
@@ -31,5 +33,8 @@ class AppServiceProvider extends ServiceProvider
         Translatable::allowNullForTranslation();
 
         Event::listen(MediaHasBeenAddedEvent::class, RecordImageDimensions::class);
+
+        // A dashboard write: the public API must stop serving what was just replaced.
+        Event::listen(ContentChanged::class, FlushPublicCache::class);
     }
 }

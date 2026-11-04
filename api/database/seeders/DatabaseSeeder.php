@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
             SiteSeeder::class,
         ]);
 
+        // Known-password accounts must never exist outside a developer's machine.
+        if (app()->environment('local')) {
+            $this->call(DevUsersSeeder::class);
+        }
+
         $cache->flush();
     }
 }

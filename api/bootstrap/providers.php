@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Admin\AdminServiceProvider;
 use App\Modules\Clients\ClientsServiceProvider;
 use App\Modules\Leads\LeadsServiceProvider;
 use App\Modules\Portfolio\PortfolioServiceProvider;
@@ -16,4 +17,5 @@ return [
     ClientsServiceProvider::class,
     SiteServiceProvider::class,
     LeadsServiceProvider::class,
+    AdminServiceProvider::class,
 ];

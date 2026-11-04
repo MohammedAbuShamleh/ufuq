@@ -1,0 +1,5 @@
+{
+    "The given data was invalid.": "البيانات المرسلة غير صحيحة.",
+    "(and :count more error)": "(وخطأ آخر)",
+    "(and :count more errors)": "(وأخطاء أخرى عددها :count)"
+}

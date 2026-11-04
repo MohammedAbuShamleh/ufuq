@@ -17,6 +17,13 @@ trait HasWebpSizes
             return;
         }
 
+        // Without the image extension a conversion would fail the whole upload.
+        // The original is still stored and the site falls back to it when sizes is [].
+        // The driver names (gd, imagick) are also the PHP extension names.
+        if (! extension_loaded((string) config('media-library.image_driver', 'gd'))) {
+            return;
+        }
+
         foreach (WebpSizes::WIDTHS as $width) {
             $this->addMediaConversion("w{$width}")
                 ->fit(Fit::Max, $width, $width * 4)
