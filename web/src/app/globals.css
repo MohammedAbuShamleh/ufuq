@@ -241,7 +241,16 @@
     background: var(--bg);
     overflow-x: clip;
     scroll-behavior: smooth;
+    /* Room for the nav when the page scrolls to a link target or a focused field. */
     scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 90px);
+  }
+  /*
+   * A link to a section lands on the section's own top edge: its top padding
+   * already keeps the heading clear of the nav, and the 90px above it would
+   * show as an empty band between the page's edge and the section.
+   */
+  section[id] {
+    scroll-margin-top: -90px;
   }
   /* Transparent so the horizon lines (a fixed canvas behind everything) show through. */
   body {
