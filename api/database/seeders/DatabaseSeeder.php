@@ -2,22 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Support\PublicCache;
 use Illuminate\Database\Seeder;
 
+/**
+ * Launch content from v7. Each seeder skips a table that already has rows:
+ * after the first run the dashboard owns the content, and a second run
+ * must never duplicate or overwrite it.
+ */
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run(PublicCache $cache): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            ProjectSeeder::class,
+            TestimonialSeeder::class,
+            ClientSeeder::class,
+            TeamSeeder::class,
+            SiteSeeder::class,
         ]);
+
+        $cache->flush();
     }
 }
