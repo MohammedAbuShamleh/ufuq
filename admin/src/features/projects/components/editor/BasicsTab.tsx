@@ -3,11 +3,9 @@ import { Translated } from '@/components/Translated'
 import { SelectField, TextAreaField, TextField } from '@/components/ui/Field'
 import { Toggle } from '@/components/ui/Toggle'
 import { PUBLISH_OPTIONS } from '@/lib/types'
-import { COUNTRY_OPTIONS, SECTOR_OPTIONS, THEME_OPTIONS, TYPE_OPTIONS } from '../../labels'
+import { COUNTRY_OPTIONS, LAYOUT_HINT, LAYOUT_OPTIONS, SECTOR_OPTIONS, TYPE_OPTIONS } from '../../labels'
 import { TagsInput } from '../TagsInput'
 import type { TabProps } from './tabProps'
-
-const NO_THEME = 'auto'
 
 export function BasicsTab({ values, set, errors }: TabProps) {
   return (
@@ -21,7 +19,6 @@ export function BasicsTab({ values, set, errors }: TabProps) {
             </div>
             <TextField label="الوسم" required max={120} placeholder="نظام إدارة الكفالات" hint="كلمتان أو ثلاث فوق اسم المشروع في البطاقة." value={values.tag[l] ?? ''} onChange={(v) => set('tag', { ...values.tag, [l]: v })} error={errors[`tag.${l}`]} />
             <TextAreaField label="الوصف المختصر" required max={400} rows={3} hint="جملة أو جملتان: ماذا يفعل النظام ولمن." value={values.summary[l] ?? ''} onChange={(v) => set('summary', { ...values.summary, [l]: v })} error={errors[`summary.${l}`]} />
-            <TextField label="عنوان شريط المتصفح" max={120} placeholder="rashid.ps/dashboard" hint="يظهر في شريط عنوان إطار المتصفح فوق الشاشات. اختياري." value={values.frame_label[l] ?? ''} onChange={(v) => set('frame_label', { ...values.frame_label, [l]: v })} error={errors[`frame_label.${l}`]} />
           </>
         )}
       </Translated>
@@ -48,16 +45,28 @@ export function BasicsTab({ values, set, errors }: TabProps) {
 
       <Panel title="النشر والظهور">
         <SelectField label="الحالة" value={values.status} options={PUBLISH_OPTIONS} onChange={(v) => set('status', v)} error={errors.status} />
-        <Toggle label="مشروع مميز" description="يظهر بالبطاقة الكبيرة ذات الشاشات في الصفحة الرئيسية." checked={values.is_featured} onChange={(v) => set('is_featured', v)} />
+        <Toggle
+          label="مشروع مميز"
+          description="يظهر في قسم «أعمالنا» في الصفحة الرئيسية بطريقة العرض التي تختارها."
+          checked={values.is_featured}
+          onChange={(v) => {
+            set('is_featured', v)
+            // A featured project needs a layout; the first one fits most systems.
+            if (v && !values.featured_layout) set('featured_layout', 'showcase')
+          }}
+        />
         {values.is_featured && (
           <div className="grid gap-5 sm:grid-cols-2">
             <TextField label="الترتيب بين المميزة" type="number" dir="ltr" hint="١ يظهر أولاً." value={String(values.featured_order)} onChange={(v) => set('featured_order', Math.max(0, Number(v) || 0))} error={errors.featured_order} />
             <SelectField
-              label="لون البطاقة"
-              value={values.card_theme ?? NO_THEME}
-              options={[{ value: NO_THEME, label: 'تلقائي' }, ...THEME_OPTIONS]}
-              onChange={(v) => set('card_theme', v === NO_THEME ? null : v)}
-              error={errors.card_theme}
+              label="طريقة العرض"
+              required
+              value={values.featured_layout ?? ''}
+              emptyLabel="اختر طريقة العرض"
+              options={LAYOUT_OPTIONS}
+              hint={values.featured_layout ? LAYOUT_HINT[values.featured_layout] : 'كيف يُعرض المشروع وشاشاته في «أعمالنا».'}
+              onChange={(v) => set('featured_layout', v)}
+              error={errors.featured_layout}
             />
           </div>
         )}

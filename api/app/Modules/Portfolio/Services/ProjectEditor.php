@@ -19,13 +19,13 @@ use Illuminate\Support\Facades\DB;
 class ProjectEditor
 {
     private const SCALARS = [
-        'slug', 'type', 'sector', 'country', 'is_featured', 'featured_order', 'card_theme', 'has_demo_data', 'status',
+        'slug', 'type', 'sector', 'country', 'is_featured', 'featured_order', 'featured_layout', 'has_demo_data', 'status',
     ];
 
     private const REQUIRED_TEXT = ['title', 'client_name', 'summary', 'tag'];
 
     /** Absent from a full save means cleared: the text is pending again. */
-    private const OPTIONAL_TEXT = ['frame_label', 'challenge', 'solution', 'results'];
+    private const OPTIONAL_TEXT = ['challenge', 'solution', 'results'];
 
     /** Everything the project form shows. */
     private const FULL = ['facts', 'highlights', 'screens.media'];
@@ -113,6 +113,10 @@ class ProjectEditor
             $project->tech_stack = array_values($data['tech_stack'] ?? []);
         }
 
+        if (array_key_exists('featured_facts', $data)) {
+            $project->featured_facts = $this->featuredFacts($data['featured_facts'] ?? []);
+        }
+
         foreach (self::REQUIRED_TEXT as $attribute) {
             Translations::fill($project, $attribute, $data[$attribute]);
         }
@@ -140,6 +144,24 @@ class ProjectEditor
                 Translations::fill($highlight, 'text', $row['text'] ?? null);
             });
         }
+    }
+
+    /**
+     * Kept in form order, empty locales dropped; no figures is null, not [].
+     *
+     * @param  array<int, array{value: string, label: array<string, ?string>}>  $rows
+     * @return list<array{value: string, label: array<string, string>}>|null
+     */
+    private function featuredFacts(array $rows): ?array
+    {
+        ksort($rows);
+
+        $facts = array_map(fn (array $row) => [
+            'value' => $row['value'],
+            'label' => array_filter($row['label'], fn ($text) => filled($text)),
+        ], array_values($rows));
+
+        return $facts === [] ? null : $facts;
     }
 
     /**

@@ -18,7 +18,7 @@ export const TABS: { key: EditorTab; label: string }[] = [
 ]
 
 const STORY = ['challenge', 'solution', 'results']
-const FACTS = ['facts', 'highlights']
+const FACTS = ['featured_facts', 'facts', 'highlights']
 
 /** The tab that holds a field, so a failed save can open it. */
 export function tabOfField(field: string): EditorTab {

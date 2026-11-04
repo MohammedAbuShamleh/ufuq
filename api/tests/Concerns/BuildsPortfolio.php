@@ -44,8 +44,7 @@ trait BuildsPortfolio
         for ($i = 1; $i <= $screens; $i++) {
             $screen = $project->screens()->create([
                 'kind' => ScreenKind::Video,
-                'tab_key' => "tab-{$i}",
-                'tab_label' => ['ar' => "شاشة {$i}"],
+                'label' => ['ar' => "شاشة {$i}"],
                 'alt' => ['ar' => "لقطة {$i}"],
                 'sort_order' => $i,
             ]);

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Portfolio\Enums\CardTheme;
+use App\Modules\Portfolio\Enums\FeaturedLayout;
 use App\Modules\Portfolio\Enums\ProjectSector;
 use App\Modules\Portfolio\Enums\ProjectType;
 use App\Modules\Portfolio\Models\Project;
@@ -10,7 +10,7 @@ use App\Support\Enums\PublishStatus;
 use Illuminate\Database\Seeder;
 
 /**
- * The portfolio as v7 shows it, text verbatim. Screens are uploaded from the
+ * The portfolio as v8 shows it, text verbatim. Screens are uploaded from the
  * dashboard; story fields (challenge, solution, results) stay null until written.
  */
 class ProjectSeeder extends Seeder
@@ -40,12 +40,12 @@ class ProjectSeeder extends Seeder
             'client_name' => ['ar' => $data['client_name'] ?? $data['title']],
             'tag' => ['ar' => $data['tag']],
             'summary' => ['ar' => $data['summary']],
-            ...(isset($data['frame_label']) ? ['frame_label' => ['ar' => $data['frame_label']]] : []),
             'type' => $data['type'],
             'sector' => $data['sector'],
             'country' => $data['country'],
             'tech_stack' => $data['tech_stack'],
-            'card_theme' => $data['card_theme'] ?? null,
+            'featured_layout' => $data['featured_layout'] ?? null,
+            'featured_facts' => $data['featured_facts'] ?? null,
             'has_demo_data' => $data['has_demo_data'] ?? false,
             'status' => PublishStatus::Published,
             'published_at' => now(),
@@ -67,14 +67,17 @@ class ProjectSeeder extends Seeder
             [
                 'slug' => 'saiid',
                 'title' => 'ساعد',
-                'frame_label' => 'ساعد · لوحة التحكم',
                 'tag' => 'منصة · إدارة المشاريع الإنسانية',
                 'summary' => 'منصة تدير بها جمعية ساعد مشاريعها الإنسانية، من تبرّع الجهة المانحة إلى وصول المساعدة وتقريرها.',
                 'type' => ProjectType::Platform,
                 'sector' => ProjectSector::Charity,
                 'country' => 'PS',
                 'tech_stack' => ['Laravel', 'React', 'MySQL'],
-                'card_theme' => CardTheme::Linen,
+                'featured_layout' => FeaturedLayout::Showcase,
+                'featured_facts' => [
+                    ['value' => '١٤', 'label' => ['ar' => 'حالة لكل مشروع']],
+                    ['value' => '٥', 'label' => ['ar' => 'لوحات تحكم']],
+                ],
                 'has_demo_data' => true,
                 'highlights' => [
                     'مسار كامل للمشروع: التوريد والترسية والتوزيع والتنفيذ والمونتاج',
@@ -90,14 +93,13 @@ class ProjectSeeder extends Seeder
             [
                 'slug' => 'dar-al-itqan',
                 'title' => 'دار الإتقان',
-                'frame_label' => 'دار الإتقان · نظام إدارة التحفيظ',
                 'tag' => 'نظام وتطبيق · تحفيظ القرآن',
                 'summary' => 'نظام لإدارة حلقات التحفيظ، وتطبيق يسجّل فيه المحفّظ جلسة كل طالب من داخل الحلقة.',
                 'type' => ProjectType::App,
                 'sector' => ProjectSector::Dawah,
                 'country' => 'PS',
                 'tech_stack' => ['Laravel', 'React', 'Flutter'],
-                'card_theme' => CardTheme::Ink,
+                'featured_layout' => FeaturedLayout::Phones,
                 'has_demo_data' => true,
                 'highlights' => [
                     'جلسة بالموضع: السورة والآية والصفحة والسطر، والآيات تظهر فوراً',
@@ -111,39 +113,15 @@ class ProjectSeeder extends Seeder
                 ],
             ],
             [
-                'slug' => 'nexabridge',
-                'title' => 'NexaBridge',
-                'frame_label' => 'NexaBridge',
-                'tag' => 'موقع ومنصة منتجات · دبي',
-                'summary' => 'منصة لشركة في دبي توزّع أنظمة طاقة وإنارة ذكية من الصين إلى العالم.',
-                'type' => ProjectType::Website,
-                'sector' => ProjectSector::Business,
-                'country' => 'AE',
-                'tech_stack' => ['React', 'TypeScript', 'Tailwind', 'Motion'],
-                'card_theme' => CardTheme::Sand,
-                'has_demo_data' => false,
-                'highlights' => [
-                    'بلغتين وبوضعين فاتح وداكن، يتبدّلان دون إعادة تحميل',
-                    'مصمّم ألواح Aurora وكتالوج بمقارنة المنتجات',
-                    'منتجات تتحكم بلونها وحرارتها وسطوعها مباشرة',
-                ],
-                'facts' => [
-                    ['٢', 'لغتان'],
-                    ['٢', 'وضعان'],
-                    ['٣٧', 'منتجاً في الكتالوج'],
-                ],
-            ],
-            [
                 'slug' => 'rasras',
                 'title' => 'رصرص للبلاستيك',
-                'frame_label' => 'رصرص · نظام الإدارة المتكامل',
                 'tag' => 'ERP · استيراد وتوزيع · مصر',
                 'summary' => 'نظام ERP وموقع تعريفي لشركة مصرية تستورد خامات البلاستيك وتوزّعها من أربعة مستودعات.',
                 'type' => ProjectType::System,
                 'sector' => ProjectSector::Business,
                 'country' => 'EG',
                 'tech_stack' => ['Spring Boot', 'React', 'TypeScript'],
-                'card_theme' => CardTheme::Charcoal,
+                'featured_layout' => FeaturedLayout::Sheet,
                 'has_demo_data' => true,
                 'highlights' => [
                     'دورة شراء كاملة: طلب، فعروض موردين، فمقارنة، فأمر شراء',
@@ -154,6 +132,28 @@ class ProjectSeeder extends Seeder
                     ['٨', 'أقسام مترابطة'],
                     ['٤', 'مستودعات'],
                     ['٢', 'نظام وموقع'],
+                ],
+            ],
+            [
+                'slug' => 'nexabridge',
+                'title' => 'NexaBridge',
+                'tag' => 'موقع ومنصة منتجات · دبي',
+                'summary' => 'منصة لشركة في دبي توزّع أنظمة طاقة وإنارة ذكية من الصين إلى العالم.',
+                'type' => ProjectType::Website,
+                'sector' => ProjectSector::Business,
+                'country' => 'AE',
+                'tech_stack' => ['React', 'TypeScript', 'Tailwind', 'Motion'],
+                'featured_layout' => FeaturedLayout::Reel,
+                'has_demo_data' => false,
+                'highlights' => [
+                    'بلغتين وبوضعين فاتح وداكن، يتبدّلان دون إعادة تحميل',
+                    'مصمّم ألواح Aurora وكتالوج بمقارنة المنتجات',
+                    'منتجات تتحكم بلونها وحرارتها وسطوعها مباشرة',
+                ],
+                'facts' => [
+                    ['٢', 'لغتان'],
+                    ['٢', 'وضعان'],
+                    ['٣٧', 'منتجاً في الكتالوج'],
                 ],
             ],
         ];

@@ -39,9 +39,14 @@ class HomeEndpointTest extends TestCase
             ->assertJsonCount(5, 'data.faqs')
             ->assertJsonPath('data.featured.0.slug', 'saiid')
             ->assertJsonPath('data.featured.0.facts.0.value', '١٤')
-            ->assertJsonPath('data.featured.3.card_theme', 'charcoal')
-            ->assertJsonPath('data.featured.0.frame_label', 'ساعد · لوحة التحكم')
-            ->assertJsonPath('data.projects.0.frame_label', null)
+            ->assertJsonPath('data.featured.*.slug', ['saiid', 'dar-al-itqan', 'rasras', 'nexabridge'])
+            ->assertJsonPath('data.featured.*.featured_layout', ['showcase', 'phones', 'sheet', 'reel'])
+            ->assertJsonPath('data.featured.0.featured_facts', [
+                ['value' => '١٤', 'label' => 'حالة لكل مشروع'],
+                ['value' => '٥', 'label' => 'لوحات تحكم'],
+            ])
+            ->assertJsonPath('data.featured.1.featured_facts', [])
+            ->assertJsonPath('data.projects.0.featured_layout', null)
             ->assertJsonPath('data.projects.0.slug', 'school-management')
             ->assertJsonPath('data.projects.0.cover', null)
             ->assertJsonPath('data.team.0.name', 'م. محمد أبو شمله')
@@ -49,7 +54,7 @@ class HomeEndpointTest extends TestCase
             ->assertJsonPath('data.settings.hero_tagline', 'أنظمة وبرمجيات للجمعيات والمدارس والشركات')
             ->assertJsonPath('data.settings.why_we_started', null)
             ->assertJsonStructure(['data' => [
-                'featured' => [['slug', 'title', 'tag', 'summary', 'facts', 'highlights', 'screens']],
+                'featured' => [['slug', 'title', 'tag', 'summary', 'featured_layout', 'featured_facts', 'facts', 'highlights', 'screens']],
                 'projects' => [['slug', 'title', 'tag', 'summary', 'cover']],
                 'clients' => [['name', 'sector_label', 'location', 'logo']],
                 'testimonials' => [['quote', 'author_name', 'author_title', 'organization']],

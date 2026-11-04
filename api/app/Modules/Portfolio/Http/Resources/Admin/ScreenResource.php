@@ -16,8 +16,7 @@ class ScreenResource extends JsonResource
         return [
             'id' => $this->id,
             'kind' => $this->kind->value,
-            'tab_key' => $this->tab_key,
-            'tab_label' => Translations::of($this->resource, 'tab_label'),
+            'label' => Translations::of($this->resource, 'label'),
             'alt' => Translations::of($this->resource, 'alt'),
             'sort_order' => $this->sort_order,
             'file' => MediaResource::make($this->getFirstMedia('file')),

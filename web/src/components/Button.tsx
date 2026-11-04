@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 import './button.css'
 
-export type ButtonVariant = 'primary' | 'line' | 'wa' | 'sd' | 'nx' | 'amber'
+export type ButtonVariant = 'primary' | 'line' | 'wa'
 
 type Common = {
   variant?: ButtonVariant

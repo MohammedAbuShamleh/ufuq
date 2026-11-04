@@ -4,7 +4,7 @@ import { Approach } from '@/features/approach/Approach'
 import { BeforeAfter } from '@/features/compare/BeforeAfter'
 import { Contact } from '@/features/contact/Contact'
 import { SupportStrip } from '@/features/contact/SupportStrip'
-import { Featured } from '@/features/featured/Featured'
+import { FeaturedProjects } from '@/features/featured/FeaturedProjects'
 import { Hero } from '@/features/hero/Hero'
 import { Journey } from '@/features/journey/Journey'
 import { Services } from '@/features/services/Services'
@@ -24,9 +24,9 @@ export default async function HomePage() {
       <main id="top">
         <Hero tagline={home.settings.hero_tagline} />
         <BeforeAfter />
-        <Featured projects={home.featured}>
+        <FeaturedProjects projects={home.featured}>
           <OtherWork projects={home.projects} />
-        </Featured>
+        </FeaturedProjects>
         <AboutTeaser team={home.team} whyWeStarted={home.settings.why_we_started} />
         <Voices testimonials={home.testimonials} clients={home.clients} />
         <Services />

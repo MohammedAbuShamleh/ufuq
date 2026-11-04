@@ -16,7 +16,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class ProjectResource extends JsonResource
 {
-    private const TEXT = ['title', 'client_name', 'summary', 'tag', 'frame_label', 'challenge', 'solution', 'results'];
+    private const TEXT = ['title', 'client_name', 'summary', 'tag', 'challenge', 'solution', 'results'];
 
     public function toArray(Request $request): array
     {
@@ -36,7 +36,11 @@ class ProjectResource extends JsonResource
             'tech_stack' => $this->tech_stack ?? [],
             'is_featured' => $this->is_featured,
             'featured_order' => $this->featured_order,
-            'card_theme' => $this->card_theme?->value,
+            'featured_layout' => $this->featured_layout?->value,
+            'featured_facts' => array_map(fn (array $fact) => [
+                'value' => $fact['value'],
+                'label' => Translations::normalize($fact['label']),
+            ], $this->featured_facts ?? []),
             'has_demo_data' => $this->has_demo_data,
             'status' => $this->status->value,
             'published_at' => $this->published_at?->toIso8601String(),

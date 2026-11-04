@@ -1,4 +1,4 @@
-import type { CardTheme, ProjectSector, ProjectType, ScreenKind } from './types'
+import type { FeaturedLayout, ProjectSector, ProjectType, ScreenKind } from './types'
 
 export const TYPE_OPTIONS: readonly { value: ProjectType; label: string }[] = [
   { value: 'system', label: 'نظام' },
@@ -23,12 +23,20 @@ export const COUNTRY_OPTIONS: readonly { value: string; label: string }[] = [
   { value: 'TR', label: 'تركيا' },
 ]
 
-export const THEME_OPTIONS: readonly { value: CardTheme; label: string }[] = [
-  { value: 'linen', label: 'كتّاني فاتح' },
-  { value: 'ink', label: 'حبري داكن' },
-  { value: 'sand', label: 'رملي' },
-  { value: 'charcoal', label: 'فحمي' },
+export const LAYOUT_OPTIONS: readonly { value: FeaturedLayout; label: string }[] = [
+  { value: 'showcase', label: 'واجهة وشاشات' },
+  { value: 'phones', label: 'هواتف' },
+  { value: 'sheet', label: 'لوحة شاشات' },
+  { value: 'reel', label: 'عرض متحرك' },
 ]
+
+/** What each layout draws in «أعمالنا», from which screens. */
+export const LAYOUT_HINT: Record<FeaturedLayout, string> = {
+  showcase: 'شاشة حاسوب كبيرة وتحتها كل شاشات الحاسوب مصغّرة بتسمياتها، والأرقام البارزة بجانب العنوان.',
+  phones: 'شريط داكن فيه أول ثلاث شاشات جوال، الوسطى أكبر، وتحت كل منها تسميتها.',
+  sheet: 'النص والنقاط في الأعلى، ثم كل شاشات الحاسوب في لوحة، وتُكبَّر الشاشة بالضغط عليها.',
+  reel: 'مسرح كبير يعرض الفيديو وشاشات الحاسوب، وتحته زر بتسمية كل شاشة للتبديل بينها.',
+}
 
 export const KIND_OPTIONS: readonly { value: ScreenKind; label: string }[] = [
   { value: 'desktop', label: 'شاشة حاسوب' },

@@ -3,12 +3,14 @@ import type { Media, PublishStatus } from '@/lib/types'
 
 export type ProjectType = 'system' | 'website' | 'platform' | 'app'
 export type ProjectSector = 'charity' | 'education' | 'government' | 'dawah' | 'business'
-export type CardTheme = 'linen' | 'ink' | 'sand' | 'charcoal'
+export type FeaturedLayout = 'showcase' | 'phones' | 'sheet' | 'reel'
 export type ScreenKind = 'desktop' | 'mobile' | 'video'
 
-export type Screen = { id: number; kind: ScreenKind; tab_key: string | null; tab_label: T; alt: T; sort_order: number; file: Media | null }
+export type Screen = { id: number; kind: ScreenKind; label: T; alt: T; sort_order: number; file: Media | null }
 
 export type Fact = { id?: number; value: string; label: T }
+/** A figure beside the title in the «واجهة وشاشات» layout. */
+export type FeaturedFact = { value: string; label: T }
 export type Highlight = { id?: number; text: T }
 
 export type ProjectRow = {
@@ -34,7 +36,6 @@ type Fields = {
   client_name: T
   summary: T
   tag: T
-  frame_label: T
   challenge: T
   solution: T
   results: T
@@ -44,7 +45,8 @@ type Fields = {
   tech_stack: string[]
   is_featured: boolean
   featured_order: number
-  card_theme: CardTheme | null
+  featured_layout: FeaturedLayout | null
+  featured_facts: FeaturedFact[]
   has_demo_data: boolean
   status: PublishStatus
   facts: Fact[]
@@ -56,4 +58,4 @@ export type Project = Fields & { id: number; published_at: string | null; sort_o
 /** What the form sends: the whole project, facts and highlights included. */
 export type ProjectInput = Fields
 
-export type ScreenInput = { kind: ScreenKind; tab_key: string | null; tab_label: T; alt: T }
+export type ScreenInput = { kind: ScreenKind; label: T; alt: T }

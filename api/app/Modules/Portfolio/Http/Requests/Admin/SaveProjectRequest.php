@@ -2,7 +2,7 @@
 
 namespace App\Modules\Portfolio\Http\Requests\Admin;
 
-use App\Modules\Portfolio\Enums\CardTheme;
+use App\Modules\Portfolio\Enums\FeaturedLayout;
 use App\Modules\Portfolio\Enums\ProjectSector;
 use App\Modules\Portfolio\Enums\ProjectType;
 use App\Modules\Portfolio\Models\Project;
@@ -32,7 +32,6 @@ class SaveProjectRequest extends FormRequest
             'client_name.ar' => ['required', 'string', 'max:120'],
             'summary.ar' => ['required', 'string', 'max:400'],
             'tag.ar' => ['required', 'string', 'max:120'],
-            'frame_label.ar' => ['nullable', 'string', 'max:120'],
             'challenge.ar' => ['nullable', 'string', 'max:2000'],
             'solution.ar' => ['nullable', 'string', 'max:2000'],
             'results.ar' => ['nullable', 'string', 'max:2000'],
@@ -43,7 +42,12 @@ class SaveProjectRequest extends FormRequest
             'tech_stack.*' => ['required', 'string', 'max:40', 'distinct'],
             'is_featured' => ['sometimes', 'boolean'],
             'featured_order' => ['sometimes', 'integer', 'min:0', 'max:1000'],
-            'card_theme' => ['sometimes', 'nullable', Rule::enum(CardTheme::class)],
+            // A featured project is drawn by its layout, so it cannot go without one.
+            'featured_layout' => ['nullable', 'required_if_accepted:is_featured', Rule::enum(FeaturedLayout::class)],
+            'featured_facts' => ['sometimes', 'nullable', 'list', 'max:2'],
+            'featured_facts.*.value' => ['required', 'string', 'max:32'],
+            'featured_facts.*.label.ar' => ['required', 'string', 'max:60'],
+            'featured_facts.*.label.en' => ['nullable', 'string', 'max:60'],
             'has_demo_data' => ['sometimes', 'boolean'],
             'status' => ['required', Rule::enum(PublishStatus::class)],
             'facts' => ['sometimes', 'nullable', 'list', 'max:3'],
@@ -64,7 +68,6 @@ class SaveProjectRequest extends FormRequest
             'client_name.ar' => 'اسم العميل',
             'summary.ar' => 'الوصف المختصر',
             'tag.ar' => 'الوسم',
-            'frame_label.ar' => 'عنوان شريط المتصفح',
             'challenge.ar' => 'التحدي',
             'solution.ar' => 'الحل',
             'results.ar' => 'النتائج',
@@ -75,7 +78,11 @@ class SaveProjectRequest extends FormRequest
             'tech_stack.*' => 'التقنية',
             'is_featured' => 'مشروع مميز',
             'featured_order' => 'الترتيب بين المميزة',
-            'card_theme' => 'لون البطاقة',
+            'featured_layout' => 'طريقة العرض',
+            'featured_facts' => 'الأرقام البارزة',
+            'featured_facts.*.value' => 'الرقم البارز',
+            'featured_facts.*.label.ar' => 'وصف الرقم البارز',
+            'featured_facts.*.label.en' => 'وصف الرقم البارز بالإنجليزية',
             'has_demo_data' => 'بيانات تجريبية',
             'status' => 'الحالة',
             'facts' => 'الأرقام',
@@ -94,6 +101,8 @@ class SaveProjectRequest extends FormRequest
             'slug.regex' => 'الرابط حروف إنجليزية صغيرة وأرقام، تفصل بينها شرطة (مثل school-system).',
             'slug.unique' => 'هذا الرابط مستخدم لمشروع آخر، وقد يكون مشروعاً محذوفاً. اختر رابطاً غيره.',
             'country.regex' => 'رمز الدولة حرفان إنجليزيان كبيران (مثل PS).',
+            'featured_layout.required_if_accepted' => 'اختر طريقة العرض: المشروع المميز يظهر في الرئيسية بها.',
+            'featured_facts.max' => 'رقمان بارزان على الأكثر.',
         ];
     }
 }

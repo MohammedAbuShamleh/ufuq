@@ -1,3 +1,6 @@
+/* «أعمالنا»: one layout per featured project (v8, #projects .fb1–.fb4).
+   The phones band and the reel stage are dark in both themes. */
+
 .projects {
   padding: 7rem 0 2rem;
 }
@@ -12,242 +15,402 @@
   justify-self: end;
   max-width: 40ch;
 }
-.pj-tech {
-  display: block;
-  direction: ltr;
-  text-align: right;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.74rem;
+
+/* ---------- Shared pieces ---------- */
+.fbw {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 6vw, 5rem);
+  margin-top: 2.5rem;
+}
+.fb :is(h1, h3) {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  margin: 0.25rem 0 0;
+}
+/* On the home page the title opens the project page, without looking like a link. */
+.fb :is(h1, h3) a:hover {
   color: var(--accent);
+}
+.fv-meta {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.fv-tech {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.fv-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+.fv-cta:hover {
+  color: var(--accent-hover);
+}
+.fv-cta .ico-arrow {
+  width: 14px;
+  height: 14px;
+}
+.fb-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.4rem;
 }
 
-/* ---------- A featured card ---------- */
-.feats {
-  position: relative;
-}
-.feat {
-  position: relative;
+/* ---------- Showcase (Saiid): a main screen and its thumbnails ---------- */
+.fb1-copy {
   display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.62fr);
-  gap: 3rem;
-  align-items: center;
-  margin-bottom: 3rem;
-  padding: 3rem 3rem 3.5rem;
-  border-radius: 28px;
-  overflow: hidden;
-  background: var(--tint);
-  transition:
-    transform 0.5s cubic-bezier(0.2, 0.75, 0.2, 1),
-    box-shadow 0.5s,
-    opacity 0.9s var(--ease);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) auto;
+  align-items: end;
+  gap: 1rem 2.5rem;
+  margin-bottom: 1.2rem;
 }
-.feat > * {
-  position: relative;
-  z-index: 1;
+.fb1-copy p {
+  margin: 0;
+  line-height: 1.9;
+  color: var(--text);
+  opacity: 0.85;
+  max-width: 46ch;
 }
-.feat.rev {
-  grid-template-columns: minmax(0, 1.62fr) minmax(0, 0.78fr);
-}
-.feat-num {
+.fb1-facts {
   display: flex;
-  direction: ltr;
-  justify-content: flex-end;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 1.1rem;
-  font-family: var(--font-display);
-  line-height: 1;
-}
-.feat-num b {
-  font-size: clamp(3rem, 5vw, 4.4rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  opacity: 0.16;
-}
-.feat-num span {
-  font-size: 0.9rem;
-  opacity: 0.5;
-}
-.feat-tag {
-  font-family: var(--font-display);
+  gap: 1.4rem;
   font-size: 0.85rem;
-  color: var(--accent);
-}
-.feat :is(h1, h3) {
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
-  margin: 0.4rem 0 0.9rem;
-}
-.feat-lead {
   color: var(--muted);
-  margin: -0.4rem 0 1rem;
+  white-space: nowrap;
 }
-.feat-list {
-  list-style: none;
-  margin: 0 0 1.25rem;
-  padding: 0;
-  display: grid;
-  gap: 0.6rem;
-}
-.feat-list li {
-  display: grid;
-  grid-template-columns: 18px 1fr;
-  gap: 0.6rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-/* Bullets are little arches. */
-.feat-list li::before {
-  content: '';
-  width: 11px;
-  height: 14px;
-  margin-top: 0.35rem;
-  background: var(--accent);
-  clip-path: url(#archShape);
-}
-.feat-facts {
-  display: flex;
-  margin: 0 0 1.1rem;
-}
-.feat-facts div {
-  padding-inline: 1.25rem;
-  border-inline-start: 1px solid var(--line);
-}
-.feat-facts div:first-child {
-  padding-inline-start: 0;
-  border: 0;
-}
-.feat-facts strong {
-  display: block;
+.fb1-facts b {
   font-family: var(--font-display);
   font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.3;
+  color: var(--accent);
+  margin-inline-end: 0.2rem;
+}
+.fb1-screen {
+  position: relative;
+  aspect-ratio: 16 / 8.6;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 50px 80px -60px rgb(21 24 29 / 0.5);
+}
+.fb1-m {
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.fb1-m.on {
+  opacity: 1;
+}
+.fb1-screen .demo-pill {
+  position: absolute;
+  bottom: 12px;
+  inset-inline-end: 12px;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+}
+.fb1-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0.8rem 0 1.1rem;
+}
+.fb1-thumbs button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-align: center;
+}
+.fb-th {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line);
+  opacity: 0.65;
+  transition:
+    opacity 0.3s,
+    box-shadow 0.3s;
+}
+.fb-th img {
+  object-fit: cover;
+  object-position: top;
+}
+.fb1-thumbs button:hover .fb-th,
+.fb1-thumbs button.on .fb-th {
+  opacity: 1;
+}
+.fb1-thumbs button.on .fb-th {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.fb1-thumbs button.on {
   color: var(--text);
 }
-.feat-facts span {
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-.feat-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1rem;
+.fb1-thumbs button:focus-visible .fb-th {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* On the home stack the title opens the project page, without looking like a link. */
-.feat h3 a:hover {
-  color: var(--accent);
+/* ---------- Phones (Dar Al-Itqan): a dark band across the page ---------- */
+.fb2 {
+  position: relative;
+  isolation: isolate;
+  margin-inline: calc((100vw - 100%) / -2);
+  padding: clamp(3.2rem, 5.5vw, 4.5rem) max(1.5rem, calc((100vw - 1240px) / 2));
+  background: radial-gradient(120% 90% at 50% 0%, #24262b, #15181d 65%);
+  color: #f4efe6;
+  overflow: hidden;
+  text-align: center;
 }
-
-/* The project page shows any project as its card: one with no screens is
-   text only, and phones without a browser window stand side by side. */
-.feat.solo {
-  grid-template-columns: minmax(0, 1fr);
+/* A soft warm light behind the phones. */
+.fb2::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -20%;
+  width: min(900px, 90vw);
+  height: 70%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgb(233 140 90 / 0.18), transparent);
+  pointer-events: none;
+  z-index: -1;
 }
-.feat.solo .feat-body {
-  max-width: 62ch;
+.fb2-copy {
+  max-width: 640px;
+  margin-inline: auto;
 }
-/* Text only: the tech line and the button stay together under the text. */
-.feat.solo .feat-foot {
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 1.4rem;
+.fb2 .fv-meta,
+.fb2 .fv-tech,
+.fb2 figcaption {
+  color: #b9b4a6;
 }
-.feat.phones-only .feat-visual {
+.fb2 :is(h1, h3) {
+  color: #f4efe6;
+}
+.fb2 :is(h1, h3) a:hover,
+.fb2 .fv-cta:hover {
+  color: #f4efe6;
+}
+.fb2-copy p {
+  margin: 1rem auto 0;
+  line-height: 1.9;
+  color: #cfcab2;
+}
+.fb2-trio {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  padding: 0;
+  align-items: flex-end;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin: 2.4rem 0 2rem;
 }
-.feat.phones-only .pframe,
-.feat.phones-only .pframe.p2 {
+.fb2-ph {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+.fb2-scr {
   position: relative;
-  inset: auto;
-  width: clamp(150px, 42%, 230px);
+  width: clamp(140px, 15vw, 205px);
+  aspect-ratio: 1080 / 2220;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 6px solid #0c0e11;
+  box-shadow:
+    0 40px 60px -30px rgb(0 0 0 / 0.7),
+    0 0 0 1px rgb(255 255 255 / 0.08);
+}
+.fb2-scr img {
+  object-fit: cover;
+  object-position: top;
+}
+.fb2-ph2 .fb2-scr {
+  width: clamp(160px, 17.5vw, 240px);
+}
+.fb2-ph1,
+.fb2-ph3 {
+  transform: translateY(-14px);
+}
+.fb2 figcaption {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+}
+.fb2-foot {
+  justify-content: center;
+}
+.fb2 .demo-pill {
+  color: #b9b4a6;
+  border-color: rgb(255 255 255 / 0.15);
+}
+.fb2 .fv-cta {
+  color: #e9a79f;
 }
 
-/* ---------- Screens: tabs, a browser window, phones ---------- */
-.feat-visual {
+/* ---------- Sheet (RasRas): copy and points, then every screen ---------- */
+.fb3 {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+.fb3-copy p {
+  margin: 1rem 0;
+  line-height: 1.9;
+  color: var(--text);
+  opacity: 0.85;
+}
+.fb3-copy ul {
+  list-style: none;
+  margin: 0 0 1.6rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.fb3-copy li {
   position: relative;
-  padding-bottom: 1.5rem;
-  padding-inline-end: 2.5rem;
-  transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.2, 0.75, 0.2, 1);
+  padding-inline-start: 1.2rem;
+  font-size: 0.95rem;
+  line-height: 1.8;
 }
-.feat.rev .feat-visual {
-  order: -1;
-  padding-inline: 3.5rem 0;
-}
-.feat-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-}
-.feat-tabs button {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--muted);
-  border-radius: 999px;
-  padding: 0.35rem 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.feat-tabs button:hover {
-  color: var(--text);
-}
-.feat-tabs button.on {
-  background: var(--surface);
-  border-color: var(--line);
-  color: var(--text);
-  box-shadow: 0 2px 8px -4px rgb(var(--ink-rgb) / 0.25);
-}
-.bframe {
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--frame);
-  box-shadow:
-    0 30px 60px -30px rgb(var(--ink-rgb) / 0.45),
-    0 0 0 1px rgb(var(--ink-rgb) / 0.06);
-  transition:
-    transform 1.1s var(--ease),
-    opacity 1s ease;
-}
-.bbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  height: 30px;
-  padding: 0 12px;
-  background: var(--frame-bar);
-  direction: ltr;
-}
-.bbar i {
-  width: 9px;
-  height: 9px;
+.fb3-copy li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.75em;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--frame-dot);
+  background: var(--accent);
 }
-.bbar span {
-  margin: 0 auto;
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  color: var(--frame-url-text);
-  background: var(--frame-url);
-  border-radius: 6px;
-  padding: 1px 14px;
+.fb3-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.1rem;
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
 }
-.bshot {
+.fb3-cell {
+  all: unset;
+  cursor: zoom-in;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.fb3-img {
   position: relative;
-  aspect-ratio: var(--ar, 1600 / 1000);
-  background: var(--frame-blank);
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--line);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.3s;
 }
-.bshot :is(img, video),
-.ph-stack img {
+.fb3-img img {
+  object-fit: cover;
+  object-position: top;
+}
+.fb3-cell:hover .fb3-img {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 45%, var(--line)),
+    0 18px 30px -20px rgb(21 24 29 / 0.4);
+}
+.fb3-cell:focus-visible .fb3-img {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.fb3-l {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+.fb3-note {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.fb3-box {
+  /* Centered as browsers do it; the base reset zeroes dialog margins. */
+  margin: auto;
+  border: 0;
+  padding: 0;
+  border-radius: 18px;
+  max-width: min(1100px, 94vw);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 40px 90px -30px rgb(0 0 0 / 0.6);
+}
+.fb3-box::backdrop {
+  background: rgb(21 24 29 / 0.72);
+}
+.fb3-box img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.fb3-box p {
+  margin: 0;
+  padding: 0.8rem 1.2rem;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+}
+.fb3-x {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  inset-inline-end: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: rgb(21 24 29 / 0.7);
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.fb3-x:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* ---------- Reel (NexaBridge): a stage that plays the clips ---------- */
+.fb4-stage {
+  position: relative;
+  aspect-ratio: 16 / 7.4;
+  max-height: 72vh;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0f1012;
+}
+.fb4-m {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -255,213 +418,103 @@
   object-fit: cover;
   object-position: top;
   opacity: 0;
-  transition: opacity 0.45s;
+  transition: opacity 0.5s;
 }
-.bshot :is(img, video).on,
-.ph-stack img.on {
+.fb4-m.on {
   opacity: 1;
 }
-.pframe {
+.fb4-cap {
   position: absolute;
-  inset-inline-end: 0;
-  bottom: -1rem;
-  width: clamp(110px, 22%, 170px);
-  aspect-ratio: 390 / 760;
-  border-radius: 24px;
-  border: 6px solid var(--phone);
-  background: var(--phone);
-  overflow: hidden;
-  box-shadow: 0 30px 50px -20px rgb(var(--ink-rgb) / 0.55);
-  transition:
-    transform 1.2s var(--ease) 0.15s,
-    opacity 1s ease 0.15s;
+  inset: auto 0 0 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem 2.5rem;
+  padding: 4rem 2rem 1.6rem;
+  background: linear-gradient(180deg, transparent, rgb(10 11 13 / 0.86));
+  color: #f4efe6;
 }
-.pframe :is(img, video) {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 18px;
+.fb4-cap .fv-meta {
+  color: #b9b4a6;
 }
-.feat .pframe.p2 {
-  inset-inline: -0.5rem auto;
-  bottom: -1.5rem;
+.fb4-cap :is(h1, h3) {
+  color: #f4efe6;
 }
-.feat.rev .pframe {
-  inset-inline: 0 auto;
+.fb4-cap :is(h1, h3) a:hover {
+  color: #e9a79f;
 }
-.feat.rev .pframe.p2 {
-  inset-inline: auto -1rem;
-  bottom: -1.5rem;
+.fb4-cap p {
+  margin: 0;
+  max-width: 52ch;
+  line-height: 1.8;
+  color: #dcd6c8;
 }
-@media (hover: hover) {
-  .feat:hover .bframe {
-    transform: translateZ(30px);
-  }
-  .feat:hover .pframe {
-    transform: translateZ(70px) translateY(-10px);
-  }
+.fb4-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }
-/* Before a card is first seen, its screens wait a little lower. */
-@media (prefers-reduced-motion: no-preference) {
-  html.js:not(.motion-off) .feats .feat:not(.seen) .bframe {
-    transform: translateY(30px) scale(0.97);
-    opacity: 0.4;
-  }
-  html.js:not(.motion-off) .feats .feat:not(.seen) .pframe {
-    transform: translateY(60px);
-    opacity: 0;
-  }
+.fb4-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
-
-/* ---------- Themes ---------- */
-.feat.saiid,
-.feat.nexa {
-  color: var(--paper-text);
-  border: 1px solid var(--paper-edge);
-}
-.feat.saiid {
-  background: var(--paper-linen);
-}
-.feat.nexa {
-  background: var(--paper-sand);
-}
-.feat:is(.saiid, .nexa) :is(.feat-tag, .pj-tech) {
-  color: var(--terra);
-}
-.feat:is(.saiid, .nexa) .feat-list li::before {
-  background: var(--terra);
-}
-.feat:is(.saiid, .nexa) :is(.feat-lead, .feat-facts span, .feat-list li) {
-  color: var(--paper-muted);
-}
-.feat:is(.saiid, .nexa) :is(h1, h3, .feat-facts strong, .feat-num) {
-  color: var(--paper-text);
-}
-.feat:is(.saiid, .nexa) .feat-facts div {
-  border-color: var(--paper-line);
-}
-.feat:is(.saiid, .nexa) .feat-tabs button {
-  color: var(--paper-tab);
-}
-.feat:is(.saiid, .nexa) .feat-tabs button.on {
-  background: var(--paper-tab-on);
-  border-color: var(--paper-line);
-  color: var(--paper-tab-on-text);
-}
-.feat.saiid .bbar {
-  background: var(--paper-bar-linen);
-}
-.feat.nexa .bbar {
-  background: var(--paper-bar-sand);
-}
-.nx-title {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: clamp(2rem, 3.4vw, 2.8rem) !important;
-  letter-spacing: 0.01em;
-  direction: ltr;
-  text-align: right;
-}
-
-.feat.itqan {
-  background: linear-gradient(160deg, var(--night-1), var(--night) 62%);
-  color: var(--on-night);
-  border: 1px solid rgb(var(--white-rgb) / 0.06);
-}
-.feat.itqan :is(.feat-tag, .pj-tech) {
-  color: var(--rose);
-}
-.feat.itqan .feat-list li::before {
-  background: var(--rose-strong);
-}
-.feat.itqan :is(.feat-lead, .feat-facts span, .feat-list li) {
-  color: var(--on-night-muted);
-}
-.feat.itqan .feat-facts span {
+.fb4-chips button {
+  all: unset;
+  cursor: pointer;
+  font-family: var(--font-display);
   font-size: 0.8rem;
+  color: var(--muted);
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition:
+    color 0.25s,
+    box-shadow 0.25s,
+    background 0.25s;
 }
-.feat.itqan .feat-facts div {
-  border-color: rgb(var(--white-rgb) / 0.12);
+.fb4-chips button:hover {
+  color: var(--text);
 }
-.feat.itqan :is(.feat-facts strong, h1, h3, .feat-num) {
-  color: var(--on-night);
+.fb4-chips button.on {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
 }
-.feat.dark .bframe {
-  box-shadow: 0 30px 60px -30px rgb(var(--ink-rgb) / 0.7);
-}
-.feat.dark .pframe {
-  border-color: var(--phone-deep);
-  background: var(--phone-deep);
-}
-
-.feat.rasras {
-  background: radial-gradient(110% 120% at 0% 0%, var(--char-1) 0%, var(--char-2) 55%, var(--char-3) 100%);
-  color: var(--on-night);
-  border: 1px solid rgb(var(--white-rgb) / 0.07);
-  box-shadow: 0 40px 80px -45px color-mix(in srgb, var(--char-3) 80%, transparent);
-}
-.feat.rasras :is(.feat-tag, .pj-tech) {
-  color: var(--rose);
-}
-.feat.rasras :is(.feat-lead, .feat-facts span) {
-  color: var(--on-night-soft);
-}
-.feat.rasras .feat-list li::before {
-  background: var(--rose-strong);
-}
-.feat.rasras .feat-facts div {
-  border-color: rgb(var(--white-rgb) / 0.16);
-}
-.feat.rasras .feat-facts strong {
-  color: var(--frame);
-}
-.feat.rasras .feat-tabs button {
-  color: var(--on-night-soft);
-}
-.feat.rasras .feat-tabs button:hover {
-  color: var(--frame);
-}
-.feat.rasras .feat-tabs button.on {
-  background: rgb(var(--white-rgb) / 0.14);
-  border-color: rgb(var(--white-rgb) / 0.2);
-  color: var(--frame);
-  box-shadow: none;
-}
-.feat.rasras .btn-line {
-  border-color: rgb(var(--white-rgb) / 0.7);
-  color: var(--frame);
-}
-.feat.rasras .btn-line:hover {
-  background: var(--frame);
-  border-color: var(--frame);
-  color: var(--char-3);
-}
-/* Film grain over the charcoal. */
-.feat.rasras::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+.fb4-chips button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* ---------- Stacking: wide and tall screens, with motion ---------- */
-@media (min-width: 961px) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
-  html:not(.motion-off) .feats .feat {
-    position: sticky;
-    top: var(--st, calc(88px + var(--i, 0) * 14px));
-    min-height: min(78vh, 720px);
-    margin-bottom: 8vh;
-    transform-origin: 50% 0;
-    will-change: transform, filter;
-    transition: none;
+/* ---------- Wide screens: RasRas's copy sits on one row ---------- */
+@media (min-width: 961px) {
+  .fb3 {
+    gap: 1.4rem;
   }
-  html:not(.motion-off) .feats .feat:last-child {
-    margin-bottom: 0;
+  .fb3-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.4rem 3rem;
+    align-items: start;
+  }
+  .fb3-copy > :is(.fv-meta, h1, h3, p) {
+    grid-column: 1;
+  }
+  .fb3-copy p {
+    margin: 0.6rem 0 0;
+  }
+  .fb3-copy ul {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    margin: 0;
+    align-self: end;
+  }
+  .fb3-copy .fb-foot {
+    grid-column: 1 / -1;
+    margin-top: 0.6rem;
   }
 }
 
@@ -472,72 +525,76 @@
   .pj-head p {
     justify-self: start;
   }
-  .feat {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 1.5rem 2.5rem;
+  .fb1-copy {
+    grid-template-columns: 1fr;
   }
-  .feat .feat-visual,
-  .feat.rev .feat-visual {
-    order: -1;
-    margin-bottom: 1.5rem;
-    padding-inline: 0 1.5rem;
+  .fb1-screen {
+    aspect-ratio: 16 / 10;
   }
-  .feat.rev .feat-visual {
-    padding-inline: 1.5rem 0;
+  .fb1-thumbs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-}
-@media (max-width: 760px) {
-  .feat-tabs {
-    flex-wrap: nowrap;
-    max-width: 100%;
-    min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-inline: 6px;
-    mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent);
+  .fb2-trio {
+    gap: 0.6rem;
+    margin: 1.8rem 0 1.6rem;
   }
-  .feat-tabs::-webkit-scrollbar {
-    display: none;
-  }
-  .feat-tabs button {
-    flex: none;
-  }
-  .feat .pframe {
-    display: none;
-  }
-  .feat .feat-visual,
-  .feat.rev .feat-visual {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    padding: 0 0 0.5rem;
-  }
-  /* Itqan is half app: its two phones stay, side by side under the window. */
-  .feat.itqan .feat-visual {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-  }
-  .feat.itqan .bframe {
-    flex: 1 0 100%;
-  }
-  .feat.itqan .pframe {
-    display: block;
-    position: relative;
-    inset: auto;
-    width: calc(50% - 8px);
-    max-width: 170px;
-    transform: none;
-    opacity: 1;
+  .fb2-scr {
+    width: 27vw;
     border-width: 4px;
     border-radius: 18px;
   }
+  .fb2-ph2 .fb2-scr {
+    width: 31vw;
+  }
+  .fb2-ph1,
+  .fb2-ph3 {
+    transform: translateY(-8px);
+  }
+  .fb2 figcaption {
+    font-size: 0.68rem;
+    max-width: 28vw;
+  }
+  .fb3-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    padding: 0.7rem;
+  }
+  .fb4-stage {
+    aspect-ratio: 4 / 3.4;
+    max-height: none;
+  }
+  .fb4-cap {
+    grid-template-columns: 1fr;
+    padding: 3rem 1.1rem 1.1rem;
+  }
+  .fb4-cap p {
+    font-size: 0.88rem;
+  }
+  /* The chips scroll sideways, edge to edge. */
+  .fb4-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+  }
+  .fb4-chips::-webkit-scrollbar {
+    display: none;
+  }
+  .fb4-chips button {
+    white-space: nowrap;
+  }
 }
-@media (max-width: 560px) {
-  .feat-tabs button {
-    font-size: 0.8rem;
-    padding: 0.3rem 0.7rem;
+
+@media (max-width: 520px) {
+  .fb1-facts {
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+  .fb4-cap :is(h1, h3) {
+    font-size: 1.5rem;
+  }
+  .fb4-cap p {
+    display: none;
   }
 }

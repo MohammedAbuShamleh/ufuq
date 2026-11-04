@@ -47,23 +47,6 @@
   background: var(--wa-hover);
   transform: translateY(-1px);
 }
-/* Featured cards: each project's own button. */
-.btn-sd,
-.btn-nx {
-  background: var(--terra);
-  color: var(--on-accent);
-}
-.btn-sd:hover,
-.btn-nx:hover {
-  background: var(--brick);
-}
-.btn-amber {
-  background: var(--on-night);
-  color: var(--night);
-}
-.btn-amber:hover {
-  background: var(--frame);
-}
 
 .ico-arrow {
   width: 18px;

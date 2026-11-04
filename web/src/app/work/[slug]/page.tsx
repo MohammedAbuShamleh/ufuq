@@ -3,15 +3,14 @@ import { notFound } from 'next/navigation'
 import { Arrow, Button } from '@/components/Button'
 import { Kicker } from '@/components/Kicker'
 import { SupportStrip } from '@/features/contact/SupportStrip'
-import { FeaturedCard } from '@/features/featured/FeaturedCard'
-import { similarHref } from '@/features/featured/screens'
+import { FeaturedProject } from '@/features/featured/FeaturedProjects'
+import { similarHref } from '@/features/featured/similar'
 import { ProjectFacts, ProjectQuote, ProjectStory } from '@/features/project/ProjectDetails'
 import { relatedProjects } from '@/features/project/related'
 import { cardTones, WorkCard } from '@/features/work/WorkCard'
 import { getProject, getProjects, getSettings } from '@/lib/api'
 import { pageMetadata, SITE_DESCRIPTION } from '@/lib/seo'
 import { PageCta } from '../../_shell/PageCta'
-import '@/features/featured/featured.css'
 
 // The page waits for its project rather than showing a shell first, so an
 // unpublished slug still answers with a real 404 (a streamed shell would
@@ -48,7 +47,7 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
             <Link className="sx-go pp-back" href="/work">
               <Arrow className="ico-arrow back" /> كل الأعمال
             </Link>
-            <FeaturedCard project={project} heading="h1" contactHref={similarHref(project.type)} />
+            <FeaturedProject project={project} heading="h1" contactHref={similarHref(project.type)} />
           </div>
         </section>
 

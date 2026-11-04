@@ -1,15 +1,10 @@
 .demo-pill {
-  order: 9;
   font-style: normal;
   font-family: var(--font-display);
-  font-size: 0.55rem;
-  letter-spacing: 0.02em;
-  color: var(--pill-text);
-  background: rgb(var(--white-rgb) / 0.7);
-  border: 1px solid rgb(var(--ink-rgb) / 0.06);
+  font-size: 0.68rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0 6px;
-  margin-inline-start: 8px;
+  padding: 0.1rem 0.55rem;
   white-space: nowrap;
-  opacity: 0.75;
 }

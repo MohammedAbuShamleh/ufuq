@@ -77,21 +77,12 @@
   --rose: #e9a79f;
   --rose-strong: #e07a6e;
 
-  /* Charcoal: the Rasras card */
-  --char-1: #3a3833;
+  /* Charcoal */
   --char-2: #24231f;
-  --char-3: #161512;
 
-  /* Device frames around screenshots */
+  /* Frames around screenshots */
   --frame: #ffffff;
-  --frame-blank: #f4f5f7;
-  --frame-bar: #efe8dc;
-  --frame-dot: #d8cdbb;
-  --frame-url: #f7f2ea;
-  --frame-url-text: #6e6b5c;
   --phone: #15181d;
-  --phone-deep: #0e1218;
-  --pill-text: #8a8270;
 
   /* Status */
   --wa: #1f8f55;

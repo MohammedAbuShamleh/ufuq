@@ -16,9 +16,10 @@ class ProjectScreen extends Model implements HasMedia
 {
     use HasTranslations, HasWebpSizes, InteractsWithMedia, SoftDeletes;
 
-    protected $fillable = ['project_id', 'kind', 'tab_key', 'tab_label', 'alt', 'sort_order'];
+    protected $fillable = ['project_id', 'kind', 'label', 'alt', 'sort_order'];
 
-    public array $translatable = ['tab_label', 'alt'];
+    /** label: the text under a thumbnail, a phone's caption, a reel chip. */
+    public array $translatable = ['label', 'alt'];
 
     protected function casts(): array
     {

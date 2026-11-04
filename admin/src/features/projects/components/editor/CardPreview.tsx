@@ -1,6 +1,7 @@
 import { MediaThumb } from '@/components/MediaThumb'
 import { buttonClass } from '@/components/ui/buttonClass'
 import { ar } from '@/lib/i18n'
+import { label, LAYOUT_OPTIONS } from '../../labels'
 import type { ProjectInput, Screen } from '../../types'
 
 const SITE_URL: string = import.meta.env.VITE_SITE_URL ?? 'http://localhost:3000'
@@ -49,7 +50,9 @@ export function CardPreview({ values, screens, saved }: { values: ProjectInput; 
       </div>
       <ul className="grid gap-1.5 text-sm text-muted">
         <li>{values.status === 'published' ? '• منشور: يظهر في الموقع خلال دقيقة من الحفظ.' : '• مسودة: لا يظهر في الموقع حتى تختار «منشور» وتحفظ.'}</li>
-        {values.is_featured && <li>• مميز: يظهر أيضاً بالبطاقة الكبيرة ذات الشاشات والتبويبات في الصفحة الرئيسية.</li>}
+        {values.is_featured && (
+          <li>{values.featured_layout ? `• مميز: يظهر أيضاً في «أعمالنا» في الرئيسية بطريقة «${label(LAYOUT_OPTIONS, values.featured_layout)}».` : '• مميز: اختر طريقة عرضه في «الأساسيات» ليظهر في «أعمالنا» في الرئيسية.'}</li>
+        )}
         {!cover && <li>• لا شاشات بعد: تظهر البطاقة نصية بأول حرف من اسم العميل.</li>}
       </ul>
       {saved?.published && (

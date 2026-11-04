@@ -77,7 +77,7 @@ class ProjectsEndpointTest extends TestCase
             ->assertJsonCount(1, 'data.facts')
             ->assertJsonCount(1, 'data.highlights')
             ->assertJsonCount(2, 'data.screens')
-            ->assertJsonPath('data.screens.0.tab_key', 'tab-1')
+            ->assertJsonPath('data.screens.0.label', 'شاشة 1')
             ->assertJsonPath('data.screens.0.file.url', fn (string $url) => str_ends_with($url, '/shot-1.mp4'))
             ->assertJsonPath('data.screens.0.file.sizes', [])
             ->assertJsonPath('data.challenge', null)

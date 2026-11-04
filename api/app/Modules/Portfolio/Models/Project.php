@@ -2,7 +2,7 @@
 
 namespace App\Modules\Portfolio\Models;
 
-use App\Modules\Portfolio\Enums\CardTheme;
+use App\Modules\Portfolio\Enums\FeaturedLayout;
 use App\Modules\Portfolio\Enums\ProjectSector;
 use App\Modules\Portfolio\Enums\ProjectType;
 use App\Support\Enums\PublishStatus;
@@ -18,19 +18,21 @@ class Project extends Model
     use HasTranslations, SoftDeletes;
 
     protected $fillable = [
-        'slug', 'title', 'client_name', 'summary', 'tag', 'frame_label', 'challenge', 'solution', 'results',
-        'type', 'sector', 'country', 'tech_stack', 'is_featured', 'featured_order', 'card_theme',
-        'has_demo_data', 'status', 'published_at', 'sort_order',
+        'slug', 'title', 'client_name', 'summary', 'tag', 'challenge', 'solution', 'results',
+        'type', 'sector', 'country', 'tech_stack', 'is_featured', 'featured_order', 'featured_layout',
+        'featured_facts', 'has_demo_data', 'status', 'published_at', 'sort_order',
     ];
 
-    public array $translatable = ['title', 'client_name', 'summary', 'tag', 'frame_label', 'challenge', 'solution', 'results'];
+    public array $translatable = ['title', 'client_name', 'summary', 'tag', 'challenge', 'solution', 'results'];
 
     protected function casts(): array
     {
         return [
             'type' => ProjectType::class,
             'sector' => ProjectSector::class,
-            'card_theme' => CardTheme::class,
+            'featured_layout' => FeaturedLayout::class,
+            // [{value, label: {ar, en}}]: up to two figures beside a featured title.
+            'featured_facts' => 'array',
             'status' => PublishStatus::class,
             'tech_stack' => 'array',
             'is_featured' => 'boolean',

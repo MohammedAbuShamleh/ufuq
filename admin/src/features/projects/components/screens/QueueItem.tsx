@@ -6,7 +6,7 @@ import { SelectField } from '@/components/ui/Field'
 import { formatNumber } from '@/lib/format'
 import type { T } from '@/lib/i18n'
 import { KIND_OPTIONS } from '../../labels'
-import { KIND_HINT, type TabOption } from '../../screens'
+import { KIND_HINT } from '../../screens'
 import type { ScreenKind } from '../../types'
 
 /** A file picked for upload, with the details the team fills in before sending it. */
@@ -16,20 +16,14 @@ export type Pending = {
   url: string
   kind: ScreenKind
   alt: T
-  tabLabel: T
-  /** The tab this shot opens when it sits in the browser frame. */
-  ownKey: string
-  /** The desktop tab a phone shot follows; '' keeps the phone still. */
-  follow: string
+  label: T
   progress: number | null
   error: string | null
 }
 
-const STILL = ''
+type Props = { item: Pending; onChange: (patch: Partial<Pending>) => void; onSend: () => void; onDrop: () => void }
 
-type Props = { item: Pending; tabs: TabOption[]; onChange: (patch: Partial<Pending>) => void; onSend: () => void; onDrop: () => void }
-
-export function QueueItem({ item, tabs, onChange, onSend, onDrop }: Props) {
+export function QueueItem({ item, onChange, onSend, onDrop }: Props) {
   const busy = item.progress !== null
   const kinds = item.file.type.startsWith('video/') ? KIND_OPTIONS.filter((k) => k.value === 'video') : KIND_OPTIONS.filter((k) => k.value !== 'video')
 
@@ -43,17 +37,7 @@ export function QueueItem({ item, tabs, onChange, onSend, onDrop }: Props) {
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <SelectField label="النوع" value={item.kind} options={kinds} onChange={(kind) => onChange({ kind })} hint={KIND_HINT[item.kind]} />
-          {item.kind === 'mobile' ? (
-            <SelectField
-              label="يتبع تبويب"
-              value={item.follow}
-              options={[{ value: STILL, label: 'لا يتبع — صورة ثابتة' }, ...tabs.map((t) => ({ value: t.key, label: t.label }))]}
-              onChange={(follow) => onChange({ follow })}
-              hint="حين يُفتح هذا التبويب في المتصفح تظهر هذه الشاشة في الجوال."
-            />
-          ) : (
-            <TranslatedInline label="اسم التبويب" max={40} placeholder="لوحة التحكم" hint="يظهر فوق إطار المتصفح. اختياري." value={item.tabLabel} onChange={(tabLabel) => onChange({ tabLabel })} />
-          )}
+          <TranslatedInline label="التسمية" max={60} placeholder="لوحة التحكم" hint="كلمة أو كلمتان تحت الشاشة أو على زرّها في الموقع. اختياري." value={item.label} onChange={(label) => onChange({ label })} />
         </div>
         <TranslatedInline
           label="وصف الصورة (نص بديل)"

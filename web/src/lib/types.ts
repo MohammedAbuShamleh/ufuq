@@ -13,29 +13,31 @@ export type ScreenKind = 'desktop' | 'mobile' | 'video'
 
 export type Screen = {
   kind: ScreenKind
-  tab_key: string | null
-  tab_label: string | null
+  /** The text under a thumbnail, a phone's caption, a reel chip. */
+  label: string | null
   alt: string | null
   file: Media | null
 }
 
 export type ProjectType = 'system' | 'website' | 'platform' | 'app'
 export type ProjectSector = 'charity' | 'education' | 'government' | 'dawah' | 'business'
-export type CardTheme = 'linen' | 'ink' | 'sand' | 'charcoal'
+/** How a featured project is drawn in «أعمالنا»: each has a layout of its own. */
+export type FeaturedLayout = 'showcase' | 'phones' | 'sheet' | 'reel'
 
 type ProjectBase = {
   slug: string
   title: string
   client_name: string | null
   tag: string | null
-  frame_label: string | null
   summary: string | null
   type: ProjectType
   sector: ProjectSector
   country: string | null
   tech_stack: string[] | null
   is_featured: boolean
-  card_theme: CardTheme | null
+  featured_layout: FeaturedLayout | null
+  /** Up to two figures beside the title in the showcase layout. */
+  featured_facts: { value: string; label: string | null }[]
   has_demo_data: boolean
 }
 

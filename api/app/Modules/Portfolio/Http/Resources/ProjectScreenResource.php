@@ -18,8 +18,7 @@ class ProjectScreenResource extends JsonResource
     {
         return [
             'kind' => $this->kind->value,
-            'tab_key' => $this->tab_key,
-            'tab_label' => $this->tab_label,
+            'label' => $this->label,
             'alt' => $this->alt,
             'file' => MediaResource::make($this->getFirstMedia('file')),
         ];

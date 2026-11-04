@@ -1,8 +1,9 @@
 # أفق | UFUQ
 
 The UFUQ marketing site, its dashboard and its API, in one repository.
-The approved design references are v7 of the home page, the About page and the 404 page;
-the build handoff document defines the structure.
+The approved design references are v7 of the home page, the About page and the 404 page,
+and v8 for the featured projects in «أعمالنا» (`docs/reference/ufuq-website-v8.html`,
+`#projects`); the build handoff document defines the structure.
 
 | Folder   | Part                       | Stack                                                  | Domain          |
 | -------- | -------------------------- | ------------------------------------------------------ | --------------- |
@@ -130,6 +131,15 @@ The contact form posts from the visitor's browser straight to `POST /v1/leads`, 
 why the API allows the site's origin in `CORS_ALLOWED_ORIGINS`. «أريد نظاماً مشابهاً» on a
 project page opens the home form with the project type already picked (`/?type=…#contact`).
 
+Each featured project has a layout of its own, chosen in the dashboard (`featured_layout`):
+`showcase` (a main desktop screen and its thumbnails, plus up to two `featured_facts`),
+`phones` (a dark band with the first three phone screens), `sheet` (copy and points, then
+every desktop screen opening full size in a `<dialog>`) and `reel` (a stage that plays the
+videos while it is in view, one chip per screen). `features/featured/FeaturedProjects.tsx`
+maps the layout to its component; a project page opens with the same layout. Each screen's
+`label` is its thumbnail text, phone caption or chip. Uploaded images go through
+`next/image` with a loader that picks the API's own webp widths, so nothing is resized twice.
+
 Each section keeps the v7 class names in its own CSS file next to its component, and every
 color in those files is a token from `globals.css`. Motion uses CSS, IntersectionObserver
 and requestAnimationFrame only. «إيقاف الحركة» adds `motion-off` to `<html>` and is
@@ -150,7 +160,7 @@ admin/src
 
 | Section          | Who            | What the team does there                                                    |
 | ---------------- | -------------- | --------------------------------------------------------------------------- |
-| المشاريع         | admin, editor  | text in four tabs, then screens (drop many, alt text required, phone shots follow a desktop tab), card preview, drag order |
+| المشاريع         | admin, editor  | text in four tabs, then screens (drop many, alt text required, a label per screen), layout and figures for featured projects, card preview, drag order |
 | رسائل التواصل    | admin, editor  | filter by status, read, move new → contacted → closed, open WhatsApp       |
 | الفريق           | admin, editor  | form, photo cut square in the browser before upload, drag order             |
 | الشهادات         | admin, editor  | form, optional project link, draft/published, drag order                    |

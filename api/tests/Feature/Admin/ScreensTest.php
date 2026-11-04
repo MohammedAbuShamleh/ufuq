@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin;
 
 use App\Enums\UserRole;
-use App\Modules\Portfolio\Enums\ScreenKind;
 use App\Modules\Portfolio\Models\Project;
 use App\Modules\Portfolio\Models\ProjectScreen;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,14 +30,12 @@ class ScreensTest extends TestCase
         $this->post("/admin/v1/projects/{$project->id}/screens", [
             'file' => $this->png(),
             'kind' => 'desktop',
-            'tab_key' => 'reports',
-            'tab_label' => ['ar' => 'التقارير'],
+            'label' => ['ar' => 'التقارير'],
             'alt' => ['ar' => 'شاشة التقارير'],
         ])
             ->assertCreated()
             ->assertJsonPath('data.kind', 'desktop')
-            ->assertJsonPath('data.tab_key', 'reports')
-            ->assertJsonPath('data.tab_label', ['ar' => 'التقارير'])
+            ->assertJsonPath('data.label', ['ar' => 'التقارير'])
             ->assertJsonPath('data.alt', ['ar' => 'شاشة التقارير'])
             ->assertJsonPath('data.sort_order', 3)
             ->assertJsonPath('data.file.mime', 'image/png')
@@ -61,7 +58,7 @@ class ScreensTest extends TestCase
         ])
             ->assertCreated()
             ->assertJsonPath('data.sort_order', 0)
-            ->assertJsonPath('data.tab_label', ['ar' => null])
+            ->assertJsonPath('data.label', ['ar' => null])
             ->assertJsonPath('data.file.url', fn (string $url) => str_ends_with($url, '/clip.mp4'));
     }
 
@@ -90,43 +87,28 @@ class ScreensTest extends TestCase
         $this->assertSame(0, ProjectScreen::count());
     }
 
-    public function test_a_mobile_screen_must_follow_an_existing_desktop_tab(): void
+    public function test_a_phone_screen_has_its_own_caption(): void
     {
         $project = $this->makeProject();
-        $project->screens()->create(['kind' => ScreenKind::Desktop, 'tab_key' => 'dashboard', 'alt' => ['ar' => 'لوحة']]);
-        $other = $this->makeProject();
-        $other->screens()->create(['kind' => ScreenKind::Desktop, 'tab_key' => 'reports', 'alt' => ['ar' => 'تقارير']]);
 
-        // A desktop tab in another project does not count.
+        $this->post("/admin/v1/projects/{$project->id}/screens", [
+            'file' => $this->png('phone.png'),
+            'kind' => 'mobile',
+            'label' => ['ar' => 'جلسة الحفظ بالموضع'],
+            'alt' => ['ar' => 'تطبيق المحفّظين'],
+        ])
+            ->assertCreated()
+            ->assertJsonPath('data.kind', 'mobile')
+            ->assertJsonPath('data.label', ['ar' => 'جلسة الحفظ بالموضع']);
+
         $this->postJson("/admin/v1/projects/{$project->id}/screens", [
             'file' => $this->png('phone.png'),
             'kind' => 'mobile',
-            'tab_key' => 'reports',
-            'alt' => ['ar' => 'الجوال'],
+            'label' => ['ar' => str_repeat('ح', 61)],
+            'alt' => ['ar' => 'تطبيق'],
         ])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(['tab_key' => 'لا توجد شاشة حاسوب بهذا المفتاح في المشروع. شاشة الجوال تتبع تبويب شاشة حاسوب، فارفعها أولاً أو اترك المفتاح فارغاً.']);
-
-        $this->post("/admin/v1/projects/{$project->id}/screens", [
-            'file' => $this->png('phone.png'),
-            'kind' => 'mobile',
-            'tab_key' => 'dashboard',
-            'alt' => ['ar' => 'الجوال'],
-        ])->assertCreated()->assertJsonPath('data.tab_key', 'dashboard');
-    }
-
-    public function test_a_mobile_screen_may_follow_a_video_tab(): void
-    {
-        // On the site a video opens a tab over the browser frame just like a desktop shot.
-        $project = $this->makeProject();
-        $project->screens()->create(['kind' => ScreenKind::Video, 'tab_key' => 'tour', 'alt' => ['ar' => 'جولة']]);
-
-        $this->post("/admin/v1/projects/{$project->id}/screens", [
-            'file' => $this->png('phone.png'),
-            'kind' => 'mobile',
-            'tab_key' => 'tour',
-            'alt' => ['ar' => 'الجوال'],
-        ])->assertCreated()->assertJsonPath('data.tab_key', 'tour');
+            ->assertJsonValidationErrors(['label.ar' => 'يجب ألا يتجاوز طول التسمية 60 حرفاً.']);
     }
 
     public function test_a_screen_is_edited_in_place(): void
@@ -135,11 +117,11 @@ class ScreensTest extends TestCase
         $screen = $this->uploadImage($project);
 
         $this->patchJson("/admin/v1/projects/{$project->id}/screens/{$screen->id}", [
-            'tab_key' => 'home',
+            'label' => ['ar' => 'الرئيسية'],
             'alt' => ['ar' => 'الرئيسية'],
         ])
             ->assertOk()
-            ->assertJsonPath('data.tab_key', 'home')
+            ->assertJsonPath('data.label', ['ar' => 'الرئيسية'])
             ->assertJsonPath('data.alt', ['ar' => 'الرئيسية'])
             ->assertJsonPath('data.kind', 'desktop')
             ->assertJsonPath('data.file.mime', 'image/png');
@@ -150,7 +132,7 @@ class ScreensTest extends TestCase
             ->assertJsonValidationErrors('kind');
 
         // A screen is only reachable through its own project.
-        $this->patchJson("/admin/v1/projects/{$this->makeProject()->id}/screens/{$screen->id}", ['tab_key' => 'x'])
+        $this->patchJson("/admin/v1/projects/{$this->makeProject()->id}/screens/{$screen->id}", ['label' => ['ar' => 'x']])
             ->assertNotFound();
     }
 

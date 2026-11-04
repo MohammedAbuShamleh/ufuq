@@ -41,11 +41,12 @@ class ProjectsTest extends TestCase
             ->assertCreated()
             ->assertJsonPath('data.slug', 'school-system')
             ->assertJsonPath('data.title', ['ar' => 'نظام المدرسة'])
-            ->assertJsonPath('data.frame_label', ['ar' => null])
             ->assertJsonPath('data.challenge', ['ar' => null])
             ->assertJsonPath('data.status', 'draft')
             ->assertJsonPath('data.published_at', null)
             ->assertJsonPath('data.is_featured', false)
+            ->assertJsonPath('data.featured_layout', null)
+            ->assertJsonPath('data.featured_facts', [])
             ->assertJsonPath('data.sort_order', 5)
             ->assertJsonPath('data.facts.1.value', '٥')
             ->assertJsonPath('data.facts.1.label', ['ar' => 'لوحات تحكم'])
@@ -128,6 +129,51 @@ class ProjectsTest extends TestCase
             ]);
     }
 
+    public function test_a_featured_project_needs_a_layout_and_two_figures_at_most(): void
+    {
+        $this->postJson('/admin/v1/projects', $this->payload([
+            'is_featured' => true,
+            'featured_facts' => array_fill(0, 3, ['value' => '٥', 'label' => ['ar' => 'لوحات']]),
+        ]))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'featured_layout' => 'اختر طريقة العرض: المشروع المميز يظهر في الرئيسية بها.',
+                'featured_facts' => 'رقمان بارزان على الأكثر.',
+            ]);
+
+        $this->postJson('/admin/v1/projects', $this->payload(['is_featured' => true, 'featured_layout' => 'carousel']))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['featured_layout' => 'قيمة طريقة العرض غير معروفة.']);
+    }
+
+    public function test_the_layout_and_figures_are_saved_with_the_project(): void
+    {
+        $project = $this->makeProject(['slug' => 'school-system', 'featured_facts' => [
+            ['value' => '١٤', 'label' => ['ar' => 'حالة', 'en' => 'statuses']],
+        ]]);
+
+        $this->putJson("/admin/v1/projects/{$project->id}", $this->payload([
+            'is_featured' => true,
+            'featured_order' => 2,
+            'featured_layout' => 'sheet',
+            'featured_facts' => [
+                // The form sends back the English label it was given.
+                ['value' => '١٤', 'label' => ['ar' => 'حالة لكل مشروع', 'en' => 'statuses']],
+                ['value' => '٥', 'label' => ['ar' => 'لوحات تحكم', 'en' => null]],
+            ],
+        ]))
+            ->assertOk()
+            ->assertJsonPath('data.featured_layout', 'sheet')
+            ->assertJsonPath('data.featured_facts.0', ['value' => '١٤', 'label' => ['ar' => 'حالة لكل مشروع', 'en' => 'statuses']])
+            ->assertJsonPath('data.featured_facts.1', ['value' => '٥', 'label' => ['ar' => 'لوحات تحكم']]);
+
+        // Clearing the figures leaves none, and the layout stays while the project is not featured.
+        $this->putJson("/admin/v1/projects/{$project->id}", $this->payload(['featured_layout' => 'sheet']))
+            ->assertOk()
+            ->assertJsonPath('data.featured_facts', []);
+        $this->assertNull($project->fresh()->featured_facts);
+    }
+
     public function test_the_list_has_drafts_but_not_deleted_projects(): void
     {
         $this->makeFullProject(['slug' => 'with-screens', 'sort_order' => 2], screens: 2);
@@ -141,7 +187,7 @@ class ProjectsTest extends TestCase
             ->assertJsonPath('data.0.cover', null)
             ->assertJsonPath('data.0.screens_count', 0)
             ->assertJsonPath('data.1.screens_count', 2)
-            ->assertJsonPath('data.1.cover.tab_key', 'tab-1')
+            ->assertJsonPath('data.1.cover.label', ['ar' => 'شاشة 1'])
             ->assertJsonPath('data.1.cover.alt', ['ar' => 'لقطة 1']);
     }
 
@@ -187,7 +233,6 @@ class ProjectsTest extends TestCase
             'client_name' => ['ar' => 'مدرسة شعاع'],
             'summary' => ['ar' => 'نظام واحد للطلاب والرسوم.'],
             'tag' => ['ar' => 'نظام ERP'],
-            'frame_label' => ['ar' => null],
             'challenge' => ['ar' => null],
             'solution' => ['ar' => null],
             'results' => ['ar' => null],
@@ -197,7 +242,8 @@ class ProjectsTest extends TestCase
             'tech_stack' => ['Laravel', 'React'],
             'is_featured' => false,
             'featured_order' => 0,
-            'card_theme' => null,
+            'featured_layout' => null,
+            'featured_facts' => [],
             'has_demo_data' => true,
             'status' => 'draft',
             'facts' => [],

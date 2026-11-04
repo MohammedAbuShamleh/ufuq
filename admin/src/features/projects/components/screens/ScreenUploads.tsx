@@ -7,14 +7,13 @@ import { formatNumber } from '@/lib/format'
 import { errorMessage } from '@/lib/http'
 import { blank } from '@/lib/i18n'
 import { useScreens } from '../../hooks/useScreens'
-import { detectKind, nextTabKey, tabOptions } from '../../screens'
-import type { Screen } from '../../types'
+import { detectKind } from '../../screens'
 import { QueueItem, type Pending } from './QueueItem'
 
 const RULES = [IMAGE, VIDEO]
 
 /** Drop many shots at once; each gets its details, then goes up with its own progress bar. */
-export function ScreenUploads({ projectId, saved }: { projectId: number; saved: Screen[] }) {
+export function ScreenUploads({ projectId }: { projectId: number }) {
   const screens = useScreens(projectId)
   const toast = useToast()
   const [queue, setQueue] = useState<Pending[]>([])
@@ -29,14 +28,10 @@ export function ScreenUploads({ projectId, saved }: { projectId: number; saved: 
         .filter((f) => !checkFile(f, RULES))
         .map(async (file): Promise<Pending> => {
           const url = URL.createObjectURL(file)
-          return { uid: crypto.randomUUID(), file, url, kind: await detectKind(file, url), alt: blank(), tabLabel: blank(), ownKey: '', follow: '', progress: null, error: null }
+          return { uid: crypto.randomUUID(), file, url, kind: await detectKind(file, url), alt: blank(), label: blank(), progress: null, error: null }
         }),
     )
-    setQueue((q) => {
-      const taken = [...saved.map((s) => s.tab_key), ...q.map((i) => i.ownKey)]
-      for (const item of items) taken.push((item.ownKey = nextTabKey(taken)))
-      return [...q, ...items]
-    })
+    setQueue((q) => [...q, ...items])
   }
 
   const send = async (item: Pending): Promise<boolean> => {
@@ -46,12 +41,7 @@ export function ScreenUploads({ projectId, saved }: { projectId: number; saved: 
     }
     patch(item.uid, { progress: 0, error: null })
     try {
-      const mobile = item.kind === 'mobile'
-      await screens.upload(
-        item.file,
-        { kind: item.kind, tab_key: mobile ? item.follow || null : item.ownKey, tab_label: mobile ? {} : item.tabLabel, alt: item.alt },
-        (progress) => patch(item.uid, { progress }),
-      )
+      await screens.upload(item.file, { kind: item.kind, label: item.label, alt: item.alt }, (progress) => patch(item.uid, { progress }))
       URL.revokeObjectURL(item.url)
       setQueue((q) => q.filter((i) => i.uid !== item.uid))
       return true
@@ -61,14 +51,12 @@ export function ScreenUploads({ projectId, saved }: { projectId: number; saved: 
     }
   }
 
-  // Desktop shots first: a phone shot can only follow a tab that already exists.
+  // In the order dropped: each new shot goes to the end of the list, as on the site.
   const sendAll = async () => {
     let sent = 0
-    for (const item of [...queue].sort((a, b) => Number(a.kind === 'mobile') - Number(b.kind === 'mobile'))) if (await send(item)) sent++
+    for (const item of [...queue]) if (await send(item)) sent++
     if (sent) toast.ok(SAVED)
   }
-
-  const tabs = tabOptions([...saved, ...queue.filter((i) => i.kind !== 'mobile').map((i) => ({ kind: i.kind, tab_key: i.ownKey, tab_label: i.tabLabel }))])
 
   return (
     <div className="grid gap-4">
@@ -101,7 +89,6 @@ export function ScreenUploads({ projectId, saved }: { projectId: number; saved: 
               <QueueItem
                 key={item.uid}
                 item={item}
-                tabs={tabs}
                 onChange={(p) => patch(item.uid, p)}
                 onSend={() => void send(item).then((ok) => ok && toast.ok(SAVED))}
                 onDrop={() => {
