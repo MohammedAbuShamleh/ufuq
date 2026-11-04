@@ -49,6 +49,32 @@ Text that is still pending comes out as `null` or wrapped in `[brackets]`; the s
 both with the pending marker. Every image comes with its original `width` and `height` and
 three webp `sizes` (480, 960, 1600).
 
+## Admin API
+
+Served under `/admin/v1` for the dashboard only. It signs in with Sanctum's cookie
+session, not tokens: the dashboard reads `GET /sanctum/csrf-cookie`, posts
+`/admin/v1/login` (5 tries a minute per email and address), and sends the `XSRF-TOKEN`
+cookie back as the `X-XSRF-TOKEN` header on every write. That works because the dashboard
+and the API share a site (`localhost:5173` and `localhost:8000` locally,
+`admin.ufuq.ps` and `api.ufuq.ps` in production) and the dashboard's host is listed in
+`SANCTUM_STATEFUL_DOMAINS` and `CORS_ALLOWED_ORIGINS`.
+
+| Endpoints                                   | Role          |
+| ------------------------------------------- | ------------- |
+| `login`, `logout`, `me`                     | anyone        |
+| `projects` (+ `screens`, `reorder`), `team` (+ `photo`), `testimonials`, `clients` (+ `logo`), `faqs`, `leads` (+ `status`) | admin, editor |
+| `settings` (+ `profile-pdf`), `users`       | admin         |
+
+Every route names its policy ability, so the rule lives next to the model, not in the
+dashboard. Errors come back in Arabic with the dashboard's own field names: a 422 carries
+`errors` per field (`title.ar`, `screens.0.alt.ar`…), and 401/403/404/419/429 carry a
+`message` the dashboard can show as it is.
+
+Every content save fires `ContentChanged` with the cache tags it touches (`home`,
+`projects`, `project:<slug>`, `team`, `settings`) after the transaction commits. Today
+`FlushPublicCache` empties the API's cache, so `/v1` answers with the new content at
+once; phase 6 adds the listener that revalidates the same tags on the site.
+
 ## Site (`web/`)
 
 ```
@@ -88,12 +114,50 @@ color in those files is a token from `globals.css`. Motion uses CSS, Intersectio
 and requestAnimationFrame only. «إيقاف الحركة» adds `motion-off` to `<html>` and is
 remembered, and it behaves exactly like the system's reduced-motion setting.
 
+## Dashboard (`admin/`)
+
+```
+admin/src
+  app/          router, providers, the shell (sidebar, phone menu) in app/shell
+  features/     auth, projects, team, testimonials, clients, faqs, settings, leads, users —
+                each with components/, hooks/, api.ts and types.ts
+  components/   shared pieces: fields, buttons, toasts, delete confirmation, sortable list,
+                file drop and upload, photo cropper, the «العربية» tab for translated fields
+  hooks/        useResourceForm (add/edit forms), useUnsavedGuard, useStoreRecord
+  lib/          the API client (Sanctum cookie + XSRF), query hooks per resource, i18n
+```
+
+| Section          | Who            | What the team does there                                                    |
+| ---------------- | -------------- | --------------------------------------------------------------------------- |
+| المشاريع         | admin, editor  | text in four tabs, then screens (drop many, alt text required, phone shots follow a desktop tab), card preview, drag order |
+| رسائل التواصل    | admin, editor  | filter by status, read, move new → contacted → closed, open WhatsApp       |
+| الفريق           | admin, editor  | form, photo cut square in the browser before upload, drag order             |
+| الشهادات         | admin, editor  | form, optional project link, draft/published, drag order                    |
+| العملاء          | admin, editor  | form, logo, drag order                                                      |
+| الأسئلة الشائعة  | admin, editor  | form, drag order                                                            |
+| الإعدادات        | admin          | contact details, social links, profile PDF, site texts, privacy policy      |
+| المستخدمون       | admin          | add people, set their role, reset a password                                |
+
+The sidebar hides what a role cannot open, and the API refuses it anyway (a policy per
+model). Every content save shows «حُفظ، وسيتحدث الموقع خلال ثوانٍ»; drag ordering saves on
+drop; uploads save on their own, with a progress bar. Deletes ask first, naming the item:
+content is soft-deleted, a user is removed for good, and nobody can delete their own
+account or the last admin. Removing an uploaded photo, logo or PDF asks first too. A form
+with unsaved edits asks before you leave it. Numbers show in Arabic-Indic digits, as on
+the site. Translated fields sit under an «العربية» tab: adding English later is one
+entry in `lib/i18n.ts`, not a change to each form.
+
+The dashboard builds to static files (`npm run build` → `dist/`); `public/.htaccess` sends
+every path to `index.html` on the host.
+
 ## Design system
 
 The tokens live as CSS variables in `web/src/app/globals.css` and its twin
 `admin/src/app/globals.css`, mapped to Tailwind there. The two files differ only in
 their font stacks, so change them together. Tailwind's default palette is switched off:
 components use the identity classes only (`bg-accent`, `text-muted`, `rounded-card`…).
+The dashboard adds the few states the site never shows (error, success, dialog scrim) in
+`admin/src/app/dashboard.css`, which imports the twin, so the twin stays identical.
 
 ## Running locally
 
@@ -114,8 +178,18 @@ cd web && npm install && cp .env.example .env.local && npm run dev
 and the site's server fetches images to build share previews.
 
 ```bash
-cd admin && npm install && npm run dev
+cd admin && npm install && cp .env.example .env && npm run dev
 ```
+
+`VITE_API_URL` points at `http://localhost:8000/admin/v1`, not `127.0.0.1`: the session
+cookie only travels between same-site hosts, and `localhost:5173` and `127.0.0.1:8000`
+are not. Two local accounts come from `php artisan db:seed --class=DevUsersSeeder`
+(`admin@ufuq.test` and `editor@ufuq.test`; the passwords are in that file). It runs only
+when `APP_ENV=local`; on the server the first admin comes from `php artisan users:create`.
+
+Screen videos go up to 60 MB, so PHP needs `upload_max_filesize=64M` and
+`post_max_size=72M`. With PHP's 2 MB default a larger file fails with «تعذّر رفع … قد يكون
+الملف أكبر مما يسمح به الخادم» or «الملف أكبر من الحجم المسموح».
 
 The site runs on `localhost:3000`, the dashboard on `localhost:5173`, and the API on
 `localhost:8000` (health check: `/up`, content: `/v1/home`). Composer resolves dependencies for PHP 8.3 (the
@@ -127,6 +201,6 @@ production version) whatever PHP version is installed locally.
 2. Database and public API ✅
 3. Home page ✅
 4. Remaining pages ✅
-5. Dashboard
+5. Dashboard ✅
 6. Wiring and instant revalidation
 7. Deployment and launch
