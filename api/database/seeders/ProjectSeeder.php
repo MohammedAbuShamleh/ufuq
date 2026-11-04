@@ -40,6 +40,7 @@ class ProjectSeeder extends Seeder
             'client_name' => ['ar' => $data['client_name'] ?? $data['title']],
             'tag' => ['ar' => $data['tag']],
             'summary' => ['ar' => $data['summary']],
+            ...(isset($data['frame_label']) ? ['frame_label' => ['ar' => $data['frame_label']]] : []),
             'type' => $data['type'],
             'sector' => $data['sector'],
             'country' => $data['country'],
@@ -66,6 +67,7 @@ class ProjectSeeder extends Seeder
             [
                 'slug' => 'saiid',
                 'title' => 'ساعد',
+                'frame_label' => 'ساعد · لوحة التحكم',
                 'tag' => 'منصة · إدارة المشاريع الإنسانية',
                 'summary' => 'منصة تدير بها جمعية ساعد مشاريعها الإنسانية، من تبرّع الجهة المانحة إلى وصول المساعدة وتقريرها.',
                 'type' => ProjectType::Platform,
@@ -88,6 +90,7 @@ class ProjectSeeder extends Seeder
             [
                 'slug' => 'dar-al-itqan',
                 'title' => 'دار الإتقان',
+                'frame_label' => 'دار الإتقان · نظام إدارة التحفيظ',
                 'tag' => 'نظام وتطبيق · تحفيظ القرآن',
                 'summary' => 'نظام لإدارة حلقات التحفيظ، وتطبيق يسجّل فيه المحفّظ جلسة كل طالب من داخل الحلقة.',
                 'type' => ProjectType::App,
@@ -110,6 +113,7 @@ class ProjectSeeder extends Seeder
             [
                 'slug' => 'nexabridge',
                 'title' => 'NexaBridge',
+                'frame_label' => 'NexaBridge',
                 'tag' => 'موقع ومنصة منتجات · دبي',
                 'summary' => 'منصة لشركة في دبي توزّع أنظمة طاقة وإنارة ذكية من الصين إلى العالم.',
                 'type' => ProjectType::Website,
@@ -132,6 +136,7 @@ class ProjectSeeder extends Seeder
             [
                 'slug' => 'rasras',
                 'title' => 'رصرص للبلاستيك',
+                'frame_label' => 'رصرص · نظام الإدارة المتكامل',
                 'tag' => 'ERP · استيراد وتوزيع · مصر',
                 'summary' => 'نظام ERP وموقع تعريفي لشركة مصرية تستورد خامات البلاستيك وتوزّعها من أربعة مستودعات.',
                 'type' => ProjectType::System,

@@ -18,12 +18,12 @@ class Project extends Model
     use HasTranslations, SoftDeletes;
 
     protected $fillable = [
-        'slug', 'title', 'client_name', 'summary', 'tag', 'challenge', 'solution', 'results',
+        'slug', 'title', 'client_name', 'summary', 'tag', 'frame_label', 'challenge', 'solution', 'results',
         'type', 'sector', 'country', 'tech_stack', 'is_featured', 'featured_order', 'card_theme',
         'has_demo_data', 'status', 'published_at', 'sort_order',
     ];
 
-    public array $translatable = ['title', 'client_name', 'summary', 'tag', 'challenge', 'solution', 'results'];
+    public array $translatable = ['title', 'client_name', 'summary', 'tag', 'frame_label', 'challenge', 'solution', 'results'];
 
     protected function casts(): array
     {

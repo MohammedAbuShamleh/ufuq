@@ -80,6 +80,23 @@ class LeadsEndpointTest extends TestCase
         $this->assertSame(5, Lead::count());
     }
 
+    public function test_only_the_site_origin_may_post_from_a_browser(): void
+    {
+        config(['cors.allowed_origins' => ['https://ufuq.ps']]);
+
+        $preflight = fn (string $origin) => $this->call('OPTIONS', '/v1/leads', server: [
+            'HTTP_ORIGIN' => $origin,
+            'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'POST',
+        ]);
+
+        $preflight('https://ufuq.ps')->assertHeader('Access-Control-Allow-Origin', 'https://ufuq.ps');
+        // Any other site gets ufuq.ps back (or nothing), which its browser refuses.
+        $this->assertNotSame(
+            'https://evil.example',
+            $preflight('https://evil.example')->headers->get('Access-Control-Allow-Origin'),
+        );
+    }
+
     public function test_status_cannot_be_set_from_the_form(): void
     {
         $this->postJson('/v1/leads', ['name' => 'أحمد', 'contact' => 'ahmad@example.com', 'status' => 'closed'])

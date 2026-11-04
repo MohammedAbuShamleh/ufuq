@@ -40,6 +40,8 @@ class HomeEndpointTest extends TestCase
             ->assertJsonPath('data.featured.0.slug', 'saiid')
             ->assertJsonPath('data.featured.0.facts.0.value', '١٤')
             ->assertJsonPath('data.featured.3.card_theme', 'charcoal')
+            ->assertJsonPath('data.featured.0.frame_label', 'ساعد · لوحة التحكم')
+            ->assertJsonPath('data.projects.0.frame_label', null)
             ->assertJsonPath('data.projects.0.slug', 'school-management')
             ->assertJsonPath('data.projects.0.cover', null)
             ->assertJsonPath('data.team.0.name', 'م. محمد أبو شمله')

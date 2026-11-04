@@ -21,6 +21,7 @@ class ProjectCardResource extends JsonResource
             'title' => $this->title,
             'client_name' => $this->client_name,
             'tag' => $this->tag,
+            'frame_label' => $this->frame_label,
             'summary' => $this->summary,
             'type' => $this->type->value,
             'sector' => $this->sector->value,
