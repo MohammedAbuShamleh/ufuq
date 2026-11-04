@@ -2,7 +2,7 @@ import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { deleteOptions, useConfirm } from '@/components/confirm/confirm'
-import { SAVED, useToast } from '@/components/toast/toast'
+import { DELETED, SAVED, useToast } from '@/components/toast/toast'
 import { errorMessage, fieldErrors } from '@/lib/http'
 import { useUnsavedGuard } from './useUnsavedGuard'
 
@@ -73,7 +73,7 @@ export function useResourceForm<Item extends { id: number }, Input>(
     remove.mutate(id, {
       onSuccess: () => {
         guard.release()
-        toast.ok(permanent || offSite ? 'حُذف.' : 'حُذف، وسيختفي من الموقع خلال ثوانٍ.')
+        toast.ok(permanent || offSite ? 'حُذف.' : DELETED)
         navigate(`/${res.path}`)
       },
       onError: (error) => toast.error(errorMessage(error)),

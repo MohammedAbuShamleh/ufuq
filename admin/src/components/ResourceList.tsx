@@ -5,7 +5,7 @@ import { errorMessage } from '@/lib/http'
 import { deleteOptions, useConfirm } from './confirm/confirm'
 import { EmptyState, ErrorState, Loading } from './Page'
 import { SortableList } from './SortableList'
-import { SAVED, useToast } from './toast/toast'
+import { DELETED, SAVED, useToast } from './toast/toast'
 
 type Props<T extends { id: number }> = {
   query: UseQueryResult<T[]>
@@ -37,7 +37,7 @@ export function ResourceList<T extends { id: number }>({ query, reorder, remove,
 
   const destroy = async (item: T) => {
     if (!(await confirm(deleteOptions(name(item), permanent)))) return
-    remove.mutate(item.id, { onSuccess: () => toast.ok(permanent ? 'حُذف.' : 'حُذف، وسيختفي من الموقع خلال ثوانٍ.'), onError: (e) => toast.error(errorMessage(e)) })
+    remove.mutate(item.id, { onSuccess: () => toast.ok(permanent ? 'حُذف.' : DELETED), onError: (e) => toast.error(errorMessage(e)) })
   }
 
   const row = (item: T, handle?: ReactNode) => (

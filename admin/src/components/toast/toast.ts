@@ -10,7 +10,9 @@ export type ToastApi = {
 export const ToastContext = createContext<ToastApi | null>(null)
 
 /** The line every save shows: the site picks the change up on its own. */
-export const SAVED = 'حُفظ، وسيتحدث الموقع خلال ثوانٍ.'
+// The API refreshes the site from a queue that cron drains every minute.
+export const SAVED = 'حُفظ، ويظهر في الموقع خلال دقيقة.'
+export const DELETED = 'حُذف، ويختفي من الموقع خلال دقيقة.'
 
 export function useToast(): ToastApi {
   const ctx = useContext(ToastContext)

@@ -48,7 +48,7 @@ export function CardPreview({ values, screens, saved }: { values: ProjectInput; 
         </article>
       </div>
       <ul className="grid gap-1.5 text-sm text-muted">
-        <li>{values.status === 'published' ? '• منشور: يظهر في الموقع بعد الحفظ خلال ثوانٍ.' : '• مسودة: لا يظهر في الموقع حتى تختار «منشور» وتحفظ.'}</li>
+        <li>{values.status === 'published' ? '• منشور: يظهر في الموقع خلال دقيقة من الحفظ.' : '• مسودة: لا يظهر في الموقع حتى تختار «منشور» وتحفظ.'}</li>
         {values.is_featured && <li>• مميز: يظهر أيضاً بالبطاقة الكبيرة ذات الشاشات والتبويبات في الصفحة الرئيسية.</li>}
         {!cover && <li>• لا شاشات بعد: تظهر البطاقة نصية بأول حرف من اسم العميل.</li>}
       </ul>
