@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Support\Content\ContentChanged;
 use App\Support\Content\FlushPublicCache;
+use App\Support\Content\RevalidateFrontend;
 use App\Support\Media\RecordImageDimensions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
@@ -34,7 +35,9 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(MediaHasBeenAddedEvent::class, RecordImageDimensions::class);
 
-        // A dashboard write: the public API must stop serving what was just replaced.
+        // A dashboard write: the public API stops serving what was just replaced (at once),
+        // then the site is told which pages to refresh (queued).
         Event::listen(ContentChanged::class, FlushPublicCache::class);
+        Event::listen(ContentChanged::class, RevalidateFrontend::class);
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Modules\Leads;
 
+use App\Modules\Leads\Events\LeadReceived;
+use App\Modules\Leads\Listeners\NotifyTeamOfLead;
 use App\Modules\Leads\Models\Lead;
 use App\Modules\Leads\Policies\LeadPolicy;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,5 +21,9 @@ class LeadsServiceProvider extends ServiceProvider
     {
         // Models live outside App\Models, so policy auto-discovery would miss them.
         Gate::policy(Lead::class, LeadPolicy::class);
+
+        $this->loadViewsFrom(__DIR__.'/resources/views', 'leads');
+
+        Event::listen(LeadReceived::class, NotifyTeamOfLead::class);
     }
 }

@@ -28,6 +28,18 @@ return [
         'key' => env('RESEND_KEY'),
     ],
 
+    // The site (Next.js) refreshes the pages a dashboard save touched when the
+    // API posts their tags here; the secret is shared with the site's .env.
+    'site' => [
+        'revalidate_url' => env('FRONTEND_REVALIDATE_URL'),
+        'revalidate_secret' => env('REVALIDATE_SECRET'),
+    ],
+
+    // The dashboard, for links in the team's emails (a new lead opens there).
+    'dashboard' => [
+        'url' => env('ADMIN_URL', 'http://localhost:5173'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
