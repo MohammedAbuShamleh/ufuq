@@ -71,9 +71,26 @@ dashboard. Errors come back in Arabic with the dashboard's own field names: a 42
 `message` the dashboard can show as it is.
 
 Every content save fires `ContentChanged` with the cache tags it touches (`home`,
-`projects`, `project:<slug>`, `team`, `settings`) after the transaction commits. Today
-`FlushPublicCache` empties the API's cache, so `/v1` answers with the new content at
-once; phase 6 adds the listener that revalidates the same tags on the site.
+`projects`, `project:<slug>`, `team`, `settings`) after the transaction commits.
+
+## Queue and email
+
+Two jobs run after the response, so nobody waits on them:
+
+| Event            | Listener                         | What it does                                              |
+| ---------------- | -------------------------------- | --------------------------------------------------------- |
+| `ContentChanged` | `FlushPublicCache` (at once)     | empties the API's cache, so `/v1` answers with the new content |
+| `ContentChanged` | `RevalidateFrontend` (queued)    | posts the tags to the site's `/api/revalidate` with `REVALIDATE_SECRET`; retried 5 times over about ten minutes, then the page catches up on its hourly refresh |
+| `LeadReceived`   | `NotifyTeamOfLead` (queued)      | emails the message to «بريد التواصل» from the dashboard's settings: Reply-To is the visitor when they left an email, plus a WhatsApp link for a phone and a link to the lead in the dashboard |
+
+Without a contact email the lead is kept and only the email is skipped (logged). The same
+name, contact and message from the same address within ten minutes is stored and emailed
+once, so a double click is one lead.
+
+Shared hosting keeps no worker running, so `routes/console.php` schedules
+`queue:work --stop-when-empty` every minute, and one cron entry on the server runs
+`php artisan schedule:run` every minute (naming PHP 8.3 explicitly; the host's default
+`php` is 8.1). A dashboard save therefore shows on the site within a minute.
 
 ## Site (`web/`)
 
@@ -95,8 +112,12 @@ web/src
 | `/about`       | `GET /v1/team`, `/v1/settings` | `team`, `settings`    |
 | `/privacy`     | `GET /v1/settings`             | `settings`            |
 
-Every read is refreshed hourly and tagged, so phase 6 can revalidate exactly the pages a
-save touches. Every published project is prerendered; one published later renders on its
+Every read is tagged and kept for an hour. After a dashboard save the API posts the tags it
+touched to `POST /api/revalidate` (`Authorization: Bearer <REVALIDATE_SECRET>`), which
+expires them at once with `revalidateTag(tag, { expire: 0 })`: the next visit renders the
+new content, rather than one last stale copy as the `'max'` profile would. Unknown tags
+are refused. The footer is cached as a whole, so it carries the `settings` tag itself.
+Every published project is prerendered; one published later renders on its
 first visit, and an unpublished slug answers 404. `sitemap.xml` lists the same projects,
 and `robots.txt` points to it.
 
@@ -139,7 +160,7 @@ admin/src
 | المستخدمون       | admin          | add people, set their role, reset a password                                |
 
 The sidebar hides what a role cannot open, and the API refuses it anyway (a policy per
-model). Every content save shows «حُفظ، وسيتحدث الموقع خلال ثوانٍ»; drag ordering saves on
+model). Every content save shows «حُفظ، ويظهر في الموقع خلال دقيقة»; drag ordering saves on
 drop; uploads save on their own, with a progress bar. Deletes ask first, naming the item:
 content is soft-deleted, a user is removed for good, and nobody can delete their own
 account or the last admin. Removing an uploaded photo, logo or PDF asks first too. A form
@@ -177,6 +198,17 @@ cd web && npm install && cp .env.example .env.local && npm run dev
 `127.0.0.1`, not `localhost`: Node tries IPv6 first, `artisan serve` listens on IPv4 only,
 and the site's server fetches images to build share previews.
 
+Put the same `REVALIDATE_SECRET` in `api/.env` and `web/.env.local`, then run the queue
+the way cron runs it on the server:
+
+```bash
+cd api && php artisan schedule:work
+```
+
+A save then refreshes the site within a minute. That shows only on a production build
+(`npm run build && npm start`): `npm run dev` does not keep pages cached. With
+`MAIL_MAILER=log` the lead email lands in `api/storage/logs/laravel.log`.
+
 ```bash
 cd admin && npm install && cp .env.example .env && npm run dev
 ```
@@ -202,5 +234,5 @@ production version) whatever PHP version is installed locally.
 3. Home page ✅
 4. Remaining pages ✅
 5. Dashboard ✅
-6. Wiring and instant revalidation
+6. Wiring and instant revalidation ✅
 7. Deployment and launch
