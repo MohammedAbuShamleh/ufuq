@@ -1,0 +1,68 @@
+import { Panel } from '@/components/Page'
+import { Translated } from '@/components/Translated'
+import { SelectField, TextAreaField, TextField } from '@/components/ui/Field'
+import { Toggle } from '@/components/ui/Toggle'
+import { PUBLISH_OPTIONS } from '@/lib/types'
+import { COUNTRY_OPTIONS, SECTOR_OPTIONS, THEME_OPTIONS, TYPE_OPTIONS } from '../../labels'
+import { TagsInput } from '../TagsInput'
+import type { TabProps } from './tabProps'
+
+const NO_THEME = 'auto'
+
+export function BasicsTab({ values, set, errors }: TabProps) {
+  return (
+    <div className="grid gap-6">
+      <Translated>
+        {(l) => (
+          <>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <TextField label="اسم المشروع" required max={120} placeholder="نظام راشد" value={values.title[l] ?? ''} onChange={(v) => set('title', { ...values.title, [l]: v })} error={errors[`title.${l}`]} />
+              <TextField label="اسم العميل" required max={120} placeholder="جمعية راشد الخيرية" value={values.client_name[l] ?? ''} onChange={(v) => set('client_name', { ...values.client_name, [l]: v })} error={errors[`client_name.${l}`]} />
+            </div>
+            <TextField label="الوسم" required max={120} placeholder="نظام إدارة الكفالات" hint="كلمتان أو ثلاث فوق اسم المشروع في البطاقة." value={values.tag[l] ?? ''} onChange={(v) => set('tag', { ...values.tag, [l]: v })} error={errors[`tag.${l}`]} />
+            <TextAreaField label="الوصف المختصر" required max={400} rows={3} hint="جملة أو جملتان: ماذا يفعل النظام ولمن." value={values.summary[l] ?? ''} onChange={(v) => set('summary', { ...values.summary, [l]: v })} error={errors[`summary.${l}`]} />
+            <TextField label="عنوان شريط المتصفح" max={120} placeholder="rashid.ps/dashboard" hint="يظهر في شريط عنوان إطار المتصفح فوق الشاشات. اختياري." value={values.frame_label[l] ?? ''} onChange={(v) => set('frame_label', { ...values.frame_label, [l]: v })} error={errors[`frame_label.${l}`]} />
+          </>
+        )}
+      </Translated>
+
+      <Panel title="التصنيف والرابط">
+        <TextField
+          label="رابط المشروع"
+          required
+          dir="ltr"
+          max={80}
+          placeholder="rashid"
+          hint={`أحرف إنجليزية صغيرة وأرقام وشرطات فقط. يظهر هكذا: ufuq.ps/work/${values.slug || '…'}`}
+          value={values.slug}
+          onChange={(v) => set('slug', v.toLowerCase().replace(/\s+/g, '-'))}
+          error={errors.slug}
+        />
+        <div className="grid gap-5 sm:grid-cols-3">
+          <SelectField label="نوع المشروع" value={values.type} options={TYPE_OPTIONS} onChange={(v) => set('type', v)} error={errors.type} />
+          <SelectField label="القطاع" value={values.sector} options={SECTOR_OPTIONS} onChange={(v) => set('sector', v)} error={errors.sector} />
+          <SelectField label="الدولة" value={values.country} options={COUNTRY_OPTIONS} onChange={(v) => set('country', v)} error={errors.country} />
+        </div>
+        <TagsInput label="التقنيات المستخدمة" max={8} hint="اكتب التقنية واضغط Enter. تظهر أسفل البطاقة." value={values.tech_stack} onChange={(v) => set('tech_stack', v)} error={errors.tech_stack ?? errors['tech_stack.0']} />
+      </Panel>
+
+      <Panel title="النشر والظهور">
+        <SelectField label="الحالة" value={values.status} options={PUBLISH_OPTIONS} onChange={(v) => set('status', v)} error={errors.status} />
+        <Toggle label="مشروع مميز" description="يظهر بالبطاقة الكبيرة ذات الشاشات في الصفحة الرئيسية." checked={values.is_featured} onChange={(v) => set('is_featured', v)} />
+        {values.is_featured && (
+          <div className="grid gap-5 sm:grid-cols-2">
+            <TextField label="الترتيب بين المميزة" type="number" dir="ltr" hint="١ يظهر أولاً." value={String(values.featured_order)} onChange={(v) => set('featured_order', Math.max(0, Number(v) || 0))} error={errors.featured_order} />
+            <SelectField
+              label="لون البطاقة"
+              value={values.card_theme ?? NO_THEME}
+              options={[{ value: NO_THEME, label: 'تلقائي' }, ...THEME_OPTIONS]}
+              onChange={(v) => set('card_theme', v === NO_THEME ? null : v)}
+              error={errors.card_theme}
+            />
+          </div>
+        )}
+        <Toggle label="الشاشات ببيانات تجريبية" description="تظهر ملاحظة تحت الشاشات بأن البيانات ليست حقيقية." checked={values.has_demo_data} onChange={(v) => set('has_demo_data', v)} />
+      </Panel>
+    </div>
+  )
+}

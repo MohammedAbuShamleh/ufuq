@@ -1,0 +1,57 @@
+/*
+ * The dashboard's stylesheet entry: the shared design system (globals.css, the
+ * twin of the site's file) plus the few states only the dashboard shows —
+ * errors, success and the dialog scrim. Kept here so the twin stays identical.
+ */
+@import "./globals.css";
+
+:root {
+  --danger: #b42318;
+  --danger-soft: #fdeceb;
+  --ok: #4f6a2c;
+  --ok-soft: #eff3e6;
+  --scrim: rgb(21 24 29 / 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --danger: #f0897e;
+    --danger-soft: #3b2222;
+    --ok: #b5c98f;
+    --ok-soft: #252b1d;
+    --scrim: rgb(0 0 0 / 0.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --danger: #f0897e;
+  --danger-soft: #3b2222;
+  --ok: #b5c98f;
+  --ok-soft: #252b1d;
+  --scrim: rgb(0 0 0 / 0.6);
+}
+
+@theme inline {
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-scrim: var(--scrim);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+@layer base {
+  dialog::backdrop {
+    background: var(--scrim);
+  }
+  /* Latin-only values (links, emails, slugs) read left to right inside RTL forms. */
+  input[dir="ltr"] {
+    text-align: left;
+  }
+}

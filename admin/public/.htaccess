@@ -1,0 +1,15 @@
+# admin.ufuq.ps serves the built dashboard as static files. Every path that is
+# not a real file (e.g. /projects/12) goes to index.html, and the app's router
+# takes it from there.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# The dashboard is private: keep it out of search engines.
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
