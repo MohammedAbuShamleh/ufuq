@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { cacheLife } from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 import Link from 'next/link'
 import { Arrow } from '@/components/Button'
 import { getSettings } from '@/lib/api'
@@ -13,6 +13,8 @@ export async function SiteFooter() {
   'use cache'
   // The copyright year is read here, so the footer is cached as a whole.
   cacheLife('days')
+  // Tagged here too: a saved setting must reach this outer entry, not only getSettings'.
+  cacheTag('settings')
   const settings = await getSettings()
   const social = settings.social_links
   const support = whatsappLink(settings.whatsapp_number)
