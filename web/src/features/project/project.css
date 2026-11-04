@@ -1,0 +1,130 @@
+/* The project page (/work/[slug]). Colors only through tokens. */
+
+.pp-top {
+  padding: 7.5rem 0 1rem;
+}
+.pp-back {
+  margin-bottom: 1.4rem;
+}
+.pp-top .feat {
+  margin-bottom: 0;
+}
+
+/* ---------- Client, sector, country, kind ---------- */
+.pp-facts {
+  padding-top: 1.5rem;
+}
+.pp-facts-in {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  padding-block: 1.6rem;
+  border-block: 1px solid var(--line);
+}
+.pp-facts-in div {
+  display: grid;
+  gap: 0.3rem;
+}
+.pp-facts dt {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.pp-facts dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* ---------- Challenge, solution, result ---------- */
+.pp-story {
+  padding: 5rem 0;
+}
+.pp-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+.pp-steps li {
+  padding: 1.8rem 1.6rem 2rem;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+}
+.pp-n {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.2px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.pp-steps h3 {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+}
+.pp-steps p {
+  margin-top: 0.7rem;
+  line-height: 1.95;
+  color: var(--muted);
+}
+
+/* ---------- The client's words ---------- */
+.pp-voice {
+  padding-bottom: 5rem;
+}
+.pp-quote {
+  margin: 0;
+  max-width: 46rem;
+  padding: 2.4rem 2.6rem;
+  border-radius: 28px;
+  background: radial-gradient(130% 120% at 100% 0%, var(--night-3), var(--night));
+  color: var(--on-night);
+}
+.pp-quote blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  line-height: 1.7;
+}
+.pp-quote figcaption {
+  margin-top: 1.4rem;
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.9rem;
+  color: var(--on-night-soft);
+}
+.pp-quote figcaption b {
+  font-family: var(--font-display);
+  color: var(--on-night);
+}
+
+/* ---------- More work ---------- */
+.pp-more {
+  padding: 5rem 0 2rem;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 960px) {
+  .pp-top {
+    padding-top: 6rem;
+  }
+  .pp-facts-in {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1.4rem;
+  }
+  .pp-steps {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .pp-quote {
+    padding: 1.8rem 1.4rem;
+  }
+}

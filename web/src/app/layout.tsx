@@ -3,6 +3,7 @@ import { Alexandria, Cormorant_Garamond, IBM_Plex_Sans_Arabic } from 'next/font/
 import { getSettings } from '@/lib/api'
 import { whatsappLink } from '@/lib/format'
 import { MOTION_SCRIPT } from '@/lib/motion'
+import { DEFAULT_OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo'
 import { THEME_SCRIPT } from '@/lib/theme'
 import { HorizonLines } from './_shell/HorizonLines'
 import { ScrollProgress } from './_shell/ScrollProgress'
@@ -36,27 +37,18 @@ const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
 })
 
-const description =
-  'أفق شركة برمجيات من غزة، تبني أنظمة وبرمجيات للجمعيات والمدارس والشركات منذ ٢٠٢٢: منصات، وأنظمة ERP ومالية، وتطبيقات جوال، ومواقع.'
-
+// The home page's metadata, and every other page's defaults (see lib/seo.ts → pageMetadata).
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
-  title: { default: 'أفق | UFUQ — شركة برمجيات', template: '%s · أفق | UFUQ' },
-  description,
+  metadataBase: new URL(SITE_URL),
+  title: { default: `${SITE_NAME} — شركة برمجيات`, template: `%s · ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
   openGraph: {
     type: 'website',
-    siteName: 'أفق | UFUQ',
+    siteName: SITE_NAME,
     locale: 'ar_AR',
-    title: 'أفق | UFUQ — نبني برمجيات تفتح أفقاً أوسع',
-    description,
-    images: [
-      {
-        url: '/og/og-ufuq-ar.png',
-        width: 1200,
-        height: 630,
-        alt: 'أفق | UFUQ — أنظمة وبرمجيات للجمعيات والمدارس والشركات',
-      },
-    ],
+    title: `${SITE_NAME} — نبني برمجيات تفتح أفقاً أوسع`,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: { card: 'summary_large_image' },
 }

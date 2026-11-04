@@ -342,62 +342,6 @@ body::before {
   }
 }
 
-/* ---------- Privacy dialog ---------- */
-.pv {
-  border: 0;
-  padding: 0;
-  margin: auto;
-  border-radius: 22px;
-  max-width: 640px;
-  width: calc(100% - 2rem);
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: 0 40px 90px -30px rgb(var(--ink-rgb) / 0.5);
-}
-.pv::backdrop {
-  background: rgb(var(--ink-rgb) / 0.55);
-  backdrop-filter: blur(3px);
-}
-.pv-in {
-  position: relative;
-  padding: 2.25rem 2rem;
-  max-height: 80vh;
-  overflow: auto;
-}
-.pv-in h2 {
-  font-size: 1.6rem;
-  margin: 0.4rem 0 1rem;
-}
-.pv-in h3 {
-  font-size: 1.02rem;
-  margin: 1.4rem 0 0.35rem;
-}
-.pv-in p {
-  color: var(--muted);
-  line-height: 1.9;
-}
-.pv-draft {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  color: var(--accent);
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
-}
-.pv-x {
-  position: absolute;
-  top: 1rem;
-  inset-inline-end: 1rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 1.3rem;
-  cursor: pointer;
-}
-
 /* ---------- Floating WhatsApp ---------- */
 .wa-float {
   position: fixed;
@@ -426,4 +370,69 @@ body::before {
 }
 .wa-float:hover {
   background: var(--wa-hover);
+}
+
+/* ---------- Inner pages (about, work, a project, privacy) ---------- */
+/* Above the horizon lines, like the home sections. */
+.inner > section {
+  position: relative;
+  z-index: 5;
+}
+.apg-hero {
+  padding: 9rem 0 5rem;
+}
+.apg-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  line-height: 1.25;
+  max-width: 20ch;
+}
+.apg-hero h1 span {
+  color: var(--accent);
+}
+.apg-lead {
+  margin-top: 1.6rem;
+  font-size: 1.15rem;
+  line-height: 2;
+  max-width: 60ch;
+  color: var(--text);
+  opacity: 0.86;
+}
+.apg-sec-head {
+  margin-bottom: 2.5rem;
+}
+.apg-sec-head p {
+  margin-top: 0.8rem;
+  max-width: 52ch;
+}
+.apg-cta {
+  padding: 5rem 0 6rem;
+}
+.apg-cta-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2.4rem 2.6rem;
+  border-radius: 28px;
+  background: radial-gradient(130% 140% at 100% 0%, var(--night-ember), var(--night) 70%);
+  color: var(--on-night);
+}
+.apg-cta-in h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: var(--on-night);
+}
+.apg-cta-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.apg-cta .btn-line {
+  color: var(--on-night);
+  border-color: rgb(var(--linen-rgb) / 0.5);
+}
+@media (max-width: 960px) {
+  .apg-hero {
+    padding: 7rem 0 3.5rem;
+  }
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@/components/Button'
 import { Logo } from './Logo'
@@ -15,11 +16,20 @@ const LINKS = [
   { id: 'contact', label: 'تواصل معنا' },
 ]
 
+// Home sections that also have a page of their own; on that page the link marks it.
+const PAGES: Record<string, string> = { projects: '/work', about: '/about' }
+const pageOf = (path: string) =>
+  Object.keys(PAGES).find((id) => path === PAGES[id] || path.startsWith(`${PAGES[id]}/`)) ?? null
+
 /**
- * The floating capsule: a pill slides under the section in view (or the link
- * under the pointer), and the bar tucks away while the visitor reads downward.
+ * The floating capsule: a pill slides under the section in view (or, away
+ * from home, the page you are on, or the link under the pointer), and the bar
+ * tucks away while the visitor reads downward.
  */
 export function SiteHeader() {
+  const path = usePathname()
+  const home = path === '/'
+  const page = pageOf(path)
   const navRef = useRef<HTMLElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
   const [active, setActive] = useState('top')
@@ -29,8 +39,9 @@ export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
 
-  // The section in the middle band of the screen is the active one.
+  // On home, the section in the middle band of the screen is the active one.
   useEffect(() => {
+    if (!home) return
     const showing = new Set<string>()
     const io = new IntersectionObserver(
       (entries) => {
@@ -48,7 +59,7 @@ export function SiteHeader() {
       if (el) io.observe(el)
     }
     return () => io.disconnect()
-  }, [])
+  }, [home])
 
   useEffect(() => {
     let lastY = scrollY
@@ -76,7 +87,8 @@ export function SiteHeader() {
   }, [])
 
   // Measure the link the pill should sit under.
-  const target = hovered ?? active
+  const current = home ? active : page
+  const target = hovered ?? current
   useLayoutEffect(() => {
     const measure = () => {
       const list = listRef.current
@@ -102,10 +114,10 @@ export function SiteHeader() {
           {LINKS.map(({ id, label }) => (
             <li key={id}>
               <Link
-                href={`/#${id}`}
+                href={!home && page === id ? PAGES[id] : `/#${id}`}
                 data-id={id}
-                className={active === id ? 'on' : undefined}
-                aria-current={active === id ? 'location' : undefined}
+                className={current === id ? 'on' : undefined}
+                aria-current={current === id ? (home ? 'location' : 'page') : undefined}
                 onMouseEnter={() => setHovered(id)}
                 onClick={() => setOpen(false)}
               >

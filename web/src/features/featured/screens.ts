@@ -17,6 +17,9 @@ export const SIMILAR: Record<ProjectType, { label: string; formType: string }> =
   system: { label: 'أريد نظاماً مشابهاً', formType: 'نظام ERP' },
 }
 
+/** From another page: the home contact form, with the project type picked through ?type=. */
+export const similarHref = (type: ProjectType) => `/?type=${encodeURIComponent(SIMILAR[type].formType)}#contact`
+
 export type Keyed = { key: string; screen: Screen }
 export type Phone = { kind: 'stack'; shots: Keyed[] } | { kind: 'static'; screen: Screen }
 

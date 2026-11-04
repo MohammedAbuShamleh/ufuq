@@ -47,6 +47,14 @@ export type FeaturedProject = ProjectBase & {
 
 export type ProjectCard = ProjectBase & { cover: Screen | null }
 
+/** GET /projects/{slug}: a featured card's content plus the story (null while pending). */
+export type ProjectDetail = FeaturedProject & {
+  challenge: string | null
+  solution: string | null
+  results: string | null
+  testimonial: Testimonial | null
+}
+
 export type Client = { name: string; sector_label: string; location: string; logo: Media | null }
 
 export type Testimonial = {

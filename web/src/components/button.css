@@ -83,3 +83,18 @@
 .link-arrow:hover .ico-arrow:dir(ltr) {
   translate: 4px 0;
 }
+/* «Back»: the same arrow, turned to point the way the reader came from. */
+.ico-arrow.back {
+  scale: -1 1;
+}
+.ico-arrow.back:dir(ltr) {
+  scale: 1 1;
+}
+.btn:hover .ico-arrow.back,
+.link-arrow:hover .ico-arrow.back {
+  translate: 4px 0;
+}
+.btn:hover .ico-arrow.back:dir(ltr),
+.link-arrow:hover .ico-arrow.back:dir(ltr) {
+  translate: -4px 0;
+}

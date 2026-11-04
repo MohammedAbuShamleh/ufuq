@@ -24,7 +24,7 @@ export function Featured({ projects, children }: { projects: FeaturedProject[]; 
         </div>
         <FeaturedStack>
           {projects.map((p, i) => (
-            <FeaturedCard key={p.slug} project={p} index={i} total={projects.length} />
+            <FeaturedCard key={p.slug} project={p} place={{ index: i, total: projects.length }} />
           ))}
         </FeaturedStack>
         {children}

@@ -54,16 +54,34 @@ three webp `sizes` (480, 960, 1600).
 ```
 web/src
   app/          routes, the site shell (header, footer, theme, motion) in app/_shell
-  features/     one folder per home section: hero, compare, featured, work, about,
-                voices, services, approach, journey, contact
+  features/     one folder per section: hero, compare, featured, work, about, voices,
+                services, approach, journey, contact, and project (the project page)
   components/   the few shared pieces: Button, Kicker, ArchClip, DemoPill, Reveal
   hooks/        useInView, useReducedMotion, useMotionToggle
-  lib/          API client and types, number and media helpers
+  lib/          API client and types, number, media and SEO helpers
 ```
 
-The home page reads everything from `GET /v1/home` (refreshed hourly, tagged `home`, so
-phase 6 can revalidate it). The contact form posts from the visitor's browser straight to
-`POST /v1/leads`, which is why the API allows the site's origin in `CORS_ALLOWED_ORIGINS`.
+| Route          | Reads                          | Cache tags            |
+| -------------- | ------------------------------ | --------------------- |
+| `/`            | `GET /v1/home`                 | `home`                |
+| `/work`        | `GET /v1/projects`             | `projects`            |
+| `/work/[slug]` | `GET /v1/projects/{slug}`      | `project:<slug>`, `projects` |
+| `/about`       | `GET /v1/team`, `/v1/settings` | `team`, `settings`    |
+| `/privacy`     | `GET /v1/settings`             | `settings`            |
+
+Every read is refreshed hourly and tagged, so phase 6 can revalidate exactly the pages a
+save touches. Every published project is prerendered; one published later renders on its
+first visit, and an unpublished slug answers 404. `sitemap.xml` lists the same projects,
+and `robots.txt` points to it.
+
+Each page sets its title, description, canonical link and share preview through
+`lib/seo.ts`. A project's preview is its first image screen, made into a 1200×630 JPEG by
+`work/[slug]/opengraph-image.ts` (a desktop screen from its top, a phone screen whole on
+linen); a project with no image screen shares the site's default preview.
+
+The contact form posts from the visitor's browser straight to `POST /v1/leads`, which is
+why the API allows the site's origin in `CORS_ALLOWED_ORIGINS`. «أريد نظاماً مشابهاً» on a
+project page opens the home form with the project type already picked (`/?type=…#contact`).
 
 Each section keeps the v7 class names in its own CSS file next to its component, and every
 color in those files is a token from `globals.css`. Motion uses CSS, IntersectionObserver
@@ -91,8 +109,9 @@ extension to build the webp sizes.
 cd web && npm install && cp .env.example .env.local && npm run dev
 ```
 
-`API_URL` points at `127.0.0.1`, not `localhost`: Node tries IPv6 first, and
-`artisan serve` listens on IPv4 only.
+`API_URL` (web) and `APP_URL` (api, which builds the image addresses) point at
+`127.0.0.1`, not `localhost`: Node tries IPv6 first, `artisan serve` listens on IPv4 only,
+and the site's server fetches images to build share previews.
 
 ```bash
 cd admin && npm install && npm run dev
@@ -107,7 +126,7 @@ production version) whatever PHP version is installed locally.
 1. Foundation ✅
 2. Database and public API ✅
 3. Home page ✅
-4. Remaining pages
+4. Remaining pages ✅
 5. Dashboard
 6. Wiring and instant revalidation
 7. Deployment and launch

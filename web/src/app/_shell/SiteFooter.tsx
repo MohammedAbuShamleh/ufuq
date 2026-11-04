@@ -6,7 +6,6 @@ import { getSettings } from '@/lib/api'
 import { arYear, whatsappLink } from '@/lib/format'
 import { Logo } from './Logo'
 import { FooterMotionToggle } from './FooterMotionToggle'
-import { PrivacyDialog } from './PrivacyDialog'
 
 const SERVICES = ['المواقع الإبداعية', 'أنظمة ERP', 'الأنظمة المالية', 'المنصات الإلكترونية', 'تطبيقات الجوال']
 
@@ -46,7 +45,8 @@ export async function SiteFooter() {
         </div>
         <nav className="foot-col" aria-label="الموقع">
           <h4>الموقع</h4>
-          <Link href="/#projects">أعمالنا</Link>
+          <Link href="/work">أعمالنا</Link>
+          <Link href="/about">من نحن</Link>
           <Link href="/#services">خدماتنا</Link>
           <Link href="/#approach">طريقتنا</Link>
           <Link href="/#contact">تواصل معنا</Link>
@@ -81,7 +81,7 @@ export async function SiteFooter() {
       <div className="wrap foot-bottom">
         <span>
           © {arYear(new Date().getFullYear())} أفق للبرمجيات. جميع الحقوق محفوظة. ·{' '}
-          <PrivacyDialog sections={settings.privacy_policy ?? []} draft={settings.privacy_is_draft} /> · <FooterMotionToggle />
+          <Link href="/privacy">سياسة الخصوصية</Link> · <FooterMotionToggle />
         </span>
         <Link href="/#top" className="to-top">
           العودة للأعلى

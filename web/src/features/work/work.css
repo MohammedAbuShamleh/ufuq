@@ -50,6 +50,34 @@
   background: color-mix(in srgb, var(--bg) 20%, transparent);
   color: var(--bg);
 }
+.pj-filter button:disabled {
+  opacity: 0.45;
+  cursor: default;
+  border-color: var(--line);
+  color: var(--muted);
+}
+.pj-all {
+  margin-top: 1.6rem;
+}
+
+/* ---------- /work: every project, two filters ---------- */
+.wk-list {
+  padding-bottom: 3rem;
+}
+.wk-filters {
+  display: grid;
+  gap: 0.25rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.wk-filters .pj-filter {
+  margin-bottom: 0.5rem;
+}
+.wk-count {
+  margin: 0.6rem 0 1.4rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
 
 .pjt-grid {
   display: grid;
@@ -59,6 +87,7 @@
 }
 .pjt {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -86,9 +115,21 @@
   border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
 }
 .pjt-body {
-  position: relative;
-  z-index: 2;
   padding: 1.4rem 1.5rem 1.5rem;
+}
+/* The title's link stretches over the whole card. */
+.pjt-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.pjt:has(.pjt-link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.pjt-link:focus-visible {
+  outline: none;
 }
 .pjt-tag {
   display: inline-block;
@@ -130,7 +171,7 @@
   background: var(--frame);
   box-shadow: 0 0 0 1px var(--line);
 }
-.pjt-media img {
+.pjt-media :is(img, video) {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -139,7 +180,7 @@
   object-position: top;
   transition: transform 0.8s var(--ease);
 }
-.pjt:hover .pjt-media img {
+.pjt:hover .pjt-media :is(img, video) {
   transform: scale(1.04);
 }
 /* A phone screenshot sits in a phone. */
@@ -159,6 +200,7 @@
   font-weight: 800;
   font-size: 9rem;
   line-height: 1;
+  z-index: -1;
   opacity: 0.09;
   pointer-events: none;
   transition: transform 0.6s var(--ease);

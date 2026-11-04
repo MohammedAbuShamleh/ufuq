@@ -62,12 +62,14 @@
   --ember-rgb: 233 140 90;
   --live-rgb: 63 167 101;
   --wa-rgb: 31 143 85;
+  --sun-rgb: 255 214 170;
 
   /* Night: sections that stay dark in both modes (voices, approach, the open service) */
   --night: #15181d;
   --night-1: #22252b;
   --night-2: #24262b;
   --night-3: #2a2d33;
+  --night-ember: #3a2620;
   --on-night: #f4efe6;
   --on-night-muted: #b9b4a6;
   --on-night-soft: #cfcab2;
@@ -117,6 +119,8 @@
   --tile-olive: linear-gradient(160deg, #f2f2ec, #e9e8df);
   --tile-terra: linear-gradient(160deg, #fbf1ef, #f4e2de);
   --tile-stone: linear-gradient(160deg, #f6f6f4, #ecece9);
+  /* A teammate without a photo yet (the About page) */
+  --tile-photo: linear-gradient(160deg, #edece8, #dcdad4);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -19,8 +19,12 @@ export function ContactForm({ endpoint }: { endpoint: string }) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [errors, setErrors] = useState<Errors>({})
 
-  // «أريد منصة مشابهة» on a project card picks the project type here.
+  // «أريد منصة مشابهة» on a project card picks the project type here: from a
+  // click on this page, or from ?type= when it comes from a project page.
   useEffect(() => {
+    const preset = new URLSearchParams(location.search).get('type')
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the URL is only readable after hydration
+    if (preset && TYPES.includes(preset)) setType(preset)
     const pick = (e: MouseEvent) => {
       const link = (e.target as Element).closest<HTMLElement>('a[data-type]')
       if (link?.dataset.type && TYPES.includes(link.dataset.type)) setType(link.dataset.type)

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { AboutTeaser } from '@/features/about/AboutTeaser'
 import { Approach } from '@/features/approach/Approach'
 import { BeforeAfter } from '@/features/compare/BeforeAfter'
@@ -10,6 +11,10 @@ import { Services } from '@/features/services/Services'
 import { Voices } from '@/features/voices/Voices'
 import { OtherWork } from '@/features/work/OtherWork'
 import { API_URL, getHome } from '@/lib/api'
+
+// Only the canonical: the title and share preview are the layout's defaults.
+// (In the layout it would also mark the 404 page as the home page.)
+export const metadata: Metadata = { alternates: { canonical: '/' } }
 
 export default async function HomePage() {
   const home = await getHome()

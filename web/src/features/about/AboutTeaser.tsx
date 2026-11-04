@@ -4,14 +4,9 @@ import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
 import { isPending } from '@/lib/format'
 import type { TeamMember } from '@/lib/types'
+import { STATS } from './stats'
 import { TeamPerson } from './TeamPerson'
 import './about.css'
-
-const STATS = [
-  { value: '٢٠٢٢', label: 'سنة البداية' },
-  { value: '+٥٠', label: 'نظاماً بنيناه', ltr: true },
-  { value: '٤', label: 'دول تعمل فيها أنظمتنا' },
-]
 
 /** «من نحن» in short: who we are, three numbers, the team; the full story is on /about. */
 export function AboutTeaser({ team, whyWeStarted }: { team: TeamMember[]; whyWeStarted: string | null }) {
