@@ -1,18 +1,29 @@
+/*
+ * Each word rises inside its own clipped box. Arabic marks reach well past
+ * the font's own box: a shadda about 0.35em above it, the dots of a final ي
+ * about 0.33em below it, and some letters a little to the side. The padding
+ * leaves room for them and the negative margin takes it back, so the words
+ * sit exactly where they would without it.
+ */
 .rw {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding: 0.4em 0.1em;
+  margin: -0.4em -0.1em;
 }
 .rw > span {
   display: inline-block;
   transition: transform 0.9s cubic-bezier(0.2, 0.75, 0.15, 1);
   transition-delay: calc(var(--k) * 60ms);
 }
-/* Hidden only when a script is there to reveal it, and motion is allowed. */
+/*
+ * Hidden only when a script is there to reveal it, and motion is allowed.
+ * A word drops its own height plus the box's 0.4em below it and up to 0.35em
+ * of marks above it, so not even a hamza shows before its turn.
+ */
 @media (prefers-reduced-motion: no-preference) {
   html.js:not(.motion-off) .rv-h:not(.in) .rw > span {
-    transform: translateY(105%);
+    transform: translateY(calc(100% + 0.8em));
   }
 }
