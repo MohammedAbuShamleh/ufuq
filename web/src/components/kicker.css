@@ -1,0 +1,24 @@
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+.kicker::before {
+  content: '';
+  width: 28px;
+  height: 1.5px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 0.8s var(--ease) 0.1s;
+}
+.kicker:dir(ltr)::before {
+  transform-origin: left;
+}
+/* Hidden only when a script is there to draw it. */
+.js .kicker.kp:not(.kin)::before {
+  transform: scaleX(0);
+}

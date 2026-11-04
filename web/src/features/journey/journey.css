@@ -1,0 +1,256 @@
+.nx3 {
+  padding: 7rem 0;
+}
+.nx3-stick {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+}
+
+/* The road through the arch; --ox/--oy/--zs aim the camera. */
+.nx3-photo {
+  position: relative;
+  align-self: center;
+  margin: 0;
+}
+.nx3-photo::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: min(calc(100% + 28px), 448px);
+  aspect-ratio: 300 / 370;
+  transform: translateX(-50%);
+  border: 1.5px solid color-mix(in srgb, var(--terra) 40%, transparent);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 36% 36% 0 0;
+  pointer-events: none;
+}
+.nx3-clip {
+  position: relative;
+  width: min(100%, 420px);
+  margin-inline: auto;
+  aspect-ratio: 300 / 370;
+  overflow: hidden;
+  background: var(--char-2);
+}
+.nx3-clip img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  transform: scale(var(--zs, 1));
+  transition:
+    transform 1.3s var(--ease),
+    transform-origin 1.3s var(--ease);
+}
+.nx3-cap {
+  margin-top: 1.1rem;
+  min-height: 1.6em;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--text);
+  transition: opacity 0.35s;
+}
+.nx3-cap.swap {
+  opacity: 0;
+}
+.nx3-prog {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 0.7rem;
+}
+.nx3-prog i {
+  width: 22px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line);
+  transition:
+    background 0.4s,
+    width 0.4s;
+}
+.nx3-prog i.on {
+  width: 34px;
+  background: var(--accent);
+}
+
+/* The steps */
+.nx-head {
+  margin-bottom: 3rem;
+}
+.nx3-hint {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.nx3-list {
+  position: relative;
+  margin-top: 2rem;
+}
+.nx3-list ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+/* --lp (0→1) is how far along the steps the visitor is. */
+.nx3-line {
+  position: absolute;
+  top: 22px;
+  bottom: 22px;
+  inset-inline-start: 21px;
+  width: 1.5px;
+  background: var(--line);
+}
+.nx3-line i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--olive), var(--terra));
+  transform-origin: top;
+  transform: scaleY(var(--lp, 0));
+  transition: transform 0.9s var(--ease);
+}
+.nx3-line b {
+  position: absolute;
+  inset-inline-start: -5px;
+  top: calc(var(--lp, 0) * 100%);
+  width: 11px;
+  height: 11px;
+  margin-top: -5.5px;
+  border-radius: 50%;
+  background: var(--terra);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--terra) 20%, transparent);
+  transition: top 0.9s var(--ease);
+}
+.nx3-step {
+  position: relative;
+}
+.nx3-head {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  width: 100%;
+  padding: 0.55rem 0;
+  cursor: pointer;
+}
+.nx3-head:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+.nx-n {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  transition:
+    background 0.35s,
+    color 0.35s,
+    transform 0.35s;
+}
+.nx3-t {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  color: var(--muted);
+  transition: color 0.35s;
+}
+.nx3-step.on .nx-n {
+  background: var(--accent);
+  color: var(--on-accent);
+  transform: scale(1.08);
+}
+.nx3-step.done .nx-n {
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg));
+}
+.nx3-step.on .nx3-t,
+.nx3-head:hover .nx3-t {
+  color: var(--text);
+}
+.nx3-det {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease);
+}
+.nx3-det > div {
+  overflow: hidden;
+  min-height: 0;
+  padding-inline-start: calc(44px + 1.1rem);
+}
+.nx3-step.on .nx3-det {
+  grid-template-rows: 1fr;
+}
+.nx3-det p {
+  max-width: 48ch;
+  margin: 0.1rem 0 0.7rem;
+  color: var(--muted);
+}
+.nx3-det ul {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.nx3-det li {
+  position: relative;
+  padding-inline-start: 1.4rem;
+  font-size: 0.92rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+.nx3-det li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--accent) 70%, transparent);
+  transform: rotate(45deg);
+}
+.nx3-step.on .nx3-det li {
+  opacity: 1;
+  transform: none;
+}
+.nx3-step.on .nx3-det li:nth-child(2) {
+  transition-delay: 0.12s;
+}
+.nx3-step.on .nx3-det li:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+@media (max-width: 960px) {
+  .nx3-stick {
+    grid-template-columns: 1fr;
+  }
+  .nx3-clip {
+    width: min(100%, 300px);
+  }
+  .nx3-line b {
+    display: none;
+  }
+}

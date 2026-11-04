@@ -1,0 +1,303 @@
+.ba {
+  padding: 7rem 0 2rem;
+}
+.ba-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 2.5rem;
+}
+.ba-head p {
+  max-width: 42ch;
+  justify-self: end;
+}
+
+/* --pos is where the line stands, from the left edge. */
+.ba-stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--frame);
+  box-shadow:
+    0 50px 90px -50px rgb(var(--ink-rgb) / 0.55),
+    0 0 0 1px var(--line);
+  user-select: none;
+  touch-action: pan-y;
+}
+.ba-stage:focus-within {
+  box-shadow:
+    0 50px 90px -50px rgb(var(--ink-rgb) / 0.55),
+    0 0 0 3px var(--accent);
+}
+.ba-after,
+.ba-before {
+  position: absolute;
+  inset: 0;
+}
+.ba-after img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.ba-before {
+  clip-path: inset(0 0 0 var(--pos));
+  background: var(--frame);
+}
+.ba-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  z-index: 3;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--frame);
+  box-shadow:
+    0 0 0 1px rgb(var(--ink-rgb) / 0.15),
+    0 0 24px rgb(var(--ink-rgb) / 0.25);
+  pointer-events: none;
+}
+.ba-handle span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-radius: 50%;
+  background: var(--terra);
+  color: var(--on-accent);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 26px -8px color-mix(in srgb, var(--terra) 70%, transparent);
+}
+.ba-stage.hint .ba-handle span {
+  animation: baNudge 1.4s ease-in-out 1;
+}
+@keyframes baNudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-14px);
+  }
+  65% {
+    transform: translateX(10px);
+  }
+}
+/* The real control: invisible, covering the stage, left-to-right like the line. */
+.ba-range {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  direction: ltr;
+}
+.ba-tag {
+  position: absolute;
+  top: 16px;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+.ba-tag.before {
+  right: 16px;
+  background: color-mix(in srgb, var(--alarm) 90%, transparent);
+  color: var(--frame);
+}
+.ba-tag.after {
+  left: 16px;
+  background: color-mix(in srgb, var(--olive) 92%, transparent);
+  color: var(--linen);
+}
+.ba-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.ba-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---------- The spreadsheet: Excel's own colors, part of the picture ---------- */
+.xl {
+  --xl-green: #1d6f42;
+  --xl-ink: #222222;
+  --xl-grey: #666666;
+  --xl-rule: #e1e1e1;
+  --xl-edge: #d6d6d6;
+  --xl-head: #f0f0f0;
+  --xl-tab: #e4e4e4;
+  --xl-bar: #f7f7f7;
+  --xl-band: #e7f1ea;
+  --xl-err: #c62828;
+  --xl-err-bg: #fdecea;
+  --xl-hl: #fff59d;
+  --xl-warn: #b45309;
+  --xl-warn-bg: #fef3c7;
+
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-size: clamp(0.55rem, 1.05vw, 0.85rem);
+  color: var(--xl-ink);
+  background: var(--frame);
+  direction: rtl;
+}
+.xl-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55em 0.9em;
+  background: var(--xl-green);
+  color: var(--frame);
+}
+.xl-bar b {
+  font-weight: 600;
+}
+.xl-ico {
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 4px;
+  background: var(--frame);
+  color: var(--xl-green);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+.xl-warn {
+  margin-inline-start: auto;
+  font-size: 0.85em;
+  background: rgb(var(--white-rgb) / 0.18);
+  padding: 0.15em 0.7em;
+  border-radius: 4px;
+}
+.xl-fx {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.4em 0.9em;
+  border-bottom: 1px solid var(--xl-edge);
+  background: var(--xl-bar);
+}
+.xl-fx span {
+  font-style: italic;
+  color: var(--xl-grey);
+  font-family: var(--font-serif);
+}
+.xl-fx code {
+  direction: ltr;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.95em;
+  color: var(--xl-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.xl-grid {
+  flex: 1;
+  overflow: hidden;
+}
+.xl table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.xl th,
+.xl td {
+  border: 1px solid var(--xl-rule);
+  padding: 0.38em 0.5em;
+  height: 1.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.xl th {
+  background: var(--xl-head);
+  color: var(--xl-grey);
+  font-weight: 500;
+  text-align: center;
+}
+.xl tbody th,
+.xl thead tr:first-child th:first-child {
+  width: 2.6em;
+}
+.xl .xl-h td {
+  background: var(--xl-band);
+  font-weight: 600;
+}
+.xl td.err {
+  color: var(--xl-err);
+  font-weight: 700;
+  background: var(--xl-err-bg);
+}
+.xl td.hl {
+  background: var(--xl-hl);
+}
+.xl td.warn {
+  color: var(--xl-warn);
+  background: var(--xl-warn-bg);
+}
+.xl-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0.3em 0.5em;
+  background: var(--xl-head);
+  border-top: 1px solid var(--xl-edge);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.xl-tabs span {
+  padding: 0.25em 0.8em;
+  background: var(--xl-tab);
+  color: var(--xl-grey);
+  border-radius: 3px 3px 0 0;
+}
+.xl-tabs span.on {
+  background: var(--frame);
+  color: var(--xl-green);
+  font-weight: 600;
+  box-shadow: inset 0 -2px var(--xl-green);
+}
+.xl-tabs .xl-more {
+  background: transparent;
+  color: var(--xl-err);
+  font-weight: 600;
+}
+
+@media (max-width: 960px) {
+  .ba-head {
+    grid-template-columns: 1fr;
+  }
+  .ba-head p {
+    justify-self: start;
+  }
+  .ba-stage {
+    aspect-ratio: 4 / 5;
+  }
+  .xl {
+    font-size: 0.6rem;
+  }
+  .xl th:nth-child(n + 6),
+  .xl td:nth-child(n + 6) {
+    display: none;
+  }
+}

@@ -49,6 +49,27 @@ Text that is still pending comes out as `null` or wrapped in `[brackets]`; the s
 both with the pending marker. Every image comes with its original `width` and `height` and
 three webp `sizes` (480, 960, 1600).
 
+## Site (`web/`)
+
+```
+web/src
+  app/          routes, the site shell (header, footer, theme, motion) in app/_shell
+  features/     one folder per home section: hero, compare, featured, work, about,
+                voices, services, approach, journey, contact
+  components/   the few shared pieces: Button, Kicker, ArchClip, DemoPill, Reveal
+  hooks/        useInView, useReducedMotion, useMotionToggle
+  lib/          API client and types, number and media helpers
+```
+
+The home page reads everything from `GET /v1/home` (refreshed hourly, tagged `home`, so
+phase 6 can revalidate it). The contact form posts from the visitor's browser straight to
+`POST /v1/leads`, which is why the API allows the site's origin in `CORS_ALLOWED_ORIGINS`.
+
+Each section keeps the v7 class names in its own CSS file next to its component, and every
+color in those files is a token from `globals.css`. Motion uses CSS, IntersectionObserver
+and requestAnimationFrame only. «إيقاف الحركة» adds `motion-off` to `<html>` and is
+remembered, and it behaves exactly like the system's reduced-motion setting.
+
 ## Design system
 
 The tokens live as CSS variables in `web/src/app/globals.css` and its twin
@@ -67,8 +88,11 @@ after launch the dashboard owns the content. Image uploads need PHP's GD or Imag
 extension to build the webp sizes.
 
 ```bash
-cd web && npm install && npm run dev
+cd web && npm install && cp .env.example .env.local && npm run dev
 ```
+
+`API_URL` points at `127.0.0.1`, not `localhost`: Node tries IPv6 first, and
+`artisan serve` listens on IPv4 only.
 
 ```bash
 cd admin && npm install && npm run dev
@@ -82,7 +106,7 @@ production version) whatever PHP version is installed locally.
 
 1. Foundation ✅
 2. Database and public API ✅
-3. Home page
+3. Home page ✅
 4. Remaining pages
 5. Dashboard
 6. Wiring and instant revalidation

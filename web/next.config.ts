@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // Only the static illustrations go through next/image; uploads come sized from the API.
+  images: { qualities: [75] },
   turbopack: {
     rules: {
       "*.css": {

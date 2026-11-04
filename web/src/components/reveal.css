@@ -1,0 +1,18 @@
+.rw {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.rw > span {
+  display: inline-block;
+  transition: transform 0.9s cubic-bezier(0.2, 0.75, 0.15, 1);
+  transition-delay: calc(var(--k) * 60ms);
+}
+/* Hidden only when a script is there to reveal it, and motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.motion-off) .rv-h:not(.in) .rw > span {
+    transform: translateY(105%);
+  }
+}
