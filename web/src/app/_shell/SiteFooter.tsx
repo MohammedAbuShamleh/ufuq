@@ -64,21 +64,24 @@ export async function SiteFooter() {
             </Link>
           ))}
         </nav>
-        <div className="foot-col">
+        <div className="foot-col foot-contact">
           <h2>تواصل</h2>
           {settings.contact_email && (
-            <a href={`mailto:${settings.contact_email}`} dir="ltr" className="ltr">
+            <a href={`mailto:${settings.contact_email}`} dir="ltr" className="ltr foot-mail">
               {settings.contact_email}
             </a>
           )}
-          <span>فلسطين</span>
-          <MaybeLink href={support} external>
-            الدعم الفني
-          </MaybeLink>
-          <MaybeLink href={settings.profile_pdf} external>
-            البروفايل (PDF)
-          </MaybeLink>
-          <Link className="link-arrow" href="/#contact">
+          {/* A column on wide screens, one row of short items on a phone. */}
+          <div className="foot-meta">
+            <span>فلسطين</span>
+            <MaybeLink href={support} external>
+              الدعم الفني
+            </MaybeLink>
+            <MaybeLink href={settings.profile_pdf} external>
+              البروفايل (PDF)
+            </MaybeLink>
+          </div>
+          <Link className="link-arrow foot-cta" href="/#contact">
             ابدأ مشروعك <Arrow />
           </Link>
         </div>
