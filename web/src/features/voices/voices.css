@@ -52,8 +52,7 @@
   font-family: var(--font-serif), Georgia, serif;
   font-size: 9rem;
   line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--rose-strong) 55%, transparent);
+  color: color-mix(in srgb, var(--rose-strong) 22%, transparent);
   pointer-events: none;
 }
 

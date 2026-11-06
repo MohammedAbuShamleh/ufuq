@@ -52,8 +52,8 @@
   font-weight: 800;
   font-size: clamp(4.5rem, 11vw, 8rem);
   line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--terra) 60%, transparent);
+  /* Solid (outlined, the Arabic zero shrank to a hollow square), and 3:1 like any large text. */
+  color: color-mix(in srgb, var(--accent) 70%, var(--bg));
   margin-bottom: 0.6rem;
   animation: nfFade 1s ease 0.3s both;
 }

@@ -84,8 +84,8 @@
   font-weight: 700;
   font-size: 2.6rem;
   line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1.2px color-mix(in srgb, var(--accent) 60%, transparent);
+  /* Solid, at 3:1 like any large text: an outlined Arabic numeral reads as a missing-glyph box. */
+  color: color-mix(in srgb, var(--accent) 70%, var(--bg));
 }
 .pp-steps h3 {
   margin-top: 1rem;
