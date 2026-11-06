@@ -62,6 +62,7 @@ return [
     'قيود يومية وصناديق ومخزون وتقارير، وسجل تدقيق لكل تعديل.' => 'Journal entries, cash boxes, inventory and reports, with an audit log of every change.',
     'من طلب الجهة إلى النشر: لوحة تكليفات للمكتب الإعلامي، ٤ أدوار و٨٨ اختباراً آلياً.' => 'From a department’s request to publication: an assignments board for the media office, with 4 roles and 88 automated tests.',
     'برامج الدار وأخبارها.' => 'Dar Al-Itqan’s programs and news.',
+    'موقع دار الإتقان لتعليم القرآن الكريم بغزة: أخبار الدار وأقسامها، ومكتبة مرئية، ومواقيت الصلاة، ونوابغ الدار، بالعربية والإنجليزية وبوضعين فاتح وداكن.' => 'The website of Dar Al-Itqan, a Quran school in Gaza: its news and departments, a video library, prayer times and its standout students, in Arabic and English, with light and dark modes.',
     'متابعة الأنشطة الدعوية.' => 'Tracking dawah activities.',
     'موقع ومنصة الرابطة.' => 'The league’s website and platform.',
     'شركة تنسيق حدائق.' => 'A landscaping company.',
@@ -123,6 +124,11 @@ return [
     'أوامر الشراء' => 'Purchase orders',
     'المخزون' => 'Inventory',
     'الحضور' => 'Attendance',
+    'الأخبار' => 'News',
+    'مواقيت الصلاة' => 'Prayer times',
+    'نوابغ الإتقان' => 'Itqan’s standouts',
+    'الأقسام' => 'Departments',
+    'الوضع الداكن' => 'Dark mode',
 
     // Screen descriptions (alt text)
     'لوحة مدير المشاريع: المشاريع حسب الحالة والقيمة الإجمالية' => 'Project manager’s dashboard: projects by status and total value',
@@ -155,6 +161,12 @@ return [
     'تسجيل الحضور والانصراف اليومي للموظفين' => 'Daily staff check-in and check-out',
     'لوحة القيادة في نظام رصرص على الجوال' => 'The Rasras dashboard on mobile',
     'بريد الاعتمادات على الجوال' => 'The approvals inbox on mobile',
+    'واجهة موقع دار الإتقان: «نُتقن القرآن لنحيا به» فوق مصحف مفتوح تنبت منه حلقة تحفيظ في خيمة' => 'The Dar Al-Itqan homepage: “We master the Quran to live by it” above an open Mushaf, from which a memorization circle in a tent grows',
+    'أخبار الدار على الرئيسية: خبر بارز وبجانبه أخبار أصغر' => 'Dar Al-Itqan news on the homepage: a lead story beside smaller ones',
+    'مواقيت الصلاة: الصلاة القادمة وعدّ تنازلي لها، والتاريخ الهجري واتجاه القبلة' => 'Prayer times: the next prayer with a countdown, the Hijri date and the qibla direction',
+    'نوابغ الإتقان: قصة طالب متميز بصورته ونبذة عنه' => 'Itqan’s standouts: a top student’s story, with a photo and a short profile',
+    'صفحة قسم تحفيظ القرآن الكريم بصوره وآخر منشوراته' => 'The Quran memorization department’s page, with its photos and latest posts',
+    'الرئيسية بالوضع الداكن: مصحف بين يدين على خلفية خضراء' => 'The homepage in dark mode: a Mushaf held in two hands on a green background',
 
     // Team
     'م. محمد أبو شمله' => 'Mohammed Abu Shamleh',
