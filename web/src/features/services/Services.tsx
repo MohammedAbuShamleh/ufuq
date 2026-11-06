@@ -76,10 +76,9 @@ const SERVICES: Service[] = [
   },
 ]
 
-const NUMBERS = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥']
-
 /**
- * Five panels; the open one widens and turns dark. A mouse opens a panel by
+ * Five panels, not numbered: they are kinds of work, not steps in an order.
+ * The open one widens and turns dark. A mouse opens a panel by
  * hovering, touch and keyboard by pressing it. Below 960px they stack into an accordion.
  */
 export function Services() {
@@ -96,14 +95,13 @@ export function Services() {
           </div>
           <p className="muted">خمسة أنواع من البرمجيات، نبني كلاً منها حول طريقة عملكم.</p>
         </div>
-        <ol className="sv-panels">
+        <ul className="sv-panels">
           {SERVICES.map((s, i) => (
             <li key={s.title} className={`sv-p${open === i ? ' on' : ''}`} onMouseEnter={() => hoverOpens() && setOpen(i)}>
               <button type="button" className="sv-hit" aria-expanded={open === i} aria-controls={`sv-more-${i}`} onClick={() => setOpen(i)} onFocus={() => setOpen(i)}>
                 <span className="sr-only">{s.title}</span>
               </button>
               <div className="sv-top">
-                <span className="sv-n">{NUMBERS[i]}</span>
                 <span className="sv-ic" aria-hidden="true">
                   {s.icon}
                 </span>
@@ -124,7 +122,7 @@ export function Services() {
               </div>
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
     </section>
   )
