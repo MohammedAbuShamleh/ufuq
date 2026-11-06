@@ -1,4 +1,6 @@
-import { Kicker } from '@/components/Kicker'
+import Link from 'next/link'
+import { Arrow } from '@/components/Button'
+import { SIMILAR, similarHref } from '@/features/featured/similar'
 import { isPending, isShown } from '@/lib/format'
 import type { ProjectDetail, Testimonial } from '@/lib/types'
 import { countryName, SECTOR_LABEL, TYPE_LABEL } from '../work/labels'
@@ -17,21 +19,98 @@ function figuresOf(project: ProjectDetail): Figure[] {
   })
 }
 
-/** The project's figures, then who it was built for, where, and what kind of work it is. */
-export function ProjectFacts({ project }: { project: ProjectDetail }) {
-  const figures = figuresOf(project)
+/** A title this long is set a size down, so it still breaks into two lines at most. */
+const LONG_TITLE = 16
+
+/**
+ * The page's opening: the name and what the work is on one side, the summary
+ * and the way to ask for something similar on the other, then who it was
+ * built for, where, what kind of work, and on what, in one ruled row.
+ */
+export function ProjectHero({ project }: { project: ProjectDetail }) {
+  const similar = SIMILAR[project.type]
   const facts = [
     { label: 'العميل', value: project.client_name },
     { label: 'القطاع', value: SECTOR_LABEL[project.sector] },
     { label: 'الدولة', value: countryName(project.country) },
     { label: 'نوع العمل', value: TYPE_LABEL[project.type] },
   ].filter((f): f is { label: string; value: string } => Boolean(f.value))
+  const stack = project.tech_stack?.length ? project.tech_stack : null
 
   return (
-    <section className="pp-facts" aria-label="عن المشروع">
+    <section className="pp-hero" aria-labelledby="pp-title">
       <div className="wrap">
+        <Link className="sx-go pp-back" href="/work">
+          <Arrow className="ico-arrow back" /> كل الأعمال
+        </Link>
+
+        <div className="pp-head">
+          <div className="pp-name">
+            <h1 id="pp-title" className={project.title.length > LONG_TITLE ? 'pp-long' : undefined}>
+              {project.title}
+            </h1>
+            {project.tag && <p className="pp-tag">{project.tag}</p>}
+          </div>
+          <div className="pp-lede">
+            {project.summary && <p>{project.summary}</p>}
+            <a className="pp-similar" href={similarHref(project.type)}>
+              {similar.label} <Arrow />
+            </a>
+          </div>
+        </div>
+
+        <dl className="pp-ledger">
+          {facts.map((f) => (
+            <div key={f.label}>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+          {stack && (
+            <div className="pp-ledger-stack">
+              <dt>التقنيات</dt>
+              <dd>
+                <bdi dir="ltr">{stack.join(' · ')}</bdi>
+              </dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </section>
+  )
+}
+
+/** Whether the project has anything for the dark band: points it offers or figures. */
+export const hasOffers = (project: ProjectDetail) => project.highlights.length > 0 || figuresOf(project).length > 0
+
+/**
+ * The dark band under the cover: what the work does, in its own points, and
+ * its figures down the side, each on a rule rather than in a tile.
+ */
+export function ProjectOffers({ project, heading }: { project: ProjectDetail; heading: string }) {
+  const figures = figuresOf(project)
+  const points = project.highlights
+
+  return (
+    <section className={`pp-offers${points.length === 0 ? ' pp-offers-figures' : ''}`} aria-labelledby="offers-title">
+      <div className="wrap pp-offers-in">
+        <div className="pp-points">
+          <h2 id="offers-title">{heading}</h2>
+          {points.length > 0 && (
+            <ul>
+              {points.map((h) => (
+                <li key={h}>
+                  <svg className="pp-mark" viewBox="0 0 10 12" aria-hidden="true">
+                    <path d="M0 12V5.3C0 2.4 2.8.7 5 0c2.2.7 5 2.4 5 5.3V12Z" />
+                  </svg>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         {figures.length > 0 && (
-          <ul className="pp-figures">
+          <ul className="pp-figures" aria-label="بالأرقام">
             {figures.map((f) => (
               <li key={`${f.value}\n${f.label}`}>
                 <b>{f.value}</b>
@@ -40,14 +119,6 @@ export function ProjectFacts({ project }: { project: ProjectDetail }) {
             ))}
           </ul>
         )}
-        <dl className="pp-facts-in">
-          {facts.map((f) => (
-            <div key={f.label}>
-              <dt>{f.label}</dt>
-              <dd>{f.value}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   )
@@ -64,7 +135,8 @@ const STEP_NUM = ['١', '٢', '٣']
 /**
  * Challenge, solution, result: the client fills them. A step still waiting
  * shows what it should say in a preview build and is left out on the live
- * site; with no step written, the section is left out.
+ * site; with no step written, the section is left out. The heading holds its
+ * place while the steps pass beside it.
  */
 export function ProjectStory({ project }: { project: ProjectDetail }) {
   const steps = STORY.filter((s) => isShown(project[s.key]))
@@ -72,11 +144,8 @@ export function ProjectStory({ project }: { project: ProjectDetail }) {
 
   return (
     <section className="pp-story" aria-labelledby="story-title">
-      <div className="wrap">
-        <div className="apg-sec-head">
-          <Kicker>قصة المشروع</Kicker>
-          <h2 id="story-title">من المشكلة إلى نظام يعمل.</h2>
-        </div>
+      <div className="wrap pp-story-in">
+        <h2 id="story-title">من المشكلة إلى نظام يعمل.</h2>
         <ol className="pp-steps">
           {steps.map((s, i) => {
             const text = project[s.key]
@@ -86,8 +155,10 @@ export function ProjectStory({ project }: { project: ProjectDetail }) {
                 <span className="pp-n" aria-hidden="true">
                   {STEP_NUM[i]}
                 </span>
-                <h3>{s.title}</h3>
-                <p className={pending ? 'pending-txt' : undefined}>{pending ? (text ?? s.placeholder) : text}</p>
+                <div>
+                  <h3>{s.title}</h3>
+                  <p className={pending ? 'pending-txt' : undefined}>{pending ? (text ?? s.placeholder) : text}</p>
+                </div>
               </li>
             )
           })}

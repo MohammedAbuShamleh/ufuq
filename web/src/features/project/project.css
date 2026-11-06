@@ -1,86 +1,593 @@
-/* The project page (/work/[slug]). Colors only through tokens. */
+/* The project page (/work/[slug]). Colors only through tokens.
+   Rhythm: tight inside a group (0.3–1.25rem), wide between groups
+   (2.5–4rem), and the widest between sections (5–8rem). The one
+   moving part is the cover opening to its full width as it comes up. */
 
-.pp-top {
-  padding: 7.5rem 0 1rem;
+/* ---------- Opening: name, what it is, the ruled row of facts ---------- */
+/* The header already takes its height in the flow above main. */
+.pp-hero {
+  padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(2rem, 3.5vw, 3rem);
 }
 .pp-back {
-  margin-bottom: 1.4rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
 }
-
-/* ---------- Figures, then client, sector, country, kind ---------- */
-.pp-facts {
-  padding-top: 1.5rem;
-}
-/* Same columns as the row under it, so each figure sits over a fact. */
-.pp-figures {
-  list-style: none;
-  margin: 0;
-  padding: 0.6rem 0 1.8rem;
+.pp-head {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.6rem 1rem;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: end;
+  gap: 1.75rem clamp(2rem, 6vw, 6rem);
 }
-.pp-figures li {
-  display: grid;
-  align-content: start;
-  gap: 0.5rem;
-}
-.pp-figures b {
-  font-family: var(--font-display);
+.pp-name h1 {
+  font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
-  line-height: 1;
-  color: var(--accent);
+  font-size: clamp(2.9rem, 7.2vw, 6rem);
+  line-height: 1.1;
+  text-wrap: balance;
 }
-.pp-figures span {
-  font-size: 0.9rem;
-  line-height: 1.7;
+.pp-name h1.pp-long {
+  font-size: clamp(2.2rem, 4.8vw, 4rem);
+  line-height: 1.25;
+}
+.pp-tag {
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
   color: var(--muted);
 }
-.pp-facts-in {
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-  padding-block: 1.6rem;
-  border-block: 1px solid var(--line);
+.pp-lede p {
+  font-size: clamp(1.02rem, 1.3vw, 1.15rem);
+  line-height: 2;
+  max-width: 44ch;
+  color: color-mix(in srgb, var(--text) 88%, var(--bg));
 }
-.pp-facts-in div {
-  display: grid;
-  gap: 0.3rem;
+.pp-similar {
+  margin-top: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
-.pp-facts dt {
+.pp-similar:hover {
+  color: var(--accent-hover);
+  border-color: currentColor;
+}
+.pp-similar .ico-arrow {
+  width: 15px;
+  height: 15px;
+}
+.pp-similar:hover .ico-arrow {
+  translate: -4px 0;
+}
+
+.pp-ledger {
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--line);
+}
+.pp-ledger > div {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 1.25rem 1.5rem 0;
+  border-inline-start: 1px solid var(--line);
+}
+.pp-ledger > div:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+/* The stack is the longest value: it takes two shares of the row. */
+.pp-ledger-stack {
+  grid-column: span 2;
+}
+.pp-ledger dt {
   font-size: 0.8rem;
   color: var(--muted);
 }
-.pp-facts dd {
+.pp-ledger dd {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.05rem;
 }
+.pp-ledger-stack dd {
+  padding-top: 0.2rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+/* ---------- The cover: the first screen, wider than the text column ---------- */
+.pp-stage {
+  padding-bottom: clamp(4.5rem, 8vw, 7rem);
+}
+/* Over the band that rises behind its lower part (above `.inner > section`'s 5). */
+.inner > .pp-stage-band {
+  z-index: 6;
+  padding-bottom: 0;
+}
+.pp-cover {
+  width: min(1392px, 100% - 3rem);
+  margin: 0 auto;
+}
+.pp-cover-frame {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: clamp(14px, 1.8vw, 26px);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 60px 90px -60px rgb(var(--ink-rgb) / 0.55);
+  transform-origin: 50% 0;
+}
+.pp-cover-frame img {
+  object-fit: cover;
+  object-position: top;
+}
+.pp-cover-frame .demo-pill {
+  position: absolute;
+  bottom: 14px;
+  inset-inline-end: 14px;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+}
+.pp-cover .pp-cap {
+  margin-top: 1.1rem;
+  padding-inline: max(0px, (100% - 1240px) / 2);
+}
+.pp-stage-band .pp-cap b {
+  color: var(--on-night);
+}
+.pp-stage-band .pp-cap span {
+  color: var(--on-night-muted);
+}
+/* It comes up a little narrower and opens to its width as it rises into view.
+   Without scroll timelines, or with motion off, it simply stands open. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html:not(.motion-off) .pp-cover-frame {
+      animation: pp-open linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 42%;
+    }
+  }
+}
+@keyframes pp-open {
+  from {
+    scale: 0.9;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+/* A project with phones only opens on them. */
+.pp-stage-phones .demo-pill {
+  display: table;
+  margin: 1.5rem auto 0;
+}
+
+/* ---------- What it offers: the dark band under the cover ---------- */
+.pp-offers {
+  /* How far it rises behind the cover. */
+  --rise: clamp(5rem, 16vw, 15rem);
+  --rule: rgb(var(--linen-rgb) / 0.13);
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(4.5rem, 8vw, 7rem) 0;
+  background: radial-gradient(120% 80% at 50% 0%, var(--night-3), var(--night) 70%);
+  color: var(--on-night);
+}
+.pp-stage-band + .pp-offers {
+  margin-top: calc(-1 * var(--rise));
+  padding-top: calc(var(--rise) + clamp(3.5rem, 6vw, 5.5rem));
+}
+/* A low warm light, as under the phones on the home page. */
+.pp-offers::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: -10%;
+  bottom: -30%;
+  width: min(900px, 80vw);
+  height: 80%;
+  background: radial-gradient(closest-side, rgb(var(--ember-rgb) / 0.16), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+.pp-offers-in {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  align-items: start;
+  gap: clamp(3rem, 7vw, 7rem);
+}
+.pp-offers h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.75rem);
+  line-height: 1.25;
+  color: var(--on-night);
+}
+.pp-points ul {
+  list-style: none;
+  margin: clamp(1.75rem, 3vw, 2.5rem) 0 0;
+  padding: 0;
+}
+.pp-points li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1.1rem;
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+.pp-points li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.pp-mark {
+  width: 11px;
+  height: 14px;
+  fill: var(--rose);
+}
+.pp-figures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+.pp-figures li {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--rule);
+}
+.pp-figures li:first-child {
+  padding-top: 0.4rem;
+  border-top: 0;
+}
+.pp-figures b {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5vw, 4.25rem);
+  line-height: 1;
+  color: var(--rose);
+}
+.pp-figures span {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--on-night-muted);
+}
+/* Figures without points: they run across under the heading. */
+.pp-offers-figures .pp-offers-in {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+}
+.pp-offers-figures .pp-figures {
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+.pp-offers-figures .pp-figures li {
+  padding: 0 1.5rem;
+  border-top: 0;
+  border-inline-start: 1px solid var(--rule);
+}
+.pp-offers-figures .pp-figures li:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+/* ---------- The walk-through: every other screen, with its caption ---------- */
+.pp-walk {
+  padding-top: clamp(5rem, 9vw, 8rem);
+}
+.pp-head2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.pp-head2 h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.75rem);
+  line-height: 1.25;
+}
+.pp-head2 p {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.pp-rows {
+  display: grid;
+  gap: clamp(3rem, 6vw, 5rem);
+}
+.pp-row {
+  display: grid;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+.pp-row-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+/* The second of a pair sits lower, so the two read one after the other. */
+.pp-row-2 > :nth-child(2) {
+  margin-top: clamp(2rem, 6vw, 5rem);
+}
+.pp-shot {
+  margin: 0;
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+.pp-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border: 0;
+  border-radius: clamp(12px, 1.4vw, 20px);
+  overflow: hidden;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 40px 70px -50px rgb(var(--ink-rgb) / 0.45);
+}
+button.pp-frame {
+  cursor: zoom-in;
+}
+.pp-frame img {
+  object-fit: cover;
+  object-position: top;
+  transition: scale 0.8s var(--ease);
+}
+button.pp-frame:hover img {
+  scale: 1.02;
+}
+:is(.pp-frame, .pp-cover-frame, .pp-ph) video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+:is(.pp-frame, .pp-ph):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.pp-cap {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 62ch;
+}
+.pp-cap b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+}
+.pp-cap span {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+/* ---------- Phones, each standing in an arch ---------- */
+.pp-phones {
+  margin-top: clamp(4.5rem, 8vw, 6.5rem);
+}
+.pp-phones h3 {
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+}
+.pp-niches {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 1.25rem;
+  display: flex;
+  justify-content: safe center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 45%, transparent) transparent;
+}
+.pp-niches:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+.pp-niche {
+  flex: 0 0 auto;
+  width: clamp(150px, 17vw, 236px);
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 1rem;
+  scroll-snap-align: start;
+}
+.pp-niche-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 2.4rem 11% 0;
+}
+.pp-arch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  /* The niche fades toward its floor, as light does in one. */
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+.pp-arch-fill {
+  fill: color-mix(in srgb, var(--accent) 9%, var(--bg));
+}
+.pp-arch-line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--accent) 38%, var(--line));
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+.pp-ph {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1080 / 2220;
+  padding: 0;
+  border: 5px solid var(--phone);
+  border-radius: clamp(18px, 2vw, 28px);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: 0 30px 50px -28px rgb(var(--ink-rgb) / 0.55);
+  font: inherit;
+  color: inherit;
+}
+button.pp-ph {
+  cursor: zoom-in;
+}
+.pp-ph img {
+  object-fit: cover;
+  object-position: top;
+}
+.pp-niche-cap {
+  max-width: 22ch;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ---------- A screen at its full size ---------- */
+.pp-box {
+  /* Centered as browsers do it; the base reset zeroes dialog margins. */
+  margin: auto;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+  max-width: min(1100px, 94vw);
+  background: transparent;
+  color: var(--on-night);
+}
+.pp-box::backdrop {
+  background: rgb(var(--ink-rgb) / 0.92);
+}
+/* Room above for the close button and below for the caption, at any height. */
+.pp-box img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100svh - 10rem);
+  object-fit: contain;
+  border-radius: 14px;
+}
+.pp-box img.pp-box-ph {
+  width: auto;
+  margin-inline: auto;
+  border-radius: 24px;
+}
+.pp-box p {
+  margin: 0.9rem auto 0;
+  max-width: 70ch;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--on-night-soft);
+}
+.pp-box-x {
+  position: absolute;
+  top: -3.1rem;
+  inset-inline-end: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--linen-rgb) / 0.3);
+  background: transparent;
+  color: var(--on-night);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.pp-box-x:hover {
+  background: rgb(var(--linen-rgb) / 0.1);
+  border-color: rgb(var(--linen-rgb) / 0.55);
+}
+.pp-box-x:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+}
+.pp-box-x svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
 
 /* ---------- Challenge, solution, result ---------- */
 .pp-story {
-  padding: 5rem 0;
+  padding: clamp(5rem, 9vw, 8rem) 0 clamp(3rem, 6vw, 5rem);
+}
+.pp-story-in {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: start;
+  gap: 2rem clamp(2rem, 6vw, 6rem);
+}
+.pp-story h2 {
+  position: sticky;
+  top: calc(var(--nav-h) + 2rem);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.4vw, 2.75rem);
+  line-height: 1.3;
 }
 .pp-steps {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
 }
 .pp-steps li {
-  padding: 1.8rem 1.6rem 2rem;
-  border-radius: 22px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+}
+.pp-steps li:first-child {
+  padding-top: 0.4rem;
+  border-top: 0;
 }
 .pp-n {
-  display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 2.6rem;
   line-height: 1;
@@ -88,12 +595,12 @@
   color: color-mix(in srgb, var(--accent) 70%, var(--bg));
 }
 .pp-steps h3 {
-  margin-top: 1rem;
   font-size: 1.25rem;
 }
 .pp-steps p {
   margin-top: 0.7rem;
   line-height: 1.95;
+  max-width: 62ch;
   color: var(--muted);
 }
 
@@ -111,7 +618,7 @@
 }
 .pp-quote blockquote {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 500;
   font-size: clamp(1.2rem, 2.4vw, 1.7rem);
   line-height: 1.7;
@@ -128,29 +635,82 @@
   color: var(--on-night);
 }
 
-/* ---------- More work ---------- */
+/* ---------- Organisations like this one ---------- */
 .pp-more {
-  padding: 5rem 0 2rem;
-  border-top: 1px solid var(--line);
+  padding: clamp(5rem, 9vw, 8rem) 0 2rem;
 }
 
 @media (max-width: 960px) {
-  .pp-top {
-    padding-top: 6rem;
+  .pp-head {
+    grid-template-columns: minmax(0, 1fr);
   }
-  .pp-facts-in,
-  .pp-figures {
+  .pp-ledger {
+    grid-auto-flow: row;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .pp-facts-in {
-    row-gap: 1.4rem;
+  .pp-ledger > div,
+  .pp-ledger > div:first-child {
+    padding: 1.1rem 0 1.1rem;
+    border-inline-start: 0;
+    border-bottom: 1px solid var(--line);
   }
-  .pp-steps {
-    grid-template-columns: 1fr;
+  .pp-ledger > div:nth-child(even) {
+    padding-inline-start: 1.25rem;
+    border-inline-start: 1px solid var(--line);
+  }
+  /* The stack takes a row of its own, wherever it falls. */
+  .pp-ledger > div.pp-ledger-stack {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+  .pp-offers-in,
+  .pp-story-in {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pp-figures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+  }
+  .pp-figures li,
+  .pp-figures li:first-child {
+    padding: 1.25rem 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .pp-offers-figures .pp-figures {
+    grid-auto-flow: row;
+  }
+  .pp-offers-figures .pp-figures li,
+  .pp-offers-figures .pp-figures li:first-child {
+    padding: 1.25rem 0 0;
+    border-inline-start: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .pp-story h2 {
+    position: static;
+  }
+}
+@media (max-width: 760px) {
+  .pp-cover {
+    width: min(100% - 2rem, 1392px);
+  }
+  .pp-row-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pp-row-2 > :nth-child(2) {
+    margin-top: 0;
+  }
+  .pp-niche {
+    width: 46vw;
   }
 }
 @media (max-width: 520px) {
   .pp-quote {
     padding: 1.8rem 1.4rem;
+  }
+  .pp-steps li {
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+  }
+  .pp-n {
+    font-size: 2rem;
   }
 }
