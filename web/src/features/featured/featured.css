@@ -16,6 +16,47 @@
   max-width: 40ch;
 }
 
+/* ---------- The giant word (WordStage) ----------
+   Sized to span most of the content width; it fades from the text colour at
+   its start to a faint trace at its end, like a line toward the horizon. */
+.ws-word {
+  --ws: clamp(5.5rem, 27vw, 21rem);
+  width: fit-content;
+  margin: 0 auto 2.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--ws);
+  line-height: 1.2;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(to left, var(--text) 20%, color-mix(in srgb, var(--text) 22%, transparent));
+  background-clip: text;
+  user-select: none;
+  pointer-events: none;
+}
+/*
+ * With motion the word stops in the middle of the screen and the content
+ * rises over it. The mask hides the word from just above the content's top
+ * edge down (--edge, set by WordStage), so not even a hamza is left touching
+ * the heading, and softens the 0.4em above that.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.motion-off) .ws-word {
+    position: sticky;
+    top: calc(50svh - var(--ws) * 0.6);
+    margin-bottom: 0;
+    mask-image: linear-gradient(
+      to bottom,
+      #000 calc(var(--edge, 200vh) - 0.48em),
+      transparent calc(var(--edge, 200vh) - 0.08em)
+    );
+  }
+  html.js:not(.motion-off) .ws-sheet {
+    position: relative;
+    margin-top: 16svh;
+  }
+}
+
 /* ---------- Shared pieces ---------- */
 .fbw {
   display: flex;

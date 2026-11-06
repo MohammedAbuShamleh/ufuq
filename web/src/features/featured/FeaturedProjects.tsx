@@ -1,5 +1,4 @@
 import type { ComponentType, ReactNode } from 'react'
-import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
 import type { FeaturedLayout, FeaturedProject as Project } from '@/lib/types'
 import { PhonesLayout } from './layouts/PhonesLayout'
@@ -7,6 +6,7 @@ import { ReelLayout } from './layouts/ReelLayout'
 import { SheetLayout } from './layouts/SheetLayout'
 import { ShowcaseLayout } from './layouts/ShowcaseLayout'
 import type { LayoutProps } from './parts'
+import { WordStage } from './WordStage'
 import './featured.css'
 
 const LAYOUTS: Record<FeaturedLayout, ComponentType<LayoutProps>> = {
@@ -30,25 +30,29 @@ export function FeaturedProject(props: LayoutProps) {
   return <Layout {...props} />
 }
 
-/** «أعمالنا»: the featured systems, each as it is used; the rest of the work follows as children. */
+/**
+ * «أعمالنا»: the featured systems, each as it is used; the rest of the work
+ * follows as children. The giant word stands in for the section's kicker.
+ */
 export function FeaturedProjects({ projects, children }: { projects: Project[]; children?: ReactNode }) {
   return (
     <section className="projects" id="projects" aria-labelledby="pj-title">
-      <div className="wrap">
-        <div className="pj-head">
-          <div>
-            <Kicker>أعمالنا</Kicker>
-            <Reveal as="h2" id="pj-title" words={['أنظمة تعمل اليوم', 'في مؤسسات حقيقية.']} />
+      <WordStage word="أعمالنا">
+        <div className="wrap">
+          <div className="pj-head">
+            <div>
+              <Reveal as="h2" id="pj-title" words={['أنظمة تعمل اليوم', 'في مؤسسات حقيقية.']} />
+            </div>
+            <p className="muted">{HOW_MANY[projects.length] ?? 'منظومات مختارة'} من بين ما بنيناه، كلٌّ منها كما يُستخدم فعلاً.</p>
           </div>
-          <p className="muted">{HOW_MANY[projects.length] ?? 'منظومات مختارة'} من بين ما بنيناه، كلٌّ منها كما يُستخدم فعلاً.</p>
+          <div className="fbw">
+            {projects.map((p) => (
+              <FeaturedProject key={p.slug} project={p} heading="h3" linkTitle contactHref="#contact" />
+            ))}
+          </div>
         </div>
-        <div className="fbw">
-          {projects.map((p) => (
-            <FeaturedProject key={p.slug} project={p} heading="h3" linkTitle contactHref="#contact" />
-          ))}
-        </div>
-        {children}
-      </div>
+      </WordStage>
+      {children && <div className="wrap">{children}</div>}
     </section>
   )
 }

@@ -1,7 +1,8 @@
-/* A night section in both modes. */
+/* A night section in both modes. Clipped, not hidden: hidden would make it
+   a scroll box of its own and the deck's sticky cards would never stick. */
 .ap2 {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
   padding: 7.5rem 0;
   background: radial-gradient(120% 80% at 50% 0%, var(--night-2) 0%, var(--night) 60%);
   color: var(--on-night);
@@ -143,6 +144,78 @@
 }
 .tests.run .tests-n {
   color: var(--pass-night-text);
+}
+
+/* ---------- The deck (RuleDeck) ----------
+   With motion the rules become one column of sticky cards: each slides over
+   the one before and comes to rest a step lower, so the edges of the earlier
+   cards show above it. Cards are opaque here (the night base under the same
+   sheen) so the one underneath never shows through. Without motion they stay
+   the grid above. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.motion-off) .ap2 {
+    --deck-top: max(calc(var(--nav-h) + 1.25rem), calc(50svh - 12rem));
+  }
+  /*
+   * Rows of one height (the tallest card's), so every card rests the same
+   * step below the last and the stack leaves as one; then a short empty row
+   * that holds the finished deck on screen for a moment (--n from RuleDeck).
+   */
+  html:not(.motion-off) .apc-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(var(--n), 1fr) 14svh;
+    gap: 1.5rem;
+  }
+  html:not(.motion-off) .apc-grid::after {
+    content: '';
+  }
+  html:not(.motion-off) .apc {
+    position: sticky;
+    top: calc(var(--deck-top) + var(--i) * 0.85rem);
+    transform-origin: 50% 0;
+    background:
+      linear-gradient(160deg, rgb(var(--white-rgb) / 0.055), rgb(var(--white-rgb) / 0.02)),
+      var(--night);
+    box-shadow: 0 -24px 48px -30px rgb(0 0 0 / 0.75);
+    /* RuleDeck sets transform on every scroll frame; a transition would drag it. */
+    transition:
+      border-color 0.3s,
+      background 0.3s;
+  }
+  html:not(.motion-off) .apc:hover {
+    background:
+      linear-gradient(160deg, rgb(var(--white-rgb) / 0.08), rgb(var(--white-rgb) / 0.025)),
+      var(--night);
+  }
+  /* Darkens a card as others land on it (--dim from RuleDeck). */
+  html:not(.motion-off) .apc::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: var(--night);
+    opacity: var(--dim, 0);
+    pointer-events: none;
+  }
+}
+/* On a wide screen the heading holds its place beside the deck. Its box is
+   as tall as the finished stack (--deck-h from RuleDeck), so the two are
+   pushed off the screen together. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 961px) {
+  html:not(.motion-off) .ap-deck {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 4.5rem;
+    align-items: start;
+  }
+  html:not(.motion-off) .ap-head2 {
+    position: sticky;
+    top: var(--deck-top);
+    grid-template-columns: 1fr;
+    align-content: start;
+    min-height: var(--deck-h, auto);
+    margin-bottom: 0;
+  }
 }
 
 @media (max-width: 960px) {

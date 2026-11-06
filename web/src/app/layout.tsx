@@ -9,6 +9,7 @@ import { HorizonLines } from './_shell/HorizonLines'
 import { ScrollProgress } from './_shell/ScrollProgress'
 import { SiteFooter } from './_shell/SiteFooter'
 import { SiteHeader } from './_shell/SiteHeader'
+import { SmoothScroll } from './_shell/SmoothScroll'
 import { SvgSprite } from './_shell/SvgSprite'
 import { WhatsAppFloat } from './_shell/WhatsAppFloat'
 import './globals.css'
@@ -59,6 +60,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
       <body>
         <HorizonLines />
         <ScrollProgress />
+        <SmoothScroll />
         <SvgSprite />
         <SiteHeader />
         {children}

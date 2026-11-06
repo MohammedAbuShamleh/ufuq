@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
+import { RuleDeck } from './RuleDeck'
 import { TestsGrid } from './TestsGrid'
 import './approach.css'
 
@@ -87,13 +88,13 @@ const NUMBERS = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥', '٠٦']
 export function Approach() {
   return (
     <section className="ap2" id="approach" aria-labelledby="ap-title">
-      <div className="wrap">
+      <div className="wrap ap-deck">
         <div className="ap-head2">
           <Kicker>طريقتنا</Kicker>
           <Reveal as="h2" id="ap-title" words="قواعد لا نتنازل عنها." />
           <p>وكل قاعدة منها تعمل اليوم في مشروع حقيقي.</p>
         </div>
-        <ol className="apc-grid">
+        <RuleDeck>
           {RULES.map((r, i) => (
             <li key={r.title} className="apc" style={{ '--i': i } as CSSProperties}>
               <div className="apc-top">
@@ -109,7 +110,7 @@ export function Approach() {
               <span className="apc-src">{r.source}</span>
             </li>
           ))}
-        </ol>
+        </RuleDeck>
       </div>
     </section>
   )
