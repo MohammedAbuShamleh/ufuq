@@ -33,11 +33,12 @@ export function SmoothScroll() {
       // The screen viewer is a modal: wheel over it behaves as the browser decides.
       prevent: (node) => node instanceof HTMLDialogElement,
     })
-    // A section link hands the scroll to the browser's smooth jump; any glide
-    // still running from the wheel stops so the two never pull against each other.
+    // A section link hands the scroll to the browser's smooth jump, and a
+    // control marked data-moves-page sets the scroll itself; any glide still
+    // running from the wheel stops first so the two never pull against each other.
     // (stop and start in one go: the only public way to drop the glide.)
     const onClick = (e: MouseEvent) => {
-      if (!(e.target as Element | null)?.closest?.('a[href*="#"]')) return
+      if (!(e.target as Element | null)?.closest?.('a[href*="#"], [data-moves-page]')) return
       lenis.stop()
       lenis.start()
     }

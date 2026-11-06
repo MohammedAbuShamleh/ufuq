@@ -88,30 +88,31 @@ const NUMBERS = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥', '٠٦']
 export function Approach() {
   return (
     <section className="ap2" id="approach" aria-labelledby="ap-title">
-      <div className="wrap ap-deck">
-        <div className="ap-head2">
-          <Kicker>طريقتنا</Kicker>
-          <Reveal as="h2" id="ap-title" words="قواعد لا نتنازل عنها." />
-          <p>وكل قاعدة منها تعمل اليوم في مشروع حقيقي.</p>
-        </div>
-        <RuleDeck>
-          {RULES.map((r, i) => (
-            <li key={r.title} className="apc" style={{ '--i': i } as CSSProperties}>
-              <div className="apc-top">
-                <span className="apc-n">{NUMBERS[i]}</span>
-                {r.icon && (
-                  <span className="apc-ico" aria-hidden="true">
-                    {r.icon}
-                  </span>
-                )}
-              </div>
-              <h3>{r.title}</h3>
-              <p>{r.text}</p>
-              <span className="apc-src">{r.source}</span>
-            </li>
-          ))}
-        </RuleDeck>
-      </div>
+      <RuleDeck
+        head={
+          <>
+            <Kicker>طريقتنا</Kicker>
+            <Reveal as="h2" id="ap-title" words="قواعد لا نتنازل عنها." />
+            <p>وكل قاعدة منها تعمل اليوم في مشروع حقيقي.</p>
+          </>
+        }
+      >
+        {RULES.map((r, i) => (
+          <li key={r.title} className="apc" style={{ '--i': i } as CSSProperties}>
+            <div className="apc-top">
+              <span className="apc-n">{NUMBERS[i]}</span>
+              {r.icon && (
+                <span className="apc-ico" aria-hidden="true">
+                  {r.icon}
+                </span>
+              )}
+            </div>
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+            <span className="apc-src">{r.source}</span>
+          </li>
+        ))}
+      </RuleDeck>
     </section>
   )
 }

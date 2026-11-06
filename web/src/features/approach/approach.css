@@ -38,6 +38,44 @@
 .ap-head2 p {
   color: var(--on-night-muted);
 }
+/* «عرض الكل معاً» ↔ «عرضها بطاقةً بطاقة» (RuleDeck). Only the deck needs it,
+   so it shows with motion only (see the deck below). Under the line beside
+   the heading; on its own line once the heading is one column. */
+.ap-view {
+  display: none;
+  grid-column: -2 / -1;
+  justify-self: start;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.45rem 1.05rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--on-night-muted);
+  background: rgb(var(--white-rgb) / 0.04);
+  border: 1px solid rgb(var(--white-rgb) / 0.14);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+.ap-view:hover {
+  color: var(--on-night);
+  border-color: rgb(var(--rose-rgb) / 0.5);
+  background: rgb(var(--white-rgb) / 0.07);
+}
+.ap-view svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
 .apc-grid {
   list-style: none;
   margin: 0;
@@ -150,26 +188,29 @@
    With motion the rules become one column of sticky cards: each slides over
    the one before and comes to rest a step lower, so the edges of the earlier
    cards show above it. Cards are opaque here (the night base under the same
-   sheen) so the one underneath never shows through. Without motion they stay
-   the grid above. */
+   sheen) so the one underneath never shows through. Without motion, or after
+   «عرض الكل معاً» (data-view="grid"), they stay the grid above. */
 @media (prefers-reduced-motion: no-preference) {
   html:not(.motion-off) .ap2 {
     --deck-top: max(calc(var(--nav-h) + 1.25rem), calc(50svh - 12rem));
+  }
+  html:not(.motion-off) .ap-view {
+    display: inline-flex;
   }
   /*
    * Rows of one height (the tallest card's), so every card rests the same
    * step below the last and the stack leaves as one; then a short empty row
    * that holds the finished deck on screen for a moment (--n from RuleDeck).
    */
-  html:not(.motion-off) .apc-grid {
+  html:not(.motion-off) [data-view='deck'] .apc-grid {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(var(--n), 1fr) 14svh;
     gap: 1.5rem;
   }
-  html:not(.motion-off) .apc-grid::after {
+  html:not(.motion-off) [data-view='deck'] .apc-grid::after {
     content: '';
   }
-  html:not(.motion-off) .apc {
+  html:not(.motion-off) [data-view='deck'] .apc {
     position: sticky;
     top: calc(var(--deck-top) + var(--i) * 0.85rem);
     transform-origin: 50% 0;
@@ -182,13 +223,13 @@
       border-color 0.3s,
       background 0.3s;
   }
-  html:not(.motion-off) .apc:hover {
+  html:not(.motion-off) [data-view='deck'] .apc:hover {
     background:
       linear-gradient(160deg, rgb(var(--white-rgb) / 0.08), rgb(var(--white-rgb) / 0.025)),
       var(--night);
   }
   /* Darkens a card as others land on it (--dim from RuleDeck). */
-  html:not(.motion-off) .apc::after {
+  html:not(.motion-off) [data-view='deck'] .apc::after {
     content: '';
     position: absolute;
     inset: -1px;
@@ -202,13 +243,13 @@
    as tall as the finished stack (--deck-h from RuleDeck), so the two are
    pushed off the screen together. */
 @media (prefers-reduced-motion: no-preference) and (min-width: 961px) {
-  html:not(.motion-off) .ap-deck {
+  html:not(.motion-off) .ap-deck[data-view='deck'] {
     display: grid;
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
     gap: 4.5rem;
     align-items: start;
   }
-  html:not(.motion-off) .ap-head2 {
+  html:not(.motion-off) [data-view='deck'] .ap-head2 {
     position: sticky;
     top: var(--deck-top);
     grid-template-columns: 1fr;
@@ -216,6 +257,16 @@
     min-height: var(--deck-h, auto);
     margin-bottom: 0;
   }
+  html:not(.motion-off) [data-view='deck'] .ap-view {
+    margin-top: 0.5rem;
+  }
+}
+/* Gliding between the deck and the grid (RuleDeck), the cards cross one
+   another, so they keep the deck's opaque face until they land. */
+.ap-deck.is-gliding .apc {
+  background:
+    linear-gradient(160deg, rgb(var(--white-rgb) / 0.055), rgb(var(--white-rgb) / 0.02)),
+    var(--night);
 }
 
 @media (max-width: 960px) {
