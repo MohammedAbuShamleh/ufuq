@@ -332,12 +332,19 @@ html.motion-off .mo-ic::after {
     transform: translateY(100%);
   }
 }
+/*
+ * The arch rises into place. Its picture is the page's largest paint, so the
+ * first frame already shows most of it (no fade, no full clip) and the
+ * browser can count it at once.
+ */
 @keyframes archIn {
   from {
-    clip-path: inset(100% 0 0 0);
+    clip-path: inset(35% 0 0 0);
+    translate: 0 2.5rem;
   }
   to {
     clip-path: inset(0 0 0 0);
+    translate: 0 0;
   }
 }
 @keyframes rise {

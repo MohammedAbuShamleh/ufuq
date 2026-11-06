@@ -11,7 +11,10 @@ const channels = (hex: string) => {
 
 /**
  * Slow wave lines behind the page, in the horizon colors of the current mode.
- * Drawn at ~30fps; they freeze when the tab is hidden or motion is stopped.
+ * They wait until the browser is idle, so the first screen paints without
+ * them, then fade in. On a desktop they move at ~30fps; on phones and touch
+ * screens they are drawn once and stay still, as they do when the tab is
+ * hidden or motion is stopped.
  */
 export function HorizonLines() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -23,6 +26,7 @@ export function HorizonLines() {
     if (!canvas || !ctx) return
 
     const dpr = Math.min(devicePixelRatio || 1, 2)
+    const moving = !still && matchMedia('(pointer: fine)').matches && innerWidth >= 700
     const t0 = performance.now()
     let w = 0
     let h = 0
@@ -76,7 +80,7 @@ export function HorizonLines() {
     }
     const start = () => {
       cancelAnimationFrame(raf)
-      if (!still && !document.hidden) raf = requestAnimationFrame(loop)
+      if (moving && !document.hidden) raf = requestAnimationFrame(loop)
     }
 
     const size = () => {
@@ -92,17 +96,25 @@ export function HorizonLines() {
       draw(performance.now())
     }
 
-    readColors()
-    size()
-    start()
-    addEventListener('resize', size)
-    document.addEventListener('visibilitychange', start)
+    const begin = () => {
+      readColors()
+      size()
+      canvas.classList.add('on')
+      start()
+      addEventListener('resize', size)
+      document.addEventListener('visibilitychange', start)
+    }
+    // Safari has no requestIdleCallback; a short timeout stands in for it.
+    const hasIdle = typeof window.requestIdleCallback === 'function'
+    const idle = hasIdle ? requestIdleCallback(begin, { timeout: 2500 }) : window.setTimeout(begin, 1200)
     const themeWatch = new MutationObserver(repaint)
     themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     const scheme = matchMedia('(prefers-color-scheme: dark)')
     scheme.addEventListener('change', repaint)
 
     return () => {
+      if (hasIdle) cancelIdleCallback(idle)
+      else clearTimeout(idle)
       cancelAnimationFrame(raf)
       removeEventListener('resize', size)
       document.removeEventListener('visibilitychange', start)
