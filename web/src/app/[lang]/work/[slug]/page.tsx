@@ -7,7 +7,8 @@ import { ProjectMedia } from '@/features/project/ProjectMedia'
 import { relatedProjects } from '@/features/project/related'
 import { splitScreens } from '@/features/project/screens'
 import { cardTones, gridSpans, WorkCard } from '@/features/work/WorkCard'
-import { href } from '@/i18n/config'
+import { href, LOCALES } from '@/i18n/config'
+import { SwitchTarget } from '@/i18n/LocaleProvider'
 import { getDictionary, getLocale } from '@/i18n/server'
 import { getProject, getProjects, getSettings } from '@/lib/api'
 import { pageMetadata } from '@/lib/seo'
@@ -29,14 +30,16 @@ export async function generateMetadata({ params }: PageProps<'/[lang]/work/[slug
   const locale = await getLocale()
   const [t, project] = await Promise.all([getDictionary(locale), getProject(locale, slug)])
   if (!project) return {}
-  // The share image is ./opengraph-image: the project's first screen.
+  // The share image is ./opengraph-image (the project's first screen), named
+  // here rather than left to the file so its alt is in the page's language.
   return pageMetadata({
     locale,
     t,
     title: project.title,
     description: project.summary ?? t.meta.description,
     path: `/work/${project.slug}`,
-    ownImage: true,
+    image: { url: `/${locale}/work/${project.slug}/opengraph-image`, alt: t.meta.projectImageAlt },
+    locales: project.locales,
   })
 }
 
@@ -61,10 +64,13 @@ export default async function ProjectPage({ params }: PageProps<'/[lang]/work/[s
   const related = relatedProjects(projects, project)
   const tones = cardTones(related)
   const spans = gridSpans(related)
+  // Not translated yet: the language switch leads to the work page in the other language instead.
+  const untranslated = LOCALES.some((l) => !project.locales.includes(l))
 
   return (
     <>
       <main id="top" className="inner project-page">
+        {untranslated && <SwitchTarget path="/work" />}
         <ProjectHero project={project} />
 
         <ProjectMedia

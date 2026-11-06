@@ -67,6 +67,9 @@
 .pp-similar:hover .ico-arrow {
   translate: -4px 0;
 }
+.pp-similar:hover .ico-arrow:dir(ltr) {
+  translate: 4px 0;
+}
 
 .pp-ledger {
   margin: clamp(2rem, 4vw, 3rem) 0 0;
@@ -615,6 +618,10 @@ button.pp-ph {
   border-radius: 28px;
   background: radial-gradient(130% 120% at 100% 0%, var(--night-3), var(--night));
   color: var(--on-night);
+}
+/* LTR: the warm corner moves to the top left, where reading starts. */
+.pp-quote:dir(ltr) {
+  background: radial-gradient(130% 120% at 0% 0%, var(--night-3), var(--night));
 }
 .pp-quote blockquote {
   margin: 0;

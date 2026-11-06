@@ -11,6 +11,11 @@
   font-size: clamp(1.8rem, 3.2vw, 2.6rem);
   line-height: 1.35;
 }
+/* English runs wider than the Arabic at one size: «…from Gaza,» keeps to its line. */
+.ab-short h2:lang(en) {
+  font-size: clamp(1.7rem, 2.7vw, 2.2rem);
+  line-height: 1.2;
+}
 .ab-lead {
   margin-top: 1rem;
   font-size: 1.12rem;

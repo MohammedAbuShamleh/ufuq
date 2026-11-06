@@ -1,17 +1,25 @@
 import { cacheLife, cacheTag } from 'next/cache'
-import type { Locale } from '@/i18n/config'
+import { DEFAULT_LOCALE, type Locale } from '@/i18n/config'
+import { latinDigits } from './format'
 import type { Home, ProjectCard, ProjectDetail, Settings, TeamMember } from './types'
 
 // Server-side base, e.g. http://localhost:8000/v1. The contact form posts here
 // too, so it must also be reachable from the visitor's browser.
 export const API_URL = (process.env.API_URL ?? 'http://127.0.0.1:8000/v1').replace(/\/$/, '')
 
+/**
+ * Values both languages share, such as a fact's figure, are typed once and
+ * often in Arabic-Indic digits (١٤); outside Arabic they read as 14.
+ */
+const western = (_key: string, value: unknown) => (typeof value === 'string' ? latinDigits(value) : value)
+
 /** A 404 means «no such thing» (null) rather than an error. Content comes in the page's language. */
 async function find<T>(path: string, locale: Locale): Promise<T | null> {
   const res = await fetch(`${API_URL}/${path}?lang=${locale}`, { headers: { Accept: 'application/json' } })
   if (res.status === 404) return null
   if (!res.ok) throw new Error(`GET /${path} answered ${res.status}`)
-  return ((await res.json()) as { data: T }).data
+  const body = await res.text()
+  return (JSON.parse(body, locale === DEFAULT_LOCALE ? undefined : western) as { data: T }).data
 }
 
 async function get<T>(path: string, locale: Locale): Promise<T> {

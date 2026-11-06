@@ -75,7 +75,10 @@ function TeamCard({ member, sign, sizes, copy }: { member: TeamMember; sign: str
       <span className="tmc-info">
         <b className={isPending(member.name) ? 'pending-txt' : undefined}>{member.name}</b>
         <span className={rolePending ? 'pending-txt' : undefined}>{role}</span>
-        {member.tech && isShown(member.tech) && <i className={isPending(member.tech) ? 'pending-txt' : undefined}>{member.tech}</i>}
+        {member.tech && isShown(member.tech) && (
+          // The technologies are one value for every language, so their placeholder comes from the dictionary.
+          <i className={isPending(member.tech) ? 'pending-txt' : undefined}>{isPending(member.tech) ? copy.techPending : member.tech}</i>
+        )}
       </span>
     </button>
   )

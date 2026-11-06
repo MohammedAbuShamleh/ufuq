@@ -16,6 +16,10 @@ export function formatNumber(locale: Locale, n: number, options?: Intl.NumberFor
 /** Years and codes: no thousands separator (٢٠٢٢, not ٢٬٠٢٢). */
 export const formatYear = (locale: Locale, n: number) => formatNumber(locale, n, { useGrouping: false })
 
+/** Arabic-Indic (٠–٩) and Persian (۰–۹) digits as Western ones: ١٤ → 14. */
+export const latinDigits = (text: string) =>
+  text.replace(/[٠-٩۰-۹]/g, (d) => String(d.charCodeAt(0) & 0xf))
+
 /** Content still waiting for real text: null, or a [bracketed] placeholder. */
 export const isPending = (text: string | null | undefined): text is null | undefined | `[${string}]` =>
   text == null || /^\s*\[[\s\S]*\]\s*$/.test(text)

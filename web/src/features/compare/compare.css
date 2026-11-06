@@ -46,6 +46,10 @@
   clip-path: inset(0 0 0 var(--pos));
   background: var(--frame);
 }
+/* LTR: «before» is on the left, from the edge to the line. */
+.ba-before:dir(ltr) {
+  clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+}
 .ba-handle {
   position: absolute;
   top: 0;
@@ -89,6 +93,22 @@
     transform: translateX(10px);
   }
 }
+/* LTR: the first nudge is toward the file, now on the left: the handle moves right. */
+.ba-stage.hint:dir(ltr) .ba-handle span {
+  animation-name: baNudgeLtr;
+}
+@keyframes baNudgeLtr {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(14px);
+  }
+  65% {
+    transform: translateX(-10px);
+  }
+}
 /* The real control: invisible, covering the stage, left-to-right like the line. */
 .ba-range {
   position: absolute;
@@ -122,6 +142,14 @@
   left: 16px;
   background: color-mix(in srgb, var(--olive) 92%, transparent);
   color: var(--linen);
+}
+.ba-tag.before:dir(ltr) {
+  right: auto;
+  left: 16px;
+}
+.ba-tag.after:dir(ltr) {
+  left: auto;
+  right: 16px;
 }
 .ba-foot {
   display: flex;
@@ -162,6 +190,9 @@
   color: var(--xl-ink);
   background: var(--frame);
   direction: rtl;
+}
+.xl:dir(ltr) {
+  direction: ltr;
 }
 .xl-bar {
   display: flex;
@@ -231,6 +262,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: right;
+}
+.xl td:dir(ltr) {
+  text-align: left;
 }
 .xl th {
   background: var(--xl-head);

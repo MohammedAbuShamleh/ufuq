@@ -10,11 +10,14 @@ import './voices.css'
 type Copy = Dictionary['voices']
 
 /**
- * The letter in the avatar: the organization's name without its kind (مدرسة، جمعية…) or «ال».
- * These are rules for Arabic names; a name in another script keeps its first letter.
+ * The letter in the avatar: the organization's name without its kind (مدرسة، جمعية…)
+ * or «ال», or in English without "The". Any other name keeps its first letter.
  */
 function initial(organization: string) {
-  const name = organization.replace(/^(مدرسة|دار|جمعية|وزارة|شركة)\s+/, '').replace(/^ال/, '')
+  const name = organization
+    .replace(/^(مدرسة|دار|جمعية|وزارة|شركة)\s+/, '')
+    .replace(/^ال/, '')
+    .replace(/^the\s+/i, '')
   return name.charAt(0)
 }
 

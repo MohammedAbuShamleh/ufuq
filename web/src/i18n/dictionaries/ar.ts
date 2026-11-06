@@ -226,6 +226,8 @@ export const ar = {
     hint: 'اضغط للتعرّف',
     teamHead: 'فريق العمل',
     inColor: 'إظهار الصورة بالألوان',
+    /** A preview build's placeholder while a teammate's technologies (not a translated field) are missing. */
+    techPending: '[التقنيات]',
   },
 
   voices: {

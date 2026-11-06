@@ -105,6 +105,10 @@
 .tmc.on::after {
   opacity: 1;
 }
+/* LTR: «inset-inline-start: 50%» is the left edge, so the pill shifts back by half. */
+.tmc-hint:dir(ltr) {
+  transform: translateX(-50%);
+}
 .tmc-hint {
   position: absolute;
   bottom: 12px;
@@ -162,6 +166,9 @@
   color: var(--rose);
   direction: ltr;
   text-align: right;
+}
+.tmc-info i:dir(ltr) {
+  text-align: left;
 }
 .tmc-info .pending-txt {
   color: var(--rose) !important;
@@ -543,6 +550,10 @@
   background: radial-gradient(130% 120% at 100% 0%, var(--night-3), var(--night));
   border-color: transparent;
   color: var(--on-night);
+}
+/* LTR: the warm corner moves to the top left, where reading starts. */
+.where-grid li:first-child:dir(ltr) {
+  background: radial-gradient(130% 120% at 0% 0%, var(--night-3), var(--night));
 }
 .where-grid li:first-child p {
   color: var(--on-night-soft);

@@ -5,6 +5,7 @@ import { Arrow } from '@/components/Button'
 import { fillNodes, href, type Locale } from '@/i18n/config'
 import { getDictionary } from '@/i18n/server'
 import { getSettings } from '@/lib/api'
+import { LanguageSwitch } from '@/i18n/LanguageSwitch'
 import { formatYear, SHOW_PENDING, whatsappLink } from '@/lib/format'
 import { Logo } from './Logo'
 import { FooterMotionToggle } from './FooterMotionToggle'
@@ -94,6 +95,7 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
         <span className="foot-legal">
           <span>{fillNodes(f.copyright, { year: formatYear(locale, new Date().getFullYear()) })}</span>
           <Link href={link('/privacy')}>{f.privacy}</Link>
+          <LanguageSwitch />
           <FooterMotionToggle copy={t.common.motion} />
         </span>
         <Link href={link('/#top')} className="to-top">

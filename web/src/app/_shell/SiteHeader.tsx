@@ -6,6 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@/components/Button'
 import { href, stripLocale } from '@/i18n/config'
 import type { Dictionary, NavId } from '@/i18n/dictionaries/ar'
+import { LanguageSwitch } from '@/i18n/LanguageSwitch'
 import { useLocale } from '@/i18n/LocaleProvider'
 import { Logo } from './Logo'
 import { ThemeToggle } from './ThemeToggle'
@@ -160,6 +161,7 @@ export function SiteHeader({ copy }: { copy: Copy }) {
         </ul>
         </nav>
         <div className="nav-end">
+          <LanguageSwitch short className="icon-btn lang-btn" />
           <ThemeToggle label={copy.nav.theme} />
           <button
             ref={menuBtn}

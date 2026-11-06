@@ -1,3 +1,5 @@
+import type { Locale } from '@/i18n/config'
+
 // Shapes of the public API (GET /v1/*). Text that is still pending arrives as
 // null or as a [bracketed] placeholder; see lib/format.ts → isPending.
 
@@ -26,6 +28,8 @@ export type FeaturedLayout = 'showcase' | 'phones' | 'sheet' | 'reel'
 
 type ProjectBase = {
   slug: string
+  /** The languages the project has a page in: Arabic always, English once it is translated. */
+  locales: Locale[]
   title: string
   client_name: string | null
   tag: string | null

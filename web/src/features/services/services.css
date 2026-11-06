@@ -73,6 +73,10 @@
   color: var(--on-night);
   cursor: default;
 }
+/* LTR: the warm corner moves to the top left, where reading starts. */
+.sv-p.on:dir(ltr) {
+  background: radial-gradient(130% 120% at 0% 0%, var(--night-3) 0%, var(--night) 70%);
+}
 .sv-p.on::after {
   opacity: 1;
 }

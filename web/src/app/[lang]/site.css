@@ -221,6 +221,17 @@ body::before {
 .menu-btn {
   display: none;
 }
+/* The other language's short name in the round button: «EN» or «ع». */
+.lang-btn {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.lang-btn:lang(ar) {
+  font-size: 1.05rem;
+  letter-spacing: 0;
+}
 @media (max-width: 860px) {
   .nav-in {
     position: relative;
@@ -513,6 +524,12 @@ body::before {
   line-height: 1.25;
   max-width: 20ch;
 }
+/* English: a little smaller and wider, so «A software company from Gaza,» keeps to its line. */
+.apg-hero h1:lang(en) {
+  font-size: clamp(1.85rem, 4.4vw, 3.6rem);
+  line-height: 1.15;
+  max-width: 17em;
+}
 .apg-hero h1 span {
   color: var(--accent);
 }
@@ -544,6 +561,10 @@ body::before {
   border-radius: 28px;
   background: radial-gradient(130% 140% at 100% 0%, var(--night-ember), var(--night) 70%);
   color: var(--on-night);
+}
+/* LTR: the warm corner moves to the top left, where reading starts. */
+.apg-cta-in:dir(ltr) {
+  background: radial-gradient(130% 140% at 0% 0%, var(--night-ember), var(--night) 70%);
 }
 .apg-cta-in h2 {
   font-size: clamp(1.6rem, 3vw, 2.4rem);

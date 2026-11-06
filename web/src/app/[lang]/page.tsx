@@ -10,14 +10,14 @@ import { Journey } from '@/features/journey/Journey'
 import { Services } from '@/features/services/Services'
 import { Voices } from '@/features/voices/Voices'
 import { OtherWork } from '@/features/work/OtherWork'
-import { href } from '@/i18n/config'
 import { getDictionary, getLocale } from '@/i18n/server'
 import { API_URL, getHome } from '@/lib/api'
+import { alternates } from '@/lib/seo'
 
-// Only the canonical: the title and share preview are the layout's defaults.
-// (In the layout it would also mark the 404 page as the home page.)
+// Only the addresses: the title and share preview are the layout's defaults.
+// (In the layout they would also mark the 404 page as the home page.)
 export async function generateMetadata(): Promise<Metadata> {
-  return { alternates: { canonical: href(await getLocale(), '/') } }
+  return { alternates: alternates(await getLocale(), '/') }
 }
 
 export default async function HomePage() {
