@@ -39,6 +39,7 @@ class EnglishSavesTest extends TestCase
             'highlights' => [['text' => ['ar' => 'مسار كامل', 'en' => '']]],
         ]))
             ->assertCreated()
+            ->assertJsonPath('data.locales', ['ar', 'en'])
             ->assertJsonPath('data.title', ['ar' => 'نظام المدرسة', 'en' => 'School system'])
             ->assertJsonPath('data.challenge', ['ar' => null, 'en' => 'Paper files.'])
             ->assertJsonPath('data.facts.0.label', ['ar' => 'لوحات', 'en' => 'dashboards']);
@@ -74,7 +75,7 @@ class EnglishSavesTest extends TestCase
 
     public function test_arabic_alone_still_saves(): void
     {
-        $this->postJson('/admin/v1/faqs', ['question' => ['ar' => 'كم؟'], 'answer' => ['ar' => 'حسب.']])->assertCreated();
+        $this->postJson('/admin/v1/faqs', ['question' => ['ar' => 'كم؟'], 'answer' => ['ar' => 'حسب.']])->assertCreated()->assertJsonPath('data.locales', ['ar']);
         $this->postJson('/admin/v1/faqs', ['question' => ['ar' => 'متى؟', 'en' => ''], 'answer' => ['ar' => 'قريباً.', 'en' => null]])->assertCreated();
 
         $this->assertSame(2, Faq::count());
