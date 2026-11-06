@@ -41,7 +41,7 @@
 }
 .fv-tech {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 .fv-cta {
@@ -134,7 +134,7 @@
   flex-direction: column;
   gap: 0.4rem;
   font-family: var(--font-display);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   color: var(--muted);
   text-align: center;
 }
@@ -551,7 +551,7 @@
     transform: translateY(-8px);
   }
   .fb2 figcaption {
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     max-width: 28vw;
   }
   .fb3-grid {

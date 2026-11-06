@@ -113,7 +113,7 @@
   z-index: 2;
   white-space: nowrap;
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   /* The pill is white over a photo in both themes, so its text stays ink. */
   color: rgb(var(--ink-rgb));
   background: rgb(var(--white-rgb) / 0.82);
@@ -158,7 +158,7 @@
   font-style: normal;
   margin-top: 0.35rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--rose);
   direction: ltr;
   text-align: right;
@@ -253,7 +253,7 @@
 }
 .tm-team .tmc-soon {
   bottom: 10px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
 }
 .tm-team .tmc-info {
   padding: 0.8rem 0.9rem;
@@ -282,7 +282,7 @@
     font-size: 0.78rem;
   }
   .tm-founders .tmc-hint {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   .tm-team {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -295,7 +295,7 @@
     font-size: 2rem;
   }
   .tm-team .tmc-soon {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   .tm-team .tmc-info {
     padding: 0.6rem;
@@ -304,7 +304,7 @@
     font-size: 0.8rem;
   }
   .tm-team .tmc-info span {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 }
 /* Two founders side by side on a phone: the name and role must fit a 165px card. */
@@ -317,7 +317,7 @@
     font-size: 0.9rem;
   }
   .tm-founders .tmc-info span {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     line-height: 1.6;
   }
   .tm-founders .tmc-info i {

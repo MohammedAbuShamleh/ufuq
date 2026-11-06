@@ -194,7 +194,7 @@
   display: inline-block;
   direction: ltr;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--rose);
   border: 1px solid rgb(var(--rose-rgb) / 0.35);
   border-radius: 999px;

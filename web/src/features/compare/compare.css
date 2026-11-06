@@ -294,7 +294,7 @@
     aspect-ratio: 4 / 5;
   }
   .xl {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
   }
   .xl th:nth-child(n + 6),
   .xl td:nth-child(n + 6) {
