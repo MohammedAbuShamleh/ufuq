@@ -36,13 +36,14 @@ export function ReelLayout({ project, heading, linkTitle, contactHref }: LayoutP
             <MediaImage key={s.file.url} media={s.file} alt={s.alt ?? ''} fill sizes={STAGE_SIZES} className={cls} aria-hidden={!on || undefined} />
           )
         })}
-        <div className="fb4-cap">
-          <div>
-            <Meta project={project} />
-            <Title project={project} heading={heading} linkTitle={linkTitle} />
-          </div>
-          {project.summary && <p>{project.summary}</p>}
+      </div>
+      {/* Under the stage, not over it: the clips carry text of their own. */}
+      <div className="fb4-cap">
+        <div>
+          <Meta project={project} />
+          <Title project={project} heading={heading} linkTitle={linkTitle} />
         </div>
+        {project.summary && <p>{project.summary}</p>}
       </div>
 
       <div className="fb4-bar">
