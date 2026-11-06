@@ -1,7 +1,7 @@
 /*
  * UFUQ design system — values copied from the approved v7 CSS.
  * Twin of admin/src/app/globals.css: the two files differ only in the font
- * stacks (@fontsource there, next/font here). Change both together.
+ * stacks (app/fonts.css + @fontsource there, next/font here). Change both together.
  * Components never use a raw color or spacing value: only the classes below.
  */
 @import "tailwindcss";
@@ -234,8 +234,12 @@
   --color-mark-b: var(--mark-b);
   --color-mark-w: var(--mark-w);
 
-  --font-display: var(--font-alexandria), var(--font-plex), system-ui, sans-serif;
-  --font-sans: var(--font-plex), var(--font-alexandria), system-ui, sans-serif;
+  /* Big type: h1–h3, the giant word, the large figures (Bold); big lists and quotes (Medium). */
+  --font-heading: var(--font-thmanyah-serif), var(--font-thmanyah-sans), system-ui, serif;
+  /* The interface: nav, buttons, labels, small titles. */
+  --font-display: var(--font-thmanyah-sans), var(--font-plex), system-ui, sans-serif;
+  /* Running text: paragraphs, lists, quotes. */
+  --font-sans: var(--font-plex), var(--font-thmanyah-sans), system-ui, sans-serif;
   /* Two ornaments only (Excel's «fx», the quote mark): a system face, nothing to download. */
   --font-serif: Georgia, 'Times New Roman', serif;
 }
@@ -273,7 +277,7 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-heading);
     font-weight: 600;
     line-height: 1.3;
   }

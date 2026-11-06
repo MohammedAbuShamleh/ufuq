@@ -191,6 +191,17 @@ components use the identity classes only (`bg-accent`, `text-muted`, `rounded-ca
 The dashboard adds the few states the site never shows (error, success, dialog scrim) in
 `admin/src/app/dashboard.css`, which imports the twin, so the twin stays identical.
 
+Type has three roles: `--font-heading` (Thmanyah Serif Display) for big type: Bold for
+h1–h3, the giant word and the large figures, Medium for the big lists and quotes;
+`--font-display` (Thmanyah Sans: Regular, Medium, Bold) for the interface (nav, buttons,
+labels, small titles); and `--font-sans` (IBM Plex Sans Arabic) for paragraphs and the
+rest of the running text. The site loads Thmanyah with `next/font/local` from
+`web/src/app/fonts/` and Plex with `next/font/google`; the dashboard declares the same
+Thmanyah files in `admin/src/app/fonts.css` from `admin/src/assets/fonts/` and Plex from
+@fontsource. Thmanyah has its own licence (`thmanyah-LICENSE.pdf` beside the files):
+ship the files as they are, never subset, rename or edit them, and never put them where
+they can be downloaded on their own.
+
 ## Running locally
 
 ```bash

@@ -10,7 +10,7 @@
 }
 .apg-stats b {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: clamp(2.6rem, 5vw, 4rem);
   line-height: 1;
@@ -173,7 +173,7 @@
   background: var(--tile-photo);
 }
 .tmc-init {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 4.5rem;
   line-height: 1;
@@ -523,7 +523,7 @@
 }
 .w-c {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1.6rem;
 }

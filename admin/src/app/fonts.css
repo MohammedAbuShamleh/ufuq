@@ -1,0 +1,38 @@
+/*
+ * Thmanyah, the same five files as the site (web/src/app/fonts), under the
+ * font's own licence (assets/fonts/thmanyah-LICENSE.pdf): shipped as they
+ * are, never subset or edited. Vite bundles them with hashed names.
+ * Sans for the interface; Serif Display for big type: Bold for headings (600
+ * resolves to it), Medium for the big lists and quotes. Running text is IBM
+ * Plex (@fontsource, in main.tsx).
+ */
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("../assets/fonts/thmanyahsans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("../assets/fonts/thmanyahsans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("../assets/fonts/thmanyahsans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  src: url("../assets/fonts/thmanyahserifdisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  src: url("../assets/fonts/thmanyahserifdisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}

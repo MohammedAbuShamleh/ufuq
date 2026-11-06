@@ -30,7 +30,7 @@ export function CardPreview({ values, screens, saved }: { values: ProjectInput; 
               <MediaThumb media={cover.file} className="absolute inset-0 h-full w-full" />
             </div>
           ) : (
-            <span aria-hidden="true" className="absolute -top-4 end-3 font-display text-[9rem] leading-none font-extrabold opacity-15">
+            <span aria-hidden="true" className="absolute -top-4 end-3 font-heading text-[9rem] leading-none font-extrabold opacity-15">
               {(ar(values.client_name) || title).charAt(0)}
             </span>
           )}

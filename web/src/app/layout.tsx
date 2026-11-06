@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { Alexandria, IBM_Plex_Sans_Arabic } from 'next/font/google'
+import { IBM_Plex_Sans_Arabic } from 'next/font/google'
+import localFont from 'next/font/local'
 import { getSettings } from '@/lib/api'
 import { whatsappLink } from '@/lib/format'
 import { MOTION_SCRIPT } from '@/lib/motion'
@@ -15,14 +16,31 @@ import { WhatsAppFloat } from './_shell/WhatsAppFloat'
 import './globals.css'
 import './site.css'
 
-// Self-hosted at build time: no request to Google during a visit.
-const alexandria = Alexandria({
-  subsets: ['arabic', 'latin'],
-  weight: ['400', '500', '600', '700'],
+// Thmanyah, under its own licence (fonts/thmanyah-LICENSE.pdf): the files go
+// in as shipped, never subset or edited. Sans for the interface, Serif Display
+// for big type: Bold for headings (600 resolves to it), Medium for large
+// running text (the big lists and quotes).
+const thmanyahSans = localFont({
+  src: [
+    { path: './fonts/thmanyahsans-Regular.woff2', weight: '400' },
+    { path: './fonts/thmanyahsans-Medium.woff2', weight: '500' },
+    { path: './fonts/thmanyahsans-Bold.woff2', weight: '700' },
+  ],
   display: 'swap',
-  variable: '--font-alexandria',
+  variable: '--font-thmanyah-sans',
 })
 
+const thmanyahSerif = localFont({
+  src: [
+    { path: './fonts/thmanyahserifdisplay-Medium.woff2', weight: '500' },
+    { path: './fonts/thmanyahserifdisplay-Bold.woff2', weight: '700' },
+  ],
+  display: 'swap',
+  variable: '--font-thmanyah-serif',
+})
+
+// Running text (paragraphs, lists, quotes). Self-hosted at build time: no
+// request to Google during a visit.
 const plex = IBM_Plex_Sans_Arabic({
   subsets: ['arabic', 'latin'],
   weight: ['400', '500', '600'],
@@ -53,7 +71,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
 
   return (
     // The head script sets data-theme and classes before hydration, hence suppressHydrationWarning.
-    <html lang="ar" dir="rtl" className={`${alexandria.variable} ${plex.variable}`} suppressHydrationWarning>
+    <html lang="ar" dir="rtl" className={`${thmanyahSans.variable} ${thmanyahSerif.variable} ${plex.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT + MOTION_SCRIPT }} />
       </head>
