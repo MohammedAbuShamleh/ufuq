@@ -7,21 +7,43 @@ import type { TeamMember } from '@/lib/types'
 
 // The sign on a teammate's tile until the photo arrives, in turn.
 const SIGNS = ['✦', '</>', '◎']
-const SIZES = '(max-width: 600px) 100vw, (max-width: 1100px) 50vw, 240px'
+const FOUNDER_SIZES = '(max-width: 760px) 50vw, 440px'
+const TEAM_SIZES = '(max-width: 760px) 33vw, 200px'
 
-/** «من سيبني نظامك»: grey photos that turn to colour, with the name and role, when pressed. */
+/**
+ * «من سيبني نظامك»: the founders first, in large portraits framed from the
+ * shoulders up, then the rest of the team in a smaller row. Photos are grey
+ * and turn to colour, with the name and role, when pressed.
+ */
 export function TeamCards({ team }: { team: TeamMember[] }) {
+  const founders = team.filter((m) => m.is_founder)
+  const rest = team.filter((m) => !m.is_founder)
   let sign = 0
+
   return (
-    <div className="tm-cards">
-      {team.map((m, i) => (
-        <TeamCard key={i} member={m} sign={m.photo ? null : SIGNS[sign++ % SIGNS.length]} />
-      ))}
-    </div>
+    <>
+      {founders.length > 0 && (
+        <div className="tm-founders">
+          {founders.map((m, i) => (
+            <TeamCard key={i} member={m} sign={null} sizes={FOUNDER_SIZES} />
+          ))}
+        </div>
+      )}
+      {rest.length > 0 && (
+        <>
+          <h3 className="tm-team-head">فريق العمل</h3>
+          <div className="tm-team">
+            {rest.map((m, i) => (
+              <TeamCard key={i} member={m} sign={m.photo ? null : SIGNS[sign++ % SIGNS.length]} sizes={TEAM_SIZES} />
+            ))}
+          </div>
+        </>
+      )}
+    </>
   )
 }
 
-function TeamCard({ member, sign }: { member: TeamMember; sign: string | null }) {
+function TeamCard({ member, sign, sizes }: { member: TeamMember; sign: string | null; sizes: string }) {
   const [on, setOn] = useState(false)
   const role = member.is_founder ? `شريك مؤسس · ${member.role}` : member.role
 
@@ -30,7 +52,7 @@ function TeamCard({ member, sign }: { member: TeamMember; sign: string | null })
       <span className="tmc-img">
         {member.photo ? (
           // eslint-disable-next-line @next/next/no-img-element -- the API already serves the webp widths (see imgAttrs)
-          <img {...imgAttrs(member.photo, SIZES)} alt={isPending(member.name) ? '' : member.name} />
+          <img {...imgAttrs(member.photo, sizes)} alt={isPending(member.name) ? '' : member.name} />
         ) : (
           <>
             <span className="tmc-init" aria-hidden="true">

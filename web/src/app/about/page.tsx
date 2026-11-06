@@ -50,7 +50,7 @@ export default async function AboutPage() {
         <section className="apg-team" aria-labelledby="team-title">
           <div className="wrap">
             <div className="apg-sec-head">
-              <Kicker>الفريق</Kicker>
+              <Kicker>المؤسسان والفريق</Kicker>
               <h2 id="team-title">من سيبني نظامك.</h2>
               <p className="muted">تتعامل مع من يكتب الكود مباشرة، لا مع وسيط بينكما. اضغط على الصورة للتعرّف.</p>
             </div>

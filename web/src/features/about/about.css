@@ -107,13 +107,16 @@
   object-fit: cover;
   border-radius: 50%;
   filter: grayscale(1) contrast(1.05);
+  /* The photo is framed to the shoulders for /about; this small circle keeps to the face. */
+  transform-origin: 50% 32%;
+  transform: scale(1.75);
   transition:
     filter 0.7s ease,
     transform 0.7s var(--ease);
 }
 .ab-p.color .ab-av.ph img {
   filter: none;
-  transform: scale(1.04);
+  transform: scale(1.82);
 }
 @media (hover: hover) and (pointer: fine) {
   .ab-av.ph:hover img {
