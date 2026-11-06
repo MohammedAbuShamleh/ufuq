@@ -133,9 +133,21 @@ export function Hero({ tagline }: { tagline: string | null }) {
 
 function MotionButton() {
   const { off, toggle } = useMotionToggle()
+  const ref = useRef<HTMLButtonElement>(null)
+
+  // With motion the hero is a walk through the arch two and a half screens
+  // long; without, one still screen. A press partway through would leave the
+  // page past it, in the next section, with this button out of sight, so the
+  // hero starts again from its top either way.
+  const press = () => {
+    toggle()
+    const hero = ref.current?.closest('section')
+    if (hero) scrollBy({ top: hero.getBoundingClientRect().top, behavior: 'instant' })
+  }
+
   return (
     // The visible words are the name and say what a press does, so no pressed state.
-    <button type="button" className="hx-mo" onClick={toggle}>
+    <button ref={ref} type="button" className="hx-mo" data-moves-page onClick={press}>
       <span className="mo-ic" aria-hidden="true" />
       <span>{off ? 'تشغيل الحركة' : 'إيقاف الحركة'}</span>
     </button>
