@@ -18,6 +18,8 @@ class ProjectRowResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // The languages the site shows this item in (Arabic always; English once complete).
+            'locales' => Translations::locales($this->resource, Project::REQUIRED_TEXT),
             'slug' => $this->slug,
             'title' => Translations::of($this->resource, 'title'),
             'client_name' => Translations::of($this->resource, 'client_name'),

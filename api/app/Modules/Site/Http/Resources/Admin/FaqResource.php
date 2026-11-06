@@ -14,6 +14,8 @@ class FaqResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // The languages the site shows this item in (Arabic always; English once complete).
+            'locales' => Translations::locales($this->resource, Faq::REQUIRED_TEXT),
             'question' => Translations::of($this->resource, 'question'),
             'answer' => Translations::of($this->resource, 'answer'),
             'is_visible' => $this->is_visible,

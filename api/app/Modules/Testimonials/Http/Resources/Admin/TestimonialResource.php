@@ -20,6 +20,8 @@ class TestimonialResource extends JsonResource
 
         return [
             'id' => $this->id,
+            // The languages the site shows this item in (Arabic always; English once complete).
+            'locales' => Translations::locales($this->resource, Testimonial::REQUIRED_TEXT),
             'project_id' => $this->project_id,
             'project' => $project === null ? null : [
                 'id' => $project->id,

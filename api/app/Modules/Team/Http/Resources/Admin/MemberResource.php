@@ -15,6 +15,8 @@ class MemberResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // The languages the site shows this item in (Arabic always; English once complete).
+            'locales' => Translations::locales($this->resource, TeamMember::REQUIRED_TEXT),
             'name' => Translations::of($this->resource, 'name'),
             'role' => Translations::of($this->resource, 'role'),
             'bio' => Translations::of($this->resource, 'bio'),
