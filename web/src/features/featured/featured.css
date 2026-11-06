@@ -18,11 +18,15 @@
 
 /* ---------- The giant word (WordStage) ----------
    Sized to span most of the content width; it fades from the text colour at
-   its start to a faint trace at its end, like a line toward the horizon. */
+   its start to a faint trace at its end, like a line toward the horizon.
+   The hamza on its alef rises about 0.12em above the line box, and a
+   text-clipped background (and the mask below) paint only inside the box, so
+   the box gets 0.2em more on top for it, taken back by the margin. */
 .ws-word {
   --ws: clamp(5.5rem, 27vw, 21rem);
   width: fit-content;
-  margin: 0 auto 2.5rem;
+  padding-top: 0.2em;
+  margin: -0.2em auto 2.5rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: var(--ws);
@@ -43,7 +47,8 @@
 @media (prefers-reduced-motion: no-preference) {
   html.js:not(.motion-off) .ws-word {
     position: sticky;
-    top: calc(50svh - var(--ws) * 0.6);
+    /* The line's middle (0.6em into it, after the 0.2em for the hamza) at mid-screen. */
+    top: calc(50svh - var(--ws) * 0.8);
     margin-bottom: 0;
     mask-image: linear-gradient(
       to bottom,
