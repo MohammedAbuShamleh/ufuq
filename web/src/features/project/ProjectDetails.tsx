@@ -1,5 +1,5 @@
 import { Kicker } from '@/components/Kicker'
-import { isPending } from '@/lib/format'
+import { isPending, isShown } from '@/lib/format'
 import type { ProjectDetail, Testimonial } from '@/lib/types'
 import { countryName, SECTOR_LABEL, TYPE_LABEL } from '../work/labels'
 import './project.css'
@@ -61,8 +61,15 @@ const STORY = [
 
 const STEP_NUM = ['١', '٢', '٣']
 
-/** Challenge, solution, result: the client fills them; until then each shows what it should say. */
+/**
+ * Challenge, solution, result: the client fills them. A step still waiting
+ * shows what it should say in a preview build and is left out on the live
+ * site; with no step written, the section is left out.
+ */
 export function ProjectStory({ project }: { project: ProjectDetail }) {
+  const steps = STORY.filter((s) => isShown(project[s.key]))
+  if (steps.length === 0) return null
+
   return (
     <section className="pp-story" aria-labelledby="story-title">
       <div className="wrap">
@@ -71,7 +78,7 @@ export function ProjectStory({ project }: { project: ProjectDetail }) {
           <h2 id="story-title">من المشكلة إلى نظام يعمل.</h2>
         </div>
         <ol className="pp-steps">
-          {STORY.map((s, i) => {
+          {steps.map((s, i) => {
             const text = project[s.key]
             const pending = isPending(text)
             return (
@@ -90,8 +97,9 @@ export function ProjectStory({ project }: { project: ProjectDetail }) {
   )
 }
 
-/** The client's own words about the project, when there are any. */
+/** The client's own words about the project, when there are any (on the live site, only once written). */
 export function ProjectQuote({ testimonial: t }: { testimonial: Testimonial }) {
+  if (!isShown(t.quote) || !isShown(t.author_name)) return null
   const mark = (text: string | null) => (isPending(text) ? 'pending-txt' : undefined)
   return (
     <section className="pp-voice" aria-label={`شهادة ${t.organization}`}>
@@ -101,7 +109,12 @@ export function ProjectQuote({ testimonial: t }: { testimonial: Testimonial }) {
           <figcaption>
             <b className={mark(t.author_name)}>{t.author_name ?? '[الاسم]'}</b>
             <span>
-              <span className={mark(t.author_title)}>{t.author_title ?? '[المنصب]'}</span> · {t.organization}
+              {isShown(t.author_title) && (
+                <>
+                  <span className={mark(t.author_title)}>{t.author_title ?? '[المنصب]'}</span> ·{' '}
+                </>
+              )}
+              {t.organization}
             </span>
           </figcaption>
         </figure>

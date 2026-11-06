@@ -1,9 +1,15 @@
 import { Button } from '@/components/Button'
-import { whatsappLink } from '@/lib/format'
+import { SHOW_PENDING, whatsappLink } from '@/lib/format'
 import './contact.css'
 
-/** For clients whose system already runs: straight to support, before the footer. */
+/**
+ * For clients whose system already runs: straight to support, before the
+ * footer. Without a support number there is nowhere to send them, so the strip
+ * is left out of the live site.
+ */
 export function SupportStrip({ whatsapp }: { whatsapp: string | null }) {
+  const href = whatsappLink(whatsapp)
+  if (!href && !SHOW_PENDING) return null
   return (
     <section className="sup" aria-labelledby="sup-title">
       <div className="wrap sup-in">
@@ -19,7 +25,7 @@ export function SupportStrip({ whatsapp }: { whatsapp: string | null }) {
           <h2 id="sup-title">عندك نظام يعمل معنا؟</h2>
           <p>تواصل مع الدعم الفني مباشرة، واذكر اسم النظام والمشكلة، ونتابعها معك حتى تُحل.</p>
         </div>
-        <Button variant="line" className="sup-btn" href={whatsappLink(whatsapp)} target="_blank" rel="noopener">
+        <Button variant="line" className="sup-btn" href={href} target="_blank" rel="noopener">
           <svg width="16" height="16" aria-hidden="true"><use href="#wa" /></svg> تواصل مع الدعم
         </Button>
       </div>

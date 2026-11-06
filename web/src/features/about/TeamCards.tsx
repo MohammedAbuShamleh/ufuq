@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { isPending } from '@/lib/format'
+import { isPending, isShown } from '@/lib/format'
 import { imgAttrs } from '@/lib/media'
 import type { TeamMember } from '@/lib/types'
 
@@ -17,7 +17,8 @@ const TEAM_SIZES = '(max-width: 760px) 33vw, 200px'
  */
 export function TeamCards({ team }: { team: TeamMember[] }) {
   const founders = team.filter((m) => m.is_founder)
-  const rest = team.filter((m) => !m.is_founder)
+  // On the live site a teammate whose name has not arrived yet is left out.
+  const rest = team.filter((m) => !m.is_founder && isShown(m.name))
   let sign = 0
 
   return (
@@ -45,7 +46,9 @@ export function TeamCards({ team }: { team: TeamMember[] }) {
 
 function TeamCard({ member, sign, sizes }: { member: TeamMember; sign: string | null; sizes: string }) {
   const [on, setOn] = useState(false)
-  const role = member.is_founder ? `شريك مؤسس · ${member.role}` : member.role
+  // A founder whose role has not arrived yet is still «شريك مؤسس» on the live site.
+  const role = member.is_founder ? (isShown(member.role) ? `شريك مؤسس · ${member.role}` : 'شريك مؤسس') : member.role
+  const rolePending = isShown(member.role) && isPending(member.role)
 
   return (
     <button type="button" className={`tmc${member.photo ? '' : ' tmc-ph'}${on ? ' on' : ''}`} aria-pressed={on} onClick={() => setOn((o) => !o)}>
@@ -67,8 +70,8 @@ function TeamCard({ member, sign, sizes }: { member: TeamMember; sign: string | 
       </span>
       <span className="tmc-info">
         <b className={isPending(member.name) ? 'pending-txt' : undefined}>{member.name}</b>
-        <span className={isPending(member.role) ? 'pending-txt' : undefined}>{role}</span>
-        {member.tech && <i className={isPending(member.tech) ? 'pending-txt' : undefined}>{member.tech}</i>}
+        <span className={rolePending ? 'pending-txt' : undefined}>{role}</span>
+        {member.tech && isShown(member.tech) && <i className={isPending(member.tech) ? 'pending-txt' : undefined}>{member.tech}</i>}
       </span>
     </button>
   )

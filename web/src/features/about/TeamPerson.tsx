@@ -1,14 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { isPending } from '@/lib/format'
+import { isPending, isShown } from '@/lib/format'
 import { imgAttrs } from '@/lib/media'
 import type { TeamMember } from '@/lib/types'
 
 /** A teammate: the photo is grey until clicked (or hovered with a mouse). */
 export function TeamPerson({ member }: { member: TeamMember }) {
   const [color, setColor] = useState(false)
-  const role = member.is_founder ? `شريك مؤسس · ${member.role}` : member.role
+  // A founder whose role has not arrived yet is still «شريك مؤسس» on the live site.
+  const role = member.is_founder ? (isShown(member.role) ? `شريك مؤسس · ${member.role}` : 'شريك مؤسس') : member.role
+  const rolePending = isShown(member.role) && isPending(member.role)
 
   return (
     <div className={`ab-p${color ? ' color' : ''}`}>
@@ -27,7 +29,7 @@ export function TeamPerson({ member }: { member: TeamMember }) {
       )}
       <span>
         <b className={isPending(member.name) ? 'pending-txt' : undefined}>{member.name}</b>
-        <small className={isPending(member.role) ? 'pending-txt' : undefined}>{role}</small>
+        <small className={rolePending ? 'pending-txt' : undefined}>{role}</small>
       </span>
     </div>
   )

@@ -6,7 +6,7 @@ import { STATS } from '@/features/about/stats'
 import { TeamCards } from '@/features/about/TeamCards'
 import { SupportStrip } from '@/features/contact/SupportStrip'
 import { getSettings, getTeam } from '@/lib/api'
-import { isPending } from '@/lib/format'
+import { isPending, isShown } from '@/lib/format'
 import { pageMetadata } from '@/lib/seo'
 import { PageCta } from '../_shell/PageCta'
 import { PageHero } from '../_shell/PageHero'
@@ -102,14 +102,18 @@ export default async function AboutPage() {
               <h2 id="found-title">ما يثبت أننا هنا لنبقى.</h2>
             </div>
             <ul className="found-grid">
-              <li>
-                <b>التسجيل الرسمي</b>
-                <Pending text={settings.legal_registration} placeholder="[الكيان القانوني ورقم التسجيل]" />
-              </li>
-              <li>
-                <b>العضويات</b>
-                <Pending text={settings.memberships} placeholder="[عضوية اتحاد شركات أنظمة المعلومات الفلسطينية (بيتا) إن وُجدت]" />
-              </li>
+              {isShown(settings.legal_registration) && (
+                <li>
+                  <b>التسجيل الرسمي</b>
+                  <Pending text={settings.legal_registration} placeholder="[الكيان القانوني ورقم التسجيل]" />
+                </li>
+              )}
+              {isShown(settings.memberships) && (
+                <li>
+                  <b>العضويات</b>
+                  <Pending text={settings.memberships} placeholder="[عضوية اتحاد شركات أنظمة المعلومات الفلسطينية (بيتا) إن وُجدت]" />
+                </li>
+              )}
               <li>
                 <b>حماية البيانات</b>
                 <p>
@@ -135,8 +139,12 @@ export default async function AboutPage() {
   )
 }
 
-/** A setting the client has not filled yet shows its placeholder, marked as pending. */
+/**
+ * A setting the client has not filled yet: its placeholder, marked as pending,
+ * in a preview build; nothing on the live site.
+ */
 function Pending({ text, placeholder, className }: { text: string | null; placeholder: string; className?: string }) {
+  if (!isShown(text)) return null
   const pending = isPending(text)
   const cls = [className, pending && 'pending-txt'].filter(Boolean).join(' ') || undefined
   return <p className={cls}>{pending ? (text ?? placeholder) : text}</p>

@@ -1,9 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { SHOW_PENDING } from '@/lib/format'
 import { WhatsAppIcon } from './SvgSprite'
 
-/** Shows once the hero is behind the visitor, and steps aside at the contact section. */
+/**
+ * Shows once the hero is behind the visitor, and steps aside at the contact
+ * section. With no number yet it is left out (a dashed mark in a preview build).
+ */
 export function WhatsAppFloat({ href }: { href: string | null }) {
   const [show, setShow] = useState(false)
 
@@ -27,12 +31,15 @@ export function WhatsAppFloat({ href }: { href: string | null }) {
   }, [])
 
   const cls = `wa-float${show ? ' show' : ''}${href ? '' : ' pending'}`
-  return href ? (
+  if (!href) {
+    return SHOW_PENDING ? (
+      <span className={cls} title="رقم واتساب قيد الإعداد" aria-hidden="true">
+        <WhatsAppIcon size={26} />
+      </span>
+    ) : null
+  }
+  return (
     <a className={cls} href={href} target="_blank" rel="noopener" aria-label="تحدّث معنا على واتساب" tabIndex={show ? undefined : -1}>
-      <WhatsAppIcon size={26} />
-    </a>
-  ) : (
-    <a className={cls} aria-disabled="true" title="رقم واتساب قيد الإعداد" aria-label="تحدّث معنا على واتساب">
       <WhatsAppIcon size={26} />
     </a>
   )

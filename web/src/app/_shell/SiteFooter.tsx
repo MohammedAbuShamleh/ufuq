@@ -3,7 +3,7 @@ import { cacheLife, cacheTag } from 'next/cache'
 import Link from 'next/link'
 import { Arrow } from '@/components/Button'
 import { getSettings } from '@/lib/api'
-import { arYear, whatsappLink } from '@/lib/format'
+import { arYear, SHOW_PENDING, whatsappLink } from '@/lib/format'
 import { Logo } from './Logo'
 import { FooterMotionToggle } from './FooterMotionToggle'
 
@@ -17,6 +17,7 @@ export async function SiteFooter() {
   cacheTag('settings')
   const settings = await getSettings()
   const social = settings.social_links
+  const hasSocial = SHOW_PENDING || Boolean(social?.linkedin || social?.x || social?.instagram)
   const support = whatsappLink(settings.whatsapp_number)
 
   return (
@@ -25,6 +26,7 @@ export async function SiteFooter() {
         <div className="foot-brand">
           <Logo className="logo-svg" />
           <p>{settings.hero_tagline}.</p>
+          {hasSocial && (
           <div className="social">
             <SocialLink href={social?.linkedin} label="لينكدإن">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -44,6 +46,7 @@ export async function SiteFooter() {
               </svg>
             </SocialLink>
           </div>
+          )}
         </div>
         <nav className="foot-col" aria-label="الموقع">
           <h4>الموقع</h4>
@@ -96,13 +99,17 @@ export async function SiteFooter() {
   )
 }
 
-/** A link the client has not given us yet shows as a dashed placeholder. */
+/**
+ * A link the client has not given us yet: left out of the live site, a dashed
+ * placeholder (not a link) in a preview build.
+ */
 function MaybeLink({ href, external, className, children }: { href: string | null | undefined; external?: boolean; className?: string; children: ReactNode }) {
   if (!href) {
+    if (!SHOW_PENDING) return null
     return (
-      <a className={`pending ${className ?? ''}`.trim()} aria-disabled="true" title="الرابط قيد الإعداد">
+      <span className={`pending ${className ?? ''}`.trim()} title="الرابط قيد الإعداد">
         {children}
-      </a>
+      </span>
     )
   }
   return (

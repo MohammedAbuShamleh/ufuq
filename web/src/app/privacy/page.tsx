@@ -1,5 +1,6 @@
 import { SupportStrip } from '@/features/contact/SupportStrip'
 import { getSettings } from '@/lib/api'
+import { SHOW_PENDING } from '@/lib/format'
 import { pageMetadata } from '@/lib/seo'
 import { PageHero } from '../_shell/PageHero'
 import './privacy.css'
@@ -20,12 +21,12 @@ export default async function PrivacyPage() {
     <>
       <main id="top" className="inner privacy-page">
         <PageHero kicker="الخصوصية" title="سياسة الخصوصية">
-          {settings.privacy_is_draft && <span className="pv-draft">مسودة للمراجعة</span>}
+          {SHOW_PENDING && settings.privacy_is_draft && <span className="pv-draft">مسودة للمراجعة</span>}
         </PageHero>
         <section className="pv-page">
           <div className="wrap">
             <div className="pv-text">
-              {sections.length === 0 && <p className="pending-txt">[نص سياسة الخصوصية]</p>}
+              {SHOW_PENDING && sections.length === 0 && <p className="pending-txt">[نص سياسة الخصوصية]</p>}
               {sections.map((s) => (
                 <section key={s.heading}>
                   <h2>{s.heading}</h2>

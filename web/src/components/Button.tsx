@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactNode } from 'react'
+import { SHOW_PENDING } from '@/lib/format'
 import './button.css'
 
 export type ButtonVariant = 'primary' | 'line' | 'wa'
@@ -24,8 +25,9 @@ export function Arrow({ className = 'ico-arrow' }: { className?: string }) {
 }
 
 /**
- * A pill button or link. A link whose address is not set yet (href null)
- * renders as a dashed «pending» placeholder that goes nowhere.
+ * A pill button or link. A link whose address is not set yet (href null) is
+ * left out of the live site; a preview build shows it as a dashed «pending»
+ * placeholder that is not a link.
  */
 export function Button(props: AsLink | AsButton) {
   const { variant = 'primary', size, arrow, className, children, ...rest } = props
@@ -40,10 +42,11 @@ export function Button(props: AsLink | AsButton) {
   if (rest.href !== undefined) {
     const { href, ...anchor } = rest as Omit<AsLink, keyof Common>
     if (href === null) {
+      if (!SHOW_PENDING) return null
       return (
-        <a {...anchor} className={`${cls} pending`} aria-disabled="true" title="الرابط قيد الإعداد">
+        <span className={`${cls} pending`} title="الرابط قيد الإعداد">
           {body}
-        </a>
+        </span>
       )
     }
     return (

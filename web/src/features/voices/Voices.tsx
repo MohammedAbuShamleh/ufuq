@@ -4,7 +4,7 @@ import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties 
 import { Kicker } from '@/components/Kicker'
 import { useInView } from '@/hooks/useInView'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { isPending } from '@/lib/format'
+import { isPending, isShown, SHOW_PENDING } from '@/lib/format'
 import type { Client, Testimonial } from '@/lib/types'
 import './voices.css'
 
@@ -21,7 +21,9 @@ function initial(organization: string) {
  * seven seconds while the section is on screen. Hovering pauses it; without
  * motion it waits for a click. Then the wall of organizations we work with.
  */
-export function Voices({ testimonials, clients }: { testimonials: Testimonial[]; clients: Client[] }) {
+export function Voices({ testimonials: all, clients }: { testimonials: Testimonial[]; clients: Client[] }) {
+  // A testimonial still waiting for its text or its author stays off the live site.
+  const testimonials = SHOW_PENDING ? all : all.filter((t) => !isPending(t.quote) && !isPending(t.author_name))
   const ref = useRef<HTMLElement>(null)
   const [current, setCurrent] = useState(0)
   const [leaving, setLeaving] = useState<number | null>(null)
@@ -55,6 +57,10 @@ export function Voices({ testimonials, clients }: { testimonials: Testimonial[];
     return () => clearTimeout(t)
   }, [rotating, current, round, show, testimonials.length])
 
+  if (testimonials.length === 0 && clients.length === 0) return null
+  // Until the first testimonial arrives the section is the wall of organizations alone.
+  const quotes = testimonials.length > 0
+
   return (
     <section
       ref={ref}
@@ -68,13 +74,13 @@ export function Voices({ testimonials, clients }: { testimonials: Testimonial[];
       <div className="wrap tm-in">
         <div className="tm-top">
           <h2 id="tm-title" className="sr-only">
-            قالوا عنّا: شهادات من يستخدم أنظمتنا
+            {quotes ? 'قالوا عنّا: شهادات من يستخدم أنظمتنا' : 'مؤسسات تعمل فيها أنظمتنا'}
           </h2>
-          <Kicker>قالوا عنّا</Kicker>
+          <Kicker>{quotes ? 'قالوا عنّا' : 'من نعمل معهم'}</Kicker>
           {draft && <span className="tm-draft">مسودة · بانتظار نصوص العملاء</span>}
         </div>
 
-        {testimonials.length > 0 && (
+        {quotes && (
           <>
             <div className="tm-stage" aria-live="polite">
               <span className="tm-q" aria-hidden="true">
@@ -107,7 +113,7 @@ export function Voices({ testimonials, clients }: { testimonials: Testimonial[];
 
       {clients.length > 0 && (
         <div className="wrap cw">
-          <span className="cw-t">مؤسسات تعمل فيها أنظمتنا</span>
+          {quotes && <span className="cw-t">مؤسسات تعمل فيها أنظمتنا</span>}
           <ul className="cw-grid">
             {clients.map((c) => (
               <li key={c.name}>
@@ -145,7 +151,8 @@ function Quote({ testimonial: t, state }: { testimonial: Testimonial; state: 'on
         <span>
           <b>{t.author_name ?? '[الاسم]'}</b>
           <small>
-            {t.author_title ?? '[المنصب]'} · {t.organization}
+            {isShown(t.author_title) && <>{t.author_title ?? '[المنصب]'} · </>}
+            {t.organization}
           </small>
         </span>
       </figcaption>
