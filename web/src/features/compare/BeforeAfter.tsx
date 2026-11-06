@@ -40,11 +40,11 @@ export function BeforeAfter() {
               sizes="(max-width: 1240px) 100vw, 1240px"
               alt="لوحة نظام إدارة المدارس الذي يعمل اليوم في مدرسة شعاع"
             />
-            <span className="ba-tag after">بعد · نظام واحد</span>
+            <span className="ba-tag after">بعد — نظام واحد</span>
           </div>
           <div className="ba-before">
             <ExcelSheet />
-            <span className="ba-tag before">قبل · ٥٨ ورقة</span>
+            <span className="ba-tag before">قبل — ٥٨ ورقة</span>
           </div>
           <div className="ba-handle" aria-hidden="true">
             <span>

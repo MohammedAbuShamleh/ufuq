@@ -84,9 +84,11 @@ export async function SiteFooter() {
         </div>
       </div>
       <div className="wrap foot-bottom">
-        <span>
-          © {arYear(new Date().getFullYear())} أفق للبرمجيات. جميع الحقوق محفوظة. ·{' '}
-          <Link href="/privacy">سياسة الخصوصية</Link> · <FooterMotionToggle />
+        {/* Kept apart by drawn rules, not «·», which reads as the Arabic zero. */}
+        <span className="foot-legal">
+          <span>© {arYear(new Date().getFullYear())} أفق للبرمجيات. جميع الحقوق محفوظة.</span>
+          <Link href="/privacy">سياسة الخصوصية</Link>
+          <FooterMotionToggle />
         </span>
         <Link href="/#top" className="to-top">
           العودة للأعلى

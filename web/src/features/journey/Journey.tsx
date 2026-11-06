@@ -68,7 +68,7 @@ export function Journey() {
             />
           </ArchClip>
           <figcaption className={`nx3-cap${caption === active ? '' : ' swap'}`}>
-            {ORDINALS[caption]} من {ORDINALS[STEPS.length - 1]} · {STEPS[caption].title}
+            {ORDINALS[caption]} من {ORDINALS[STEPS.length - 1]} — {STEPS[caption].title}
           </figcaption>
           <div className="nx3-prog" aria-hidden="true">
             {STEPS.map((s, i) => (
