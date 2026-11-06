@@ -17,12 +17,23 @@
   position: relative;
   height: 250vh;
   margin-top: calc(var(--nav-h) * -1);
-  margin-bottom: -35vh;
+  margin-bottom: -75vh;
 }
 /* Every section after the hero slides over its stage. */
 .hx ~ section {
   position: relative;
   z-index: 5;
+}
+/*
+ * The arch never fades out: the next section rises over it from mid-crossing
+ * (the -75vh above) on the page colour, its top edge a soft mist. Before, the
+ * arch faded to white well before that section arrived and left a blank
+ * screen. Below the overlap the section is clear again, over the horizon lines.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.motion-off) .hx + section {
+    background: linear-gradient(to bottom, transparent, var(--bg) 5rem, var(--bg) 75vh, transparent 100vh);
+  }
 }
 /* The words flow from the top; the stage takes the rest of the screen. */
 .hx-stick {
@@ -53,7 +64,6 @@
   margin-left: calc(var(--aw) / -2);
   transform-origin: 50% 62%;
   transform: scale(calc(1 + var(--p) * 2.8));
-  opacity: calc((0.86 - var(--p)) * 2.6);
   will-change: transform;
   animation: archIn 1.4s var(--ease) both;
 }
@@ -374,7 +384,8 @@ html.motion-off .mo-ic::after {
     --aw-max: min(80vw, 42vh);
     --aw-room: max(0px, (100cqh - 9vh - 1rem) * 0.84);
     height: 150vh;
-    margin-bottom: -10vh;
+    /* The next section starts right under the first screen (clear of the motion button) and rises with the scroll. */
+    margin-bottom: calc(2rem - 50vh);
   }
   .hx-stick {
     padding-top: calc(var(--nav-h) + 1.5vh);
