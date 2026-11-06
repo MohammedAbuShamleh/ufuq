@@ -49,7 +49,7 @@ export async function SiteFooter() {
           )}
         </div>
         <nav className="foot-col" aria-label="الموقع">
-          <h4>الموقع</h4>
+          <h2>الموقع</h2>
           <Link href="/work">أعمالنا</Link>
           <Link href="/about">من نحن</Link>
           <Link href="/#services">خدماتنا</Link>
@@ -57,7 +57,7 @@ export async function SiteFooter() {
           <Link href="/#contact">تواصل معنا</Link>
         </nav>
         <nav className="foot-col" aria-label="خدماتنا">
-          <h4>خدماتنا</h4>
+          <h2>خدماتنا</h2>
           {SERVICES.map((s) => (
             <Link key={s} href="/#services">
               {s}
@@ -65,7 +65,7 @@ export async function SiteFooter() {
           ))}
         </nav>
         <div className="foot-col">
-          <h4>تواصل</h4>
+          <h2>تواصل</h2>
           {settings.contact_email && (
             <a href={`mailto:${settings.contact_email}`} dir="ltr" className="ltr">
               {settings.contact_email}

@@ -98,16 +98,22 @@ export function Services() {
         <ul className="sv-panels">
           {SERVICES.map((s, i) => (
             <li key={s.title} className={`sv-p${open === i ? ' on' : ''}`} onMouseEnter={() => hoverOpens() && setOpen(i)}>
-              <button type="button" className="sv-hit" aria-expanded={open === i} aria-controls={`sv-more-${i}`} onClick={() => setOpen(i)} onFocus={() => setOpen(i)}>
-                <span className="sr-only">{s.title}</span>
-              </button>
+              <button
+                type="button"
+                className="sv-hit"
+                aria-labelledby={`sv-t-${i}`}
+                aria-expanded={open === i}
+                aria-controls={`sv-more-${i}`}
+                onClick={() => setOpen(i)}
+                onFocus={() => setOpen(i)}
+              />
               <div className="sv-top">
                 <span className="sv-ic" aria-hidden="true">
                   {s.icon}
                 </span>
               </div>
               <div className="sv-bot">
-                <h3>{s.title}</h3>
+                <h3 id={`sv-t-${i}`}>{s.title}</h3>
                 <div className="sv-more" id={`sv-more-${i}`}>
                   <div>
                     <p>{s.text}</p>

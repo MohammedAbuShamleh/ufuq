@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Arrow } from '@/components/Button'
 
 const TYPES = ['موقع إبداعي', 'نظام ERP', 'نظام مالي', 'منصة إلكترونية', 'تطبيق جوال', 'أمر آخر']
@@ -9,6 +9,7 @@ type Status = { kind: 'idle' | 'sending' | 'sent' | 'error'; note?: string }
 type Errors = Partial<Record<'name' | 'contact' | 'project_type', string>>
 
 const PRIVACY_NOTE = 'بياناتك لا تُشارك مع أحد.'
+const FIELDS = ['name', 'contact', 'project_type'] as const
 
 /**
  * Sends the visitor's details straight to the API (POST /leads). The API
@@ -18,6 +19,14 @@ export function ContactForm({ endpoint }: { endpoint: string }) {
   const [type, setType] = useState('')
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
   const [errors, setErrors] = useState<Errors>({})
+  const formRef = useRef<HTMLFormElement>(null)
+
+  // After a failed send the first field in error takes focus, so its message
+  // is read out and, on a phone, scrolled into view.
+  useEffect(() => {
+    const first = FIELDS.find((f) => errors[f])
+    if (first) formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus()
+  }, [errors])
 
   // «أريد منصة مشابهة» on a project card picks the project type here: from a
   // click on this page, or from ?type= when it comes from a project page.
@@ -74,19 +83,29 @@ export function ContactForm({ endpoint }: { endpoint: string }) {
   const sending = status.kind === 'sending'
 
   return (
-    <form className="ctx-form" onSubmit={submit} noValidate>
+    <form ref={formRef} className="ctx-form" onSubmit={submit} noValidate>
       <span className="ctx-form-title">أو اترك بياناتك ونتصل بك</span>
       <Field name="name" label="الاسم الكامل" autoComplete="name" error={errors.name} />
       <Field name="contact" label="البريد أو رقم الجوال" autoComplete="email" error={errors.contact} />
       <label className="full">
         <span>نوع المشروع</span>
-        <select name="project_type" value={type} onChange={(e) => setType(e.target.value)} aria-invalid={!!errors.project_type || undefined}>
+        <select
+          name="project_type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          aria-invalid={!!errors.project_type || undefined}
+          aria-describedby={errors.project_type ? 'project_type-error' : undefined}
+        >
           <option value="">نوع المشروع</option>
           {TYPES.map((t) => (
             <option key={t}>{t}</option>
           ))}
         </select>
-        {errors.project_type && <em className="ctx-err">{errors.project_type}</em>}
+        {errors.project_type && (
+          <em className="ctx-err" id="project_type-error">
+            {errors.project_type}
+          </em>
+        )}
       </label>
       {/* Honeypot: hidden from people, so only bots fill it in. */}
       <input className="hp" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />

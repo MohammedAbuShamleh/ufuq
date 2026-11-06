@@ -152,6 +152,10 @@ body::before {
   height: 40px;
   width: 82px;
 }
+/* The landmark only: the list inside lays out as before. */
+.nav-main {
+  display: contents;
+}
 .nav-links {
   position: relative;
   display: flex;
@@ -304,7 +308,7 @@ body::before {
   font-size: 0.94rem;
   color: var(--muted);
 }
-.foot-col h4 {
+.foot-col h2 {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.95rem;

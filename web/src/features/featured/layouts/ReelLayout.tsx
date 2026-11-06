@@ -33,7 +33,7 @@ export function ReelLayout({ project, heading, linkTitle, contactHref }: LayoutP
           return isVideo(s.file) ? (
             <Clip key={s.file.url} media={s.file} label={s.alt} className={cls} on={on} playing={on && inView && !still} />
           ) : (
-            <MediaImage key={s.file.url} media={s.file} alt={s.alt ?? ''} fill sizes={STAGE_SIZES} className={cls} aria-hidden={!on} />
+            <MediaImage key={s.file.url} media={s.file} alt={s.alt ?? ''} fill sizes={STAGE_SIZES} className={cls} aria-hidden={!on || undefined} />
           )
         })}
         <div className="fb4-cap">

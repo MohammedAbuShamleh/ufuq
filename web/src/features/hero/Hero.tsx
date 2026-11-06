@@ -132,7 +132,8 @@ export function Hero({ tagline }: { tagline: string | null }) {
 function MotionButton() {
   const { off, toggle } = useMotionToggle()
   return (
-    <button type="button" className="hx-mo" aria-label="إيقاف الحركة" aria-pressed={off} onClick={toggle}>
+    // The visible words are the name and say what a press does, so no pressed state.
+    <button type="button" className="hx-mo" onClick={toggle}>
       <span className="mo-ic" aria-hidden="true" />
       <span>{off ? 'تشغيل الحركة' : 'إيقاف الحركة'}</span>
     </button>

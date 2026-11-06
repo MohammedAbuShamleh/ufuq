@@ -32,6 +32,7 @@ export function SiteHeader() {
   const page = pageOf(path)
   const navRef = useRef<HTMLElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
+  const menuBtn = useRef<HTMLButtonElement>(null)
   const [active, setActive] = useState('top')
   const [hovered, setHovered] = useState<string | null>(null)
   const [pill, setPill] = useState<{ left: number; width: number } | null>(null)
@@ -86,6 +87,32 @@ export function SiteHeader() {
     }
   }, [])
 
+  // The open menu closes on Esc (focus back on its button), on a press
+  // anywhere outside the bar, or when the keyboard moves on past it.
+  useEffect(() => {
+    if (!open) return
+    const header = navRef.current
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      menuBtn.current?.focus()
+    }
+    const onPress = (e: PointerEvent) => {
+      if (!header?.contains(e.target as Node)) setOpen(false)
+    }
+    const onFocusOut = (e: FocusEvent) => {
+      if (e.relatedTarget && !header?.contains(e.relatedTarget as Node)) setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onPress)
+    header?.addEventListener('focusout', onFocusOut)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('pointerdown', onPress)
+      header?.removeEventListener('focusout', onFocusOut)
+    }
+  }, [open])
+
   // Measure the link the pill should sit under.
   const current = home ? active : page
   const target = hovered ?? current
@@ -109,6 +136,7 @@ export function SiteHeader() {
         <Link href="/#top" aria-label="أفق، الصفحة الرئيسية">
           <Logo className="logo-svg" />
         </Link>
+        <nav className="nav-main" aria-label="الرئيسية">
         <ul ref={listRef} id="nav-links" className={`nav-links${open ? ' open' : ''}`} onMouseLeave={() => setHovered(null)}>
           <li className={`nav-ind${pill ? ' show' : ''}`} style={pill ?? undefined} aria-hidden="true" />
           {LINKS.map(({ id, label }) => (
@@ -126,9 +154,11 @@ export function SiteHeader() {
             </li>
           ))}
         </ul>
+        </nav>
         <div className="nav-end">
           <ThemeToggle />
           <button
+            ref={menuBtn}
             type="button"
             className="icon-btn menu-btn"
             aria-label="القائمة"

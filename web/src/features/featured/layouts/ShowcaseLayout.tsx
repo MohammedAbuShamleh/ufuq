@@ -47,7 +47,7 @@ export function ShowcaseLayout({ project, heading, linkTitle, contactHref }: Lay
                 fill
                 sizes={MAIN_SIZES}
                 className={i === active ? 'fb1-m on' : 'fb1-m'}
-                aria-hidden={i !== active}
+                aria-hidden={i !== active || undefined}
               />
             ))}
             {project.has_demo_data && <DemoPill />}
