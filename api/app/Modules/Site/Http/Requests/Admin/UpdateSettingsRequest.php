@@ -2,6 +2,7 @@
 
 namespace App\Modules\Site\Http\Requests\Admin;
 
+use App\Support\TranslatedRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 /** Partial save: every key is optional, and only the keys sent change. */
@@ -20,7 +21,7 @@ class UpdateSettingsRequest extends FormRequest
     {
         $url = ['sometimes', 'nullable', 'string', 'max:255', 'url:http,https'];
 
-        return [
+        return TranslatedRules::withEnglish([
             // The site links to wa.me/<digits> as stored, so a local "059…" number would
             // open the wrong chat: the country code is required (E.164, 8 to 15 digits).
             'whatsapp_number' => ['sometimes', 'nullable', 'string', 'regex:/^\+?[1-9]\d{7,14}$/'],
@@ -39,12 +40,12 @@ class UpdateSettingsRequest extends FormRequest
             'privacy_policy.ar.*.paragraphs' => ['required', 'list', 'min:1', 'max:30'],
             'privacy_policy.ar.*.paragraphs.*' => ['required', 'string', 'max:3000'],
             'privacy_is_draft' => ['sometimes', 'boolean'],
-        ];
+        ]);
     }
 
     public function attributes(): array
     {
-        return [
+        return TranslatedRules::labels([
             'whatsapp_number' => 'رقم واتساب',
             'booking_url' => 'رابط حجز الجلسة',
             'contact_email' => 'بريد التواصل',
@@ -61,13 +62,14 @@ class UpdateSettingsRequest extends FormRequest
             'privacy_policy.ar.*.paragraphs' => 'فقرات القسم',
             'privacy_policy.ar.*.paragraphs.*' => 'الفقرة',
             'privacy_is_draft' => 'سياسة الخصوصية مسودة',
-        ];
+        ]);
     }
 
     public function messages(): array
     {
         return [
             'whatsapp_number.regex' => 'اكتب رقم واتساب بالصيغة الدولية: رمز الدولة ثم الرقم دون الصفر الأول، مثل 970599123456.',
+            ...TranslatedRules::messages(),
         ];
     }
 }

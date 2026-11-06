@@ -5,6 +5,7 @@ namespace App\Modules\Site\Services;
 use App\Modules\Site\Enums\SettingKey;
 use App\Modules\Site\Models\Faq;
 use App\Modules\Site\Models\Setting;
+use App\Support\Translations;
 use Illuminate\Database\Eloquent\Collection;
 
 class SiteSettings
@@ -26,6 +27,6 @@ class SiteSettings
     /** @return Collection<int, Faq> */
     public function faqs(): Collection
     {
-        return Faq::visible()->orderBy('sort_order')->get();
+        return Translations::shown(Faq::visible()->orderBy('sort_order')->get(), Faq::REQUIRED_TEXT);
     }
 }

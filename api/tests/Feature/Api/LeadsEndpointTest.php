@@ -104,4 +104,27 @@ class LeadsEndpointTest extends TestCase
 
         $this->assertSame(LeadStatus::New, Lead::sole()->status);
     }
+
+    public function test_a_message_from_the_english_site_is_marked_english(): void
+    {
+        $this->postJson('/v1/leads', ['name' => 'Sam', 'contact' => 'sam@example.com', 'locale' => 'en'])->assertCreated();
+        $this->postJson('/v1/leads?lang=en', ['name' => 'Lee', 'contact' => 'lee@example.com'])->assertCreated();
+        $this->postJson('/v1/leads', ['name' => 'سارة', 'contact' => 'sara@example.com', 'locale' => 'fr'])->assertCreated();
+
+        $this->assertSame(['en', 'en', 'ar'], Lead::orderBy('id')->pluck('locale')->all());
+    }
+
+    public function test_the_english_site_gets_its_errors_in_english(): void
+    {
+        $this->postJson('/v1/leads', ['name' => '', 'contact' => 'not a contact', 'locale' => 'en'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors([
+                'name' => 'Please write your name.',
+                'contact' => 'Write a valid email or phone number.',
+            ]);
+
+        $this->postJson('/v1/leads', ['name' => ''])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name' => 'اكتب اسمك.']);
+    }
 }

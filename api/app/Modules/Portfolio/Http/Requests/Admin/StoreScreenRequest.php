@@ -3,6 +3,7 @@
 namespace App\Modules\Portfolio\Http\Requests\Admin;
 
 use App\Modules\Portfolio\Enums\ScreenKind;
+use App\Support\TranslatedRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,17 +16,17 @@ class StoreScreenRequest extends FormRequest
             ? ['mimetypes:video/mp4,video/webm', 'max:61440']
             : ['mimetypes:image/jpeg,image/png,image/webp', 'max:10240'];
 
-        return [
+        return TranslatedRules::withEnglish([
             'kind' => ['required', Rule::enum(ScreenKind::class)],
             'file' => ['required', 'file', ...$file],
             'label.ar' => ['nullable', 'string', 'max:60'],
             'alt.ar' => ['required', 'string', 'max:160'],
-        ];
+        ]);
     }
 
     public function attributes(): array
     {
-        return ScreenMessages::ATTRIBUTES;
+        return TranslatedRules::labels(ScreenMessages::ATTRIBUTES);
     }
 
     public function messages(): array
@@ -37,6 +38,7 @@ class StoreScreenRequest extends FormRequest
             'file.max' => $this->input('kind') === ScreenKind::Video->value
                 ? 'حجم الفيديو أكبر من ٦٠ ميغابايت.'
                 : 'حجم الصورة أكبر من ١٠ ميغابايت.',
+            ...TranslatedRules::messages(),
         ];
     }
 }

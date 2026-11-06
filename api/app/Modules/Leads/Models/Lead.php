@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Lead extends Model
 {
     // status is deliberately not fillable: it changes only through LeadStatusService.
-    protected $fillable = ['name', 'contact', 'project_type', 'message', 'source_page', 'ip_hash'];
+    protected $fillable = ['name', 'contact', 'project_type', 'message', 'source_page', 'locale', 'ip_hash'];
 
-    protected $attributes = ['status' => 'new'];
+    protected $attributes = ['status' => 'new', 'locale' => 'ar'];
 
     protected function casts(): array
     {

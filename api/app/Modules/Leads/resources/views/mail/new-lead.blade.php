@@ -26,6 +26,12 @@
                         <td style="padding:6px 0; color:#66645D; vertical-align:top;">نوع المشروع</td>
                         <td style="padding:6px 0;">{{ $lead->project_type ?: '—' }}</td>
                     </tr>
+                    @if ($lead->locale === 'en')
+                        <tr>
+                            <td style="padding:6px 0; color:#66645D; vertical-align:top;">اللغة</td>
+                            <td style="padding:6px 0;">الإنجليزية: كتب من النسخة الإنجليزية من الموقع</td>
+                        </tr>
+                    @endif
                 </table>
             </td>
         </tr>

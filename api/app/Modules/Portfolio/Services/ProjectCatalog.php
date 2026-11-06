@@ -5,9 +5,14 @@ namespace App\Modules\Portfolio\Services;
 use App\Modules\Portfolio\Enums\ProjectSector;
 use App\Modules\Portfolio\Enums\ProjectType;
 use App\Modules\Portfolio\Models\Project;
+use App\Support\Translations;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-/** Read side of the portfolio: what the public site is allowed to see. */
+/**
+ * Read side of the portfolio: what the public site is allowed to see. Outside
+ * Arabic, a project without its text in the request's language is not there.
+ */
 class ProjectCatalog
 {
     /** Everything a featured card or a project page shows. */
@@ -19,42 +24,48 @@ class ProjectCatalog
     /** @return Collection<int, Project> */
     public function featured(): Collection
     {
-        return Project::published()
+        return Translations::shown(Project::published()
             ->where('is_featured', true)
             ->with(self::FULL)
             ->orderBy('featured_order')
-            ->get();
+            ->get(), Project::REQUIRED_TEXT);
     }
 
     /** @return Collection<int, Project> */
     public function others(): Collection
     {
-        return Project::published()
+        return Translations::shown(Project::published()
             ->where('is_featured', false)
             ->with(self::CARD)
             ->orderBy('sort_order')
-            ->get();
+            ->get(), Project::REQUIRED_TEXT);
     }
 
     /** @return Collection<int, Project> */
     public function list(?ProjectType $type = null, ?ProjectSector $sector = null): Collection
     {
-        return Project::published()
+        return Translations::shown(Project::published()
             ->when($type, fn ($query) => $query->where('type', $type))
             ->when($sector, fn ($query) => $query->where('sector', $sector))
             ->with(self::CARD)
             ->orderByDesc('is_featured')
             ->orderBy('featured_order')
             ->orderBy('sort_order')
-            ->get();
+            ->get(), Project::REQUIRED_TEXT);
     }
 
-    /** Drafts and deleted projects do not exist as far as the public site knows. */
+    /** Drafts, deleted projects and untranslated ones do not exist as far as the public site knows. */
     public function findPublishedBySlug(string $slug): Project
     {
-        return Project::published()
+        $project = Project::published()
             ->where('slug', $slug)
             ->with(self::FULL)
             ->firstOrFail();
+
+        if (! Translations::complete($project, Project::REQUIRED_TEXT)) {
+            throw (new ModelNotFoundException)->setModel(Project::class, [$slug]);
+        }
+
+        return $project;
     }
 }

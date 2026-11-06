@@ -7,6 +7,7 @@ use App\Modules\Portfolio\Enums\ProjectSector;
 use App\Modules\Portfolio\Enums\ProjectType;
 use App\Modules\Portfolio\Models\Project;
 use App\Support\Enums\PublishStatus;
+use App\Support\TranslatedRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,7 +26,7 @@ class SaveProjectRequest extends FormRequest
         /** @var Project|null $project */
         $project = $this->route('project');
 
-        return [
+        return TranslatedRules::withEnglish([
             // Soft-deleted projects keep their slug (the index is unique), so they count.
             'slug' => ['required', 'string', 'max:80', 'regex:/^[a-z0-9]+(-[a-z0-9]+)*$/', Rule::unique('projects', 'slug')->ignore($project?->id)],
             'title.ar' => ['required', 'string', 'max:120'],
@@ -57,12 +58,12 @@ class SaveProjectRequest extends FormRequest
             'highlights' => ['sometimes', 'nullable', 'list', 'max:6'],
             'highlights.*.id' => ['nullable', 'integer'],
             'highlights.*.text.ar' => ['required', 'string', 'max:200'],
-        ];
+        ]);
     }
 
     public function attributes(): array
     {
-        return [
+        return TranslatedRules::labels([
             'slug' => 'رابط المشروع',
             'title.ar' => 'اسم المشروع',
             'client_name.ar' => 'اسم العميل',
@@ -92,7 +93,7 @@ class SaveProjectRequest extends FormRequest
             'highlights' => 'النقاط',
             'highlights.*.id' => 'رقم السطر',
             'highlights.*.text.ar' => 'نص النقطة',
-        ];
+        ]);
     }
 
     public function messages(): array
@@ -103,6 +104,7 @@ class SaveProjectRequest extends FormRequest
             'country.regex' => 'رمز الدولة حرفان إنجليزيان كبيران (مثل PS).',
             'featured_layout.required_if_accepted' => 'اختر طريقة العرض: المشروع المميز يظهر في الرئيسية بها.',
             'featured_facts.max' => 'رقمان بارزان على الأكثر.',
+            ...TranslatedRules::messages(),
         ];
     }
 }

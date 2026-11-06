@@ -19,6 +19,7 @@ class ProjectCardResource extends JsonResource
     {
         return [
             'slug' => $this->slug,
+            'locales' => Translations::locales($this->resource, Project::REQUIRED_TEXT),
             'title' => $this->title,
             'client_name' => $this->client_name,
             'tag' => $this->tag,
@@ -31,19 +32,30 @@ class ProjectCardResource extends JsonResource
             'featured_layout' => $this->featured_layout?->value,
             'featured_facts' => $this->featuredFacts(),
             'has_demo_data' => $this->has_demo_data,
-            'facts' => ProjectFactResource::collection($this->whenLoaded('facts')),
-            'highlights' => $this->whenLoaded('highlights', fn () => $this->highlights->pluck('text')),
+            // Outside Arabic a fact or highlight without its text is left out, not shown empty.
+            'facts' => ProjectFactResource::collection($this->whenLoaded('facts', fn () => $this->facts->filter(fn ($fact) => filled($fact->label))->values())),
+            'highlights' => $this->whenLoaded('highlights', fn () => $this->highlights->pluck('text')->filter(fn ($text) => filled($text))->values()),
             'screens' => ProjectScreenResource::collection($this->whenLoaded('screens')),
             'cover' => $this->whenLoaded('cover', fn () => ProjectScreenResource::make($this->cover)),
         ];
     }
 
-    /** @return list<array{value: string, label: ?string}> labels in the request's locale, Arabic when missing */
+    /**
+     * Labels in the request's locale. In Arabic a missing label stays null (pending);
+     * in another language the fact is left out, as with every untranslated text.
+     *
+     * @return list<array{value: string, label: ?string}>
+     */
     private function featuredFacts(): array
     {
-        return array_map(fn (array $fact) => [
+        $locale = app()->getLocale();
+        $facts = array_map(fn (array $fact) => [
             'value' => $fact['value'],
-            'label' => $fact['label'][app()->getLocale()] ?? $fact['label'][Translations::PRIMARY] ?? null,
+            'label' => $fact['label'][$locale] ?? null,
         ], $this->featured_facts ?? []);
+
+        return $locale === Translations::PRIMARY
+            ? $facts
+            : array_values(array_filter($facts, fn (array $fact) => filled($fact['label'])));
     }
 }

@@ -10,7 +10,8 @@ use Illuminate\Support\Collection;
 
 /**
  * Every SettingKey appears, null when unset, so the site can rely on the shape.
- * Translatable values come out in the request locale; files come out as a URL.
+ * Translatable values come out in the request locale (null when that locale has
+ * none: a second language never borrows the Arabic text); files come out as a URL.
  *
  * @property Collection<string, Setting> $resource
  */
@@ -38,9 +39,7 @@ class SettingsResource extends JsonResource
         }
 
         if ($key->isTranslatable()) {
-            return $setting->value[app()->getLocale()]
-                ?? $setting->value[config('app.fallback_locale')]
-                ?? null;
+            return $setting->value[app()->getLocale()] ?? null;
         }
 
         return $setting->value;

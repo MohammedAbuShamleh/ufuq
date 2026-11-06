@@ -5,6 +5,7 @@ namespace App\Modules\Portfolio\Http\Requests\Admin;
 use App\Modules\Portfolio\Enums\ScreenKind;
 use App\Modules\Portfolio\Models\ProjectScreen;
 use App\Modules\Portfolio\Services\ScreenEditor;
+use App\Support\TranslatedRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -14,11 +15,11 @@ class UpdateScreenRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
+        return TranslatedRules::withEnglish([
             'kind' => ['sometimes', 'required', Rule::enum(ScreenKind::class)],
             'label.ar' => ['sometimes', 'nullable', 'string', 'max:60'],
             'alt.ar' => ['sometimes', 'required', 'string', 'max:160'],
-        ];
+        ]);
     }
 
     public function after(): array
@@ -39,6 +40,11 @@ class UpdateScreenRequest extends FormRequest
 
     public function attributes(): array
     {
-        return ScreenMessages::ATTRIBUTES;
+        return TranslatedRules::labels(ScreenMessages::ATTRIBUTES);
+    }
+
+    public function messages(): array
+    {
+        return TranslatedRules::messages();
     }
 }
