@@ -184,17 +184,10 @@
   height: 100%;
   width: 0;
   background: var(--rose-strong);
+  transition: width 0.4s var(--ease);
 }
 .tq-sel.on i b {
-  animation: tqFill var(--dur, 7s) linear forwards;
-}
-.tm.paused .tq-sel.on i b {
-  animation-play-state: paused;
-}
-@keyframes tqFill {
-  to {
-    width: 100%;
-  }
+  width: 100%;
 }
 
 /* ---------- The wall of organizations ---------- */
@@ -265,15 +258,9 @@
   .tq .w {
     filter: none;
   }
-  .tq-sel.on i b {
-    width: 100%;
-  }
 }
 html.motion-off .tq .w {
   filter: none;
-}
-html.motion-off .tq-sel.on i b {
-  width: 100%;
 }
 
 @media (max-width: 760px) {

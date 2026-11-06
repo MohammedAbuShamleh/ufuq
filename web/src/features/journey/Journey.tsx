@@ -1,12 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { ArchClip } from '@/components/ArchClip'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
-import { useInView } from '@/hooks/useInView'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
 import './journey.css'
 
 // Where the camera looks in the road picture at each step.
@@ -38,26 +36,13 @@ const STEPS = [
 ]
 
 const ORDINALS = ['١', '٢', '٣', '٤']
-const ADVANCE_MS = 4200
-
 /**
- * «ماذا يحدث بعدها؟»: four steps that advance by themselves while the section
- * is on screen, the camera moving along the road with them. The page scrolls
- * freely; a click on a step takes over and stops the auto-advance.
+ * «ماذا يحدث بعدها؟»: four steps, the camera moving along the road to the one
+ * the visitor opens. Nothing advances by itself.
  */
 export function Journey() {
-  const ref = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
-  const [chosen, setChosen] = useState(false)
   const [caption, setCaption] = useState(0)
-  const visible = useInView(ref, { threshold: 0.45 })
-  const still = useReducedMotion()
-
-  useEffect(() => {
-    if (chosen || !visible || still) return
-    const t = setTimeout(() => setActive((i) => (i + 1) % STEPS.length), ADVANCE_MS)
-    return () => clearTimeout(t)
-  }, [active, chosen, visible, still])
 
   // The caption fades out, changes, and fades back in.
   useEffect(() => {
@@ -69,7 +54,7 @@ export function Journey() {
   const progress = active / (STEPS.length - 1)
 
   return (
-    <section ref={ref} className="nx3" id="next" aria-labelledby="nx-title">
+    <section className="nx3" id="next" aria-labelledby="nx-title">
       <div className="wrap nx3-stick">
         <figure className="nx3-photo">
           <ArchClip className="nx3-clip">
@@ -82,7 +67,7 @@ export function Journey() {
               style={{ '--ox': view.x, '--oy': view.y, '--zs': view.zoom } as CSSProperties}
             />
           </ArchClip>
-          <figcaption className={`nx3-cap${caption === active ? '' : ' swap'}`} aria-live="polite">
+          <figcaption className={`nx3-cap${caption === active ? '' : ' swap'}`}>
             {ORDINALS[caption]} من {ORDINALS[STEPS.length - 1]} · {STEPS[caption].title}
           </figcaption>
           <div className="nx3-prog" aria-hidden="true">
@@ -111,10 +96,7 @@ export function Journey() {
                     className="nx3-head"
                     aria-expanded={i === active}
                     aria-controls={`nx3-det-${i}`}
-                    onClick={() => {
-                      setChosen(true)
-                      setActive(i)
-                    }}
+                    onClick={() => setActive(i)}
                   >
                     <span className="nx-n">{ORDINALS[i]}</span>
                     <span className="nx3-t">{s.title}</span>

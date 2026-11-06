@@ -1,14 +1,10 @@
 'use client'
 
-import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { Fragment, useEffect, useState, type CSSProperties } from 'react'
 import { Kicker } from '@/components/Kicker'
-import { useInView } from '@/hooks/useInView'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { isPending, isShown, SHOW_PENDING } from '@/lib/format'
 import type { Client, Testimonial } from '@/lib/types'
 import './voices.css'
-
-const DURATION = 7000
 
 /** The letter in the avatar: the organization's name without its kind (مدرسة، جمعية…) or «ال». */
 function initial(organization: string) {
@@ -17,32 +13,22 @@ function initial(organization: string) {
 }
 
 /**
- * «قالوا عنّا»: one testimonial at a time, word by word, moving on every
- * seven seconds while the section is on screen. Hovering pauses it; without
- * motion it waits for a click. Then the wall of organizations we work with.
+ * «قالوا عنّا»: one testimonial at a time, word by word; the visitor picks the
+ * next one (nothing turns by itself, so a screen reader is never interrupted).
+ * Then the wall of organizations we work with.
  */
 export function Voices({ testimonials: all, clients }: { testimonials: Testimonial[]; clients: Client[] }) {
   // A testimonial still waiting for its text or its author stays off the live site.
   const testimonials = SHOW_PENDING ? all : all.filter((t) => !isPending(t.quote) && !isPending(t.author_name))
-  const ref = useRef<HTMLElement>(null)
   const [current, setCurrent] = useState(0)
   const [leaving, setLeaving] = useState<number | null>(null)
-  const [hover, setHover] = useState(false)
-  // Bumps on every change so the progress bar restarts even on the same tab.
-  const [round, setRound] = useState(0)
-  const visible = useInView(ref, { threshold: 0.3 })
-  const still = useReducedMotion()
   const draft = testimonials.some((t) => isPending(t.quote) || isPending(t.author_name))
 
-  const show = useCallback(
-    (i: number) => {
-      setRound((r) => r + 1)
-      if (i === current) return
-      setLeaving(current)
-      setCurrent(i)
-    },
-    [current],
-  )
+  const show = (i: number) => {
+    if (i === current) return
+    setLeaving(current)
+    setCurrent(i)
+  }
 
   useEffect(() => {
     if (leaving === null) return
@@ -50,27 +36,12 @@ export function Voices({ testimonials: all, clients }: { testimonials: Testimoni
     return () => clearTimeout(t)
   }, [leaving])
 
-  const rotating = visible && !hover && !still && testimonials.length > 1
-  useEffect(() => {
-    if (!rotating) return
-    const t = setTimeout(() => show((current + 1) % testimonials.length), DURATION)
-    return () => clearTimeout(t)
-  }, [rotating, current, round, show, testimonials.length])
-
   if (testimonials.length === 0 && clients.length === 0) return null
   // Until the first testimonial arrives the section is the wall of organizations alone.
   const quotes = testimonials.length > 0
 
   return (
-    <section
-      ref={ref}
-      className={`tm${rotating ? '' : ' paused'}`}
-      id="voices"
-      aria-labelledby="tm-title"
-      style={{ '--dur': `${DURATION}ms` } as CSSProperties}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
+    <section className="tm" id="voices" aria-labelledby="tm-title">
       <div className="wrap tm-in">
         <div className="tm-top">
           <h2 id="tm-title" className="sr-only">
@@ -90,19 +61,12 @@ export function Voices({ testimonials: all, clients }: { testimonials: Testimoni
                 <Quote key={i} testimonial={t} state={i === current ? 'on' : i === leaving ? 'out' : null} />
               ))}
             </div>
-            <div className="tm-sels" role="tablist" aria-label="شهادات العملاء">
+            <div className="tm-sels" role="group" aria-label="اختر شهادة">
               {testimonials.map((t, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === current}
-                  className={`tq-sel${i === current ? ' on' : ''}`}
-                  onClick={() => show(i)}
-                >
+                <button key={i} type="button" aria-pressed={i === current} className={`tq-sel${i === current ? ' on' : ''}`} onClick={() => show(i)}>
                   <span>{t.organization}</span>
-                  <i>
-                    <b key={i === current ? round : undefined} />
+                  <i aria-hidden="true">
+                    <b />
                   </i>
                 </button>
               ))}
