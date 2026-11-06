@@ -21,6 +21,11 @@
 .pv-text section + section {
   margin-top: 2.4rem;
 }
+/* A jump from the index lands the heading clear of the nav (the site-wide
+   section[id] rule pulls full-height sections up to the page edge instead). */
+.pv-text section[id] {
+  scroll-margin-top: 2rem;
+}
 .pv-text h2 {
   font-size: 1.3rem;
 }
@@ -34,4 +39,125 @@
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* ---------- The index beside the text (wide screens only) ---------- */
+.pv-aside {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .pv-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 68ch) auto;
+    justify-content: space-between;
+    column-gap: 4rem;
+  }
+  /* Raised into the opening, level with the kicker, so the arch stands
+     beside the title and the side of the page is not left blank. */
+  .pv-aside {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-h) + 2rem);
+    align-self: start;
+    width: 15rem;
+    margin-top: -12.5rem;
+  }
+}
+
+/* The logo's arch: a niche holding the current section's number, with a line
+   around it that fills from the right foot to the left as the text is read.
+   Smaller on short screens, so the whole index fits once it holds still. */
+.pv-arch {
+  position: relative;
+  width: min(100%, 30vh);
+}
+.pv-arch svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.pv-niche {
+  fill: var(--tint);
+}
+.pv-track,
+.pv-trace {
+  fill: none;
+}
+.pv-track {
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+.pv-trace {
+  stroke-width: 2.5;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.2s linear;
+}
+.pv-stop-a {
+  stop-color: var(--horizon-a);
+}
+.pv-stop-b {
+  stop-color: var(--horizon-b);
+}
+.pv-mark {
+  position: absolute;
+  inset: 34% 12% 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+}
+.pv-num {
+  font-size: clamp(3.4rem, 8.5vh, 4.8rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent);
+  animation: pv-num 0.45s var(--ease);
+}
+.pv-of {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+@keyframes pv-num {
+  from {
+    opacity: 0;
+    transform: translateY(0.25em);
+  }
+}
+
+.pv-toc {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+.pv-toc a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.45rem 0.9rem;
+  border-inline-start: 2px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.pv-toc a:hover {
+  color: var(--text);
+}
+.pv-toc a[aria-current] {
+  color: var(--text);
+  border-inline-start-color: var(--accent);
+}
+.pv-toc-n {
+  flex: none;
+  font-size: 0.75rem;
+}
+.pv-toc a[aria-current] .pv-toc-n {
+  color: var(--accent);
 }

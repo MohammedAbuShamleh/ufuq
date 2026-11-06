@@ -3,6 +3,7 @@ import { getSettings } from '@/lib/api'
 import { SHOW_PENDING } from '@/lib/format'
 import { pageMetadata } from '@/lib/seo'
 import { PageHero } from '../_shell/PageHero'
+import { PrivacyIndex } from './PrivacyIndex'
 import './privacy.css'
 
 export const metadata = pageMetadata({
@@ -15,7 +16,7 @@ const EMAIL = /([\w.+-]+@[\w-]+\.[\w.]+)/
 
 export default async function PrivacyPage() {
   const settings = await getSettings()
-  const sections = settings.privacy_policy ?? []
+  const sections = (settings.privacy_policy ?? []).map((s, i) => ({ ...s, id: `pv-${i + 1}` }))
 
   return (
     <>
@@ -24,11 +25,11 @@ export default async function PrivacyPage() {
           {SHOW_PENDING && settings.privacy_is_draft && <span className="pv-draft">مسودة للمراجعة</span>}
         </PageHero>
         <section className="pv-page">
-          <div className="wrap">
+          <div className="wrap pv-grid">
             <div className="pv-text">
               {SHOW_PENDING && sections.length === 0 && <p className="pending-txt">[نص سياسة الخصوصية]</p>}
               {sections.map((s) => (
-                <section key={s.heading}>
+                <section key={s.id} id={s.id}>
                   <h2>{s.heading}</h2>
                   {s.paragraphs.map((p) => (
                     <p key={p}>{withEmailLinks(p)}</p>
@@ -36,6 +37,7 @@ export default async function PrivacyPage() {
                 </section>
               ))}
             </div>
+            {sections.length > 1 && <PrivacyIndex sections={sections.map(({ id, heading }) => ({ id, heading }))} />}
           </div>
         </section>
       </main>
