@@ -8,9 +8,11 @@ import { similarHref } from '@/features/featured/similar'
 import { ProjectFacts, ProjectQuote, ProjectStory } from '@/features/project/ProjectDetails'
 import { relatedProjects } from '@/features/project/related'
 import { cardTones, WorkCard } from '@/features/work/WorkCard'
+import { href } from '@/i18n/config'
+import { getDictionary, getLocale } from '@/i18n/server'
 import { getProject, getProjects, getSettings } from '@/lib/api'
-import { pageMetadata, SITE_DESCRIPTION } from '@/lib/seo'
-import { PageCta } from '../../_shell/PageCta'
+import { pageMetadata } from '@/lib/seo'
+import { PageCta } from '../../../_shell/PageCta'
 
 // The page waits for its project rather than showing a shell first, so an
 // unpublished slug still answers with a real 404 (a streamed shell would
@@ -19,22 +21,37 @@ export const instant = false
 
 /** Every published project is built ahead; one published later renders on its first visit. */
 export async function generateStaticParams() {
-  const projects = await getProjects()
+  const projects = await getProjects(await getLocale())
   return projects.map((p) => ({ slug: p.slug }))
 }
 
-export async function generateMetadata({ params }: PageProps<'/work/[slug]'>) {
+export async function generateMetadata({ params }: PageProps<'/[lang]/work/[slug]'>) {
   const { slug } = await params
-  const project = await getProject(slug)
+  const locale = await getLocale()
+  const [t, project] = await Promise.all([getDictionary(locale), getProject(locale, slug)])
   if (!project) return {}
   // The share image is ./opengraph-image: the project's first screen.
-  return pageMetadata({ title: project.title, description: project.summary ?? SITE_DESCRIPTION, path: `/work/${project.slug}`, ownImage: true })
+  return pageMetadata({
+    locale,
+    t,
+    title: project.title,
+    description: project.summary ?? t.meta.description,
+    path: `/work/${project.slug}`,
+    ownImage: true,
+  })
 }
 
-export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>) {
+export default async function ProjectPage({ params }: PageProps<'/[lang]/work/[slug]'>) {
   const { slug } = await params
-  const [project, projects, settings] = await Promise.all([getProject(slug), getProjects(), getSettings()])
+  const locale = await getLocale()
+  const [t, project, projects, settings] = await Promise.all([
+    getDictionary(locale),
+    getProject(locale, slug),
+    getProjects(locale),
+    getSettings(locale),
+  ])
   if (!project) notFound()
+  const copy = t.project
 
   const related = relatedProjects(projects, project)
   const tones = cardTones(related)
@@ -44,12 +61,18 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
       <main id="top" className="inner project-page">
         <section className="pp-top">
           <div className="wrap">
-            <Link className="sx-go pp-back" href="/work">
-              <Arrow className="ico-arrow back" /> كل الأعمال
+            <Link className="sx-go pp-back" href={href(locale, '/work')}>
+              <Arrow className="ico-arrow back" /> {copy.back}
             </Link>
             {/* Every figure, the highlighted ones first, is listed once in ProjectFacts below,
                 so the title row here does not repeat them. */}
-            <FeaturedProject project={{ ...project, featured_facts: [] }} heading="h1" contactHref={similarHref(project.type)} />
+            <FeaturedProject
+              project={{ ...project, featured_facts: [] }}
+              heading="h1"
+              contactHref={similarHref(locale, project.type)}
+              locale={locale}
+              copy={t.layouts}
+            />
           </div>
         </section>
 
@@ -61,24 +84,24 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
           <section className="pp-more" aria-labelledby="more-title">
             <div className="wrap">
               <div className="apg-sec-head">
-                <Kicker>أعمال قريبة</Kicker>
-                <h2 id="more-title">مؤسسات تشبه هذه.</h2>
+                <Kicker>{copy.moreKicker}</Kicker>
+                <h2 id="more-title">{copy.moreTitle}</h2>
               </div>
               <div className="pjt-grid">
                 {related.map((p, i) => (
-                  <WorkCard key={p.slug} project={p} tone={tones[i]} />
+                  <WorkCard key={p.slug} project={p} tone={tones[i]} locale={locale} />
                 ))}
               </div>
-              <Link className="sx-go pj-all" href="/work">
-                كل الأعمال <Arrow />
+              <Link className="sx-go pj-all" href={href(locale, '/work')}>
+                {copy.allWork} <Arrow />
               </Link>
             </div>
           </section>
         )}
 
-        <PageCta title="مؤسستك تحتاج شيئاً مشابهاً؟ نبدأ بجلسة نسمعك فيها.">
-          <Button variant="line" href="/work">
-            كل الأعمال
+        <PageCta title={copy.cta}>
+          <Button variant="line" href={href(locale, '/work')}>
+            {copy.ctaWork}
           </Button>
         </PageCta>
       </main>

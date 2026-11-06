@@ -5,7 +5,8 @@ import { DemoPill } from '@/components/DemoPill'
 import { MediaImage } from '@/components/MediaImage'
 import { useInView } from '@/hooks/useInView'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { arNum } from '@/lib/format'
+import { fill } from '@/i18n/config'
+import { formatNumber } from '@/lib/format'
 import { isVideo } from '@/lib/media'
 import type { Media } from '@/lib/types'
 import { Meta, shown, SimilarCta, Tech, Title, type LayoutProps } from '../parts'
@@ -17,7 +18,7 @@ const STAGE_SIZES = '(max-width: 1288px) calc(100vw - 3rem), 1240px'
  * clip or screen. Only the active clip plays, and only while a third of the
  * stage is on screen and motion is allowed.
  */
-export function ReelLayout({ project, heading, linkTitle, contactHref }: LayoutProps) {
+export function ReelLayout({ project, heading, linkTitle, contactHref, locale, copy }: LayoutProps) {
   const items = shown(project.screens, (k) => k !== 'mobile')
   const [active, setActive] = useState(0)
   const stage = useRef<HTMLDivElement>(null)
@@ -41,25 +42,25 @@ export function ReelLayout({ project, heading, linkTitle, contactHref }: LayoutP
       <div className="fb4-cap">
         <div>
           <Meta project={project} />
-          <Title project={project} heading={heading} linkTitle={linkTitle} />
+          <Title project={project} heading={heading} linkTitle={linkTitle} locale={locale} />
         </div>
         {project.summary && <p>{project.summary}</p>}
       </div>
 
       <div className="fb4-bar">
         {items.length > 1 && (
-          <div className="fb4-chips" role="group" aria-label={`مقاطع ${project.title}`}>
+          <div className="fb4-chips" role="group" aria-label={fill(copy.clips, { title: project.title })}>
             {items.map((s, i) => (
               <button key={s.file.url} type="button" aria-pressed={i === active} className={i === active ? 'on' : undefined} onClick={() => setActive(i)}>
-                {s.label ?? arNum(i + 1)}
+                {s.label ?? formatNumber(locale, i + 1)}
               </button>
             ))}
           </div>
         )}
         <div className="fb-foot">
           <Tech project={project} />
-          {project.has_demo_data && <DemoPill />}
-          <SimilarCta project={project} href={contactHref} />
+          {project.has_demo_data && <DemoPill label={copy.demoData} />}
+          <SimilarCta project={project} href={contactHref} copy={copy} />
         </div>
       </div>
     </article>

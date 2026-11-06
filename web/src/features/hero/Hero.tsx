@@ -7,23 +7,17 @@ import { Button } from '@/components/Button'
 import { Kicker } from '@/components/Kicker'
 import { useMotionToggle } from '@/hooks/useMotionToggle'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
 import './hero.css'
 
-// Systems running today, named the way their users know them.
-const LIVE = [
-  { name: 'ساعد', what: 'إدارة المشاريع الإنسانية' },
-  { name: 'دار الإتقان', what: 'حلقات التحفيظ وتطبيق المحفّظين' },
-  { name: 'مدرسة شعاع', what: 'إدارة المدرسة' },
-  { name: 'رصرص', what: 'ERP · مصر' },
-  { name: 'NexaBridge', what: 'منصة منتجات · دبي' },
-]
+export type HeroCopy = Dictionary['hero'] & { startProject: string; motion: Dictionary['common']['motion'] }
 
 /**
  * The visitor walks through the arch: as the page scrolls, --p goes 0→1 and
  * the arch grows past the screen while the copy lifts away. Without motion the
  * hero is a single still screen.
  */
-export function Hero({ tagline }: { tagline: string | null }) {
+export function Hero({ tagline, copy }: { tagline: string | null; copy: HeroCopy }) {
   const ref = useRef<HTMLElement>(null)
   const still = useReducedMotion()
 
@@ -83,21 +77,22 @@ export function Hero({ tagline }: { tagline: string | null }) {
 
         <div className="hx-copy">
           <Kicker still className="hx-k">
-            أفق للبرمجيات
+            {copy.kicker}
           </Kicker>
           <h1 id="hero-title" className="hx-title">
-            <span>نبني برمجيات</span>
-            <span>تفتح أفقاً أوسع.</span>
+            {copy.title.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
           </h1>
           {tagline && <p className="hx-niche">{tagline}</p>}
         </div>
 
         <div className="hx-live">
           <span className="hx-live-t" id="hx-live-t">
-            أنظمة تعمل اليوم
+            {copy.liveTitle}
           </span>
           <ul aria-labelledby="hx-live-t">
-            {LIVE.map(({ name, what }) => (
+            {copy.live.map(({ name, what }) => (
               <li key={name}>
                 <i aria-hidden="true" />
                 <b>{name}</b>
@@ -109,21 +104,23 @@ export function Hero({ tagline }: { tagline: string | null }) {
 
         <div className="hx-side">
           <p>
-            مواقع وأنظمة <bdi dir="ltr">ERP</bdi> ومنصات، عربية من الأساس.
+            {copy.side.before}
+            <bdi dir="ltr">{copy.side.ltr}</bdi>
+            {copy.side.after}
           </p>
           <div className="hero-actions">
             <Button href="#contact" arrow>
-              ابدأ مشروعك
+              {copy.startProject}
             </Button>
             <Button href="#projects" variant="line">
-              أعمالنا
+              {copy.work}
             </Button>
           </div>
         </div>
 
-        <MotionButton />
+        <MotionButton copy={copy.motion} />
         <a className="hx-cue" href="#difference">
-          <span>مرّر لتعبر البوابة</span>
+          <span>{copy.cue}</span>
           <i />
         </a>
       </div>
@@ -131,7 +128,7 @@ export function Hero({ tagline }: { tagline: string | null }) {
   )
 }
 
-function MotionButton() {
+function MotionButton({ copy }: { copy: HeroCopy['motion'] }) {
   const { off, toggle } = useMotionToggle()
   const ref = useRef<HTMLButtonElement>(null)
 
@@ -149,7 +146,7 @@ function MotionButton() {
     // The visible words are the name and say what a press does, so no pressed state.
     <button ref={ref} type="button" className="hx-mo" data-moves-page onClick={press}>
       <span className="mo-ic" aria-hidden="true" />
-      <span>{off ? 'تشغيل الحركة' : 'إيقاف الحركة'}</span>
+      <span>{off ? copy.on : copy.off}</span>
     </button>
   )
 }

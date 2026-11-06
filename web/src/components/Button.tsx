@@ -13,7 +13,12 @@ type Common = {
   children: ReactNode
 }
 
-type AsLink = Common & Omit<ComponentProps<'a'>, 'className' | 'children' | 'href'> & { href: string | null }
+type AsLink = Common &
+  Omit<ComponentProps<'a'>, 'className' | 'children' | 'href'> & {
+    href: string | null
+    /** The placeholder's tooltip while href is null (the dictionary's common.pendingLink). */
+    pendingTitle?: string
+  }
 type AsButton = Common & Omit<ComponentProps<'button'>, 'className' | 'children'> & { href?: undefined }
 
 export function Arrow({ className = 'ico-arrow' }: { className?: string }) {
@@ -40,11 +45,11 @@ export function Button(props: AsLink | AsButton) {
   )
 
   if (rest.href !== undefined) {
-    const { href, ...anchor } = rest as Omit<AsLink, keyof Common>
+    const { href, pendingTitle, ...anchor } = rest as Omit<AsLink, keyof Common>
     if (href === null) {
       if (!SHOW_PENDING) return null
       return (
-        <span className={`${cls} pending`} title="الرابط قيد الإعداد">
+        <span className={`${cls} pending`} title={pendingTitle}>
           {body}
         </span>
       )

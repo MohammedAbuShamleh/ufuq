@@ -4,37 +4,41 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@/components/Button'
+import { href, stripLocale } from '@/i18n/config'
+import type { Dictionary, NavId } from '@/i18n/dictionaries/ar'
+import { useLocale } from '@/i18n/LocaleProvider'
 import { Logo } from './Logo'
 import { ThemeToggle } from './ThemeToggle'
 
-const LINKS = [
-  { id: 'top', label: 'الرئيسية' },
-  { id: 'projects', label: 'أعمالنا' },
-  { id: 'about', label: 'من نحن' },
-  { id: 'services', label: 'خدماتنا' },
-  { id: 'approach', label: 'طريقتنا' },
-  { id: 'contact', label: 'تواصل معنا' },
-]
+/** The home sections the header links to, in order. */
+const LINKS: NavId[] = ['top', 'projects', 'about', 'services', 'approach', 'contact']
 
 // Home sections that also have a page of their own; on that page the link marks it.
-const PAGES: Record<string, string> = { projects: '/work', about: '/about' }
+// Paths without the language prefix (see stripLocale).
+const PAGES: Partial<Record<NavId, string>> = { projects: '/work', about: '/about' }
 const pageOf = (path: string) =>
-  Object.keys(PAGES).find((id) => path === PAGES[id] || path.startsWith(`${PAGES[id]}/`)) ?? null
+  LINKS.find((id) => {
+    const page = PAGES[id]
+    return page !== undefined && (path === page || path.startsWith(`${page}/`))
+  }) ?? null
+
+type Copy = { nav: Dictionary['nav']; logo: string; startProject: string }
 
 /**
  * The floating capsule: a pill slides under the section in view (or, away
  * from home, the page you are on, or the link under the pointer), and the bar
  * tucks away while the visitor reads downward.
  */
-export function SiteHeader() {
-  const path = usePathname()
+export function SiteHeader({ copy }: { copy: Copy }) {
+  const { locale } = useLocale()
+  const path = stripLocale(usePathname())
   const home = path === '/'
   const page = pageOf(path)
   const navRef = useRef<HTMLElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
   const menuBtn = useRef<HTMLButtonElement>(null)
-  const [active, setActive] = useState('top')
-  const [hovered, setHovered] = useState<string | null>(null)
+  const [active, setActive] = useState<NavId>('top')
+  const [hovered, setHovered] = useState<NavId | null>(null)
   const [pill, setPill] = useState<{ left: number; width: number } | null>(null)
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -50,12 +54,12 @@ export function SiteHeader() {
           if (e.isIntersecting) showing.add(e.target.id)
           else showing.delete(e.target.id)
         }
-        const current = LINKS.findLast((l) => showing.has(l.id))
-        setActive(current?.id ?? 'top')
+        const current = LINKS.findLast((id) => showing.has(id))
+        setActive(current ?? 'top')
       },
       { rootMargin: '-45% 0px -50% 0px' },
     )
-    for (const { id } of LINKS.slice(1)) {
+    for (const id of LINKS.slice(1)) {
       const el = document.getElementById(id)
       if (el) io.observe(el)
     }
@@ -133,35 +137,35 @@ export function SiteHeader() {
   return (
     <header ref={navRef} className={`nav${scrolled ? ' scrolled' : ''}${hidden && !open ? ' hide' : ''}`}>
       <div className="wrap nav-in">
-        <Link href="/#top" aria-label="أفق، الصفحة الرئيسية">
-          <Logo className="logo-svg" />
+        <Link href={href(locale, '/#top')} aria-label={copy.nav.home}>
+          <Logo className="logo-svg" label={copy.logo} />
         </Link>
-        <nav className="nav-main" aria-label="الرئيسية">
+        <nav className="nav-main" aria-label={copy.nav.label}>
         <ul ref={listRef} id="nav-links" className={`nav-links${open ? ' open' : ''}`} onMouseLeave={() => setHovered(null)}>
           <li className={`nav-ind${pill ? ' show' : ''}`} style={pill ?? undefined} aria-hidden="true" />
-          {LINKS.map(({ id, label }) => (
+          {LINKS.map((id) => (
             <li key={id}>
               <Link
-                href={!home && page === id ? PAGES[id] : `/#${id}`}
+                href={href(locale, !home && page === id ? PAGES[id]! : `/#${id}`)}
                 data-id={id}
                 className={current === id ? 'on' : undefined}
                 aria-current={current === id ? (home ? 'location' : 'page') : undefined}
                 onMouseEnter={() => setHovered(id)}
                 onClick={() => setOpen(false)}
               >
-                {label}
+                {copy.nav.links[id]}
               </Link>
             </li>
           ))}
         </ul>
         </nav>
         <div className="nav-end">
-          <ThemeToggle />
+          <ThemeToggle label={copy.nav.theme} />
           <button
             ref={menuBtn}
             type="button"
             className="icon-btn menu-btn"
-            aria-label="القائمة"
+            aria-label={copy.nav.menu}
             aria-expanded={open}
             aria-controls="nav-links"
             onClick={() => setOpen((o) => !o)}
@@ -170,8 +174,8 @@ export function SiteHeader() {
               <path d="M4 7h16M4 12h16M4 17h10" />
             </svg>
           </button>
-          <Button href="/#contact" arrow>
-            ابدأ مشروعك
+          <Button href={href(locale, '/#contact')} arrow>
+            {copy.startProject}
           </Button>
         </div>
       </div>

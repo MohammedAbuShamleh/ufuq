@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { DEFAULT_LOCALE } from '@/i18n/config'
 import { getProjects } from '@/lib/api'
 import { SITE_URL } from '@/lib/seo'
 
@@ -8,7 +9,9 @@ import { SITE_URL } from '@/lib/seo'
  * content changed, and a made-up date is worse than none.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const projects = await getProjects()
+  // A route handler: it cannot read the [lang] segment, so it names the language.
+  // These are the Arabic addresses (no prefix).
+  const projects = await getProjects(DEFAULT_LOCALE)
   const page = (path: string, priority: number) => ({ url: new URL(path, SITE_URL).href, priority })
 
   return [

@@ -20,7 +20,7 @@ type View = 'deck' | 'grid'
  * the heading lays them out as the plain grid instead, and back. Without motion
  * the rules stay a grid, the button is hidden and nothing here runs.
  */
-export function RuleDeck({ head, children }: { head: ReactNode; children: ReactNode }) {
+export function RuleDeck({ head, copy, children }: { head: ReactNode; copy: { grid: string; deck: string }; children: ReactNode }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const ref = useRef<HTMLOListElement>(null)
   const refresh = useRef<() => void>(null)
@@ -134,7 +134,7 @@ export function RuleDeck({ head, children }: { head: ReactNode; children: ReactN
               <path d="M4 2.5h8M3 5h10M2.5 7.5h11v6h-11z" />
             )}
           </svg>
-          <span>{view === 'deck' ? 'عرض الكل معاً' : 'عرضها بطاقةً بطاقة'}</span>
+          <span>{view === 'deck' ? copy.grid : copy.deck}</span>
         </button>
       </div>
       <ol ref={ref} className="apc-grid" style={{ '--n': Children.count(children) } as CSSProperties}>

@@ -2,11 +2,17 @@
 
 import { Fragment, useEffect, useState, type CSSProperties } from 'react'
 import { Kicker } from '@/components/Kicker'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
 import { isPending, isShown, SHOW_PENDING } from '@/lib/format'
 import type { Client, Testimonial } from '@/lib/types'
 import './voices.css'
 
-/** The letter in the avatar: the organization's name without its kind (مدرسة، جمعية…) or «ال». */
+type Copy = Dictionary['voices']
+
+/**
+ * The letter in the avatar: the organization's name without its kind (مدرسة، جمعية…) or «ال».
+ * These are rules for Arabic names; a name in another script keeps its first letter.
+ */
 function initial(organization: string) {
   const name = organization.replace(/^(مدرسة|دار|جمعية|وزارة|شركة)\s+/, '').replace(/^ال/, '')
   return name.charAt(0)
@@ -17,7 +23,7 @@ function initial(organization: string) {
  * next one (nothing turns by itself, so a screen reader is never interrupted).
  * Then the wall of organizations we work with.
  */
-export function Voices({ testimonials: all, clients }: { testimonials: Testimonial[]; clients: Client[] }) {
+export function Voices({ testimonials: all, clients, copy }: { testimonials: Testimonial[]; clients: Client[]; copy: Copy }) {
   // A testimonial still waiting for its text or its author stays off the live site.
   const testimonials = SHOW_PENDING ? all : all.filter((t) => !isPending(t.quote) && !isPending(t.author_name))
   const [current, setCurrent] = useState(0)
@@ -45,10 +51,10 @@ export function Voices({ testimonials: all, clients }: { testimonials: Testimoni
       <div className="wrap tm-in">
         <div className="tm-top">
           <h2 id="tm-title" className="sr-only">
-            {quotes ? 'قالوا عنّا: شهادات من يستخدم أنظمتنا' : 'مؤسسات تعمل فيها أنظمتنا'}
+            {quotes ? copy.quotesTitle : copy.clientsTitle}
           </h2>
-          <Kicker>{quotes ? 'قالوا عنّا' : 'من نعمل معهم'}</Kicker>
-          {draft && <span className="tm-draft">مسودة · بانتظار نصوص العملاء</span>}
+          <Kicker>{quotes ? copy.quotesKicker : copy.clientsKicker}</Kicker>
+          {draft && <span className="tm-draft">{copy.draft}</span>}
         </div>
 
         {quotes && (
@@ -58,10 +64,10 @@ export function Voices({ testimonials: all, clients }: { testimonials: Testimoni
                 ”
               </span>
               {testimonials.map((t, i) => (
-                <Quote key={i} testimonial={t} state={i === current ? 'on' : i === leaving ? 'out' : null} />
+                <Quote key={i} testimonial={t} state={i === current ? 'on' : i === leaving ? 'out' : null} copy={copy} />
               ))}
             </div>
-            <div className="tm-sels" role="group" aria-label="اختر شهادة">
+            <div className="tm-sels" role="group" aria-label={copy.pick}>
               {testimonials.map((t, i) => (
                 <button key={i} type="button" aria-pressed={i === current} className={`tq-sel${i === current ? ' on' : ''}`} onClick={() => show(i)}>
                   <span>{t.organization}</span>
@@ -77,7 +83,7 @@ export function Voices({ testimonials: all, clients }: { testimonials: Testimoni
 
       {clients.length > 0 && (
         <div className="wrap cw">
-          {quotes && <span className="cw-t">مؤسسات تعمل فيها أنظمتنا</span>}
+          {quotes && <span className="cw-t">{copy.wall}</span>}
           <ul className="cw-grid">
             {clients.map((c) => (
               <li key={c.name}>
@@ -94,8 +100,8 @@ export function Voices({ testimonials: all, clients }: { testimonials: Testimoni
   )
 }
 
-function Quote({ testimonial: t, state }: { testimonial: Testimonial; state: 'on' | 'out' | null }) {
-  const quote = t.quote ?? '[نص الشهادة]'
+function Quote({ testimonial: t, state, copy }: { testimonial: Testimonial; state: 'on' | 'out' | null; copy: Copy }) {
+  const quote = t.quote ?? copy.quotePending
   return (
     <figure className={`tq${state ? ` ${state}` : ''}`} aria-hidden={state !== 'on'}>
       <blockquote aria-label={quote}>
@@ -113,9 +119,9 @@ function Quote({ testimonial: t, state }: { testimonial: Testimonial; state: 'on
           {initial(t.organization)}
         </span>
         <span>
-          <b>{t.author_name ?? '[الاسم]'}</b>
+          <b>{t.author_name ?? copy.namePending}</b>
           <small>
-            {isShown(t.author_title) && <>{t.author_title ?? '[المنصب]'} · </>}
+            {isShown(t.author_title) && <>{t.author_title ?? copy.rolePending} · </>}
             {t.organization}
           </small>
         </span>

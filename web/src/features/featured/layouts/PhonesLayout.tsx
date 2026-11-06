@@ -9,14 +9,14 @@ const SIZES = '(max-width: 960px) 31vw, 240px'
  * Dar Al-Itqan: a dark band across the page with the app's first three phone
  * screens, the middle one larger, each captioned.
  */
-export function PhonesLayout({ project, heading, linkTitle, contactHref }: LayoutProps) {
+export function PhonesLayout({ project, heading, linkTitle, contactHref, locale, copy }: LayoutProps) {
   const phones = shown(project.screens, (k) => k === 'mobile').slice(0, PHONES)
 
   return (
     <article className="fb fb2">
       <div className="fb2-copy">
         <Meta project={project} />
-        <Title project={project} heading={heading} linkTitle={linkTitle} />
+        <Title project={project} heading={heading} linkTitle={linkTitle} locale={locale} />
         {project.summary && <p>{project.summary}</p>}
       </div>
 
@@ -35,8 +35,8 @@ export function PhonesLayout({ project, heading, linkTitle, contactHref }: Layou
 
       <div className="fb-foot fb2-foot">
         <Tech project={project} />
-        {project.has_demo_data && <DemoPill />}
-        <SimilarCta project={project} href={contactHref} />
+        {project.has_demo_data && <DemoPill label={copy.demoData} />}
+        <SimilarCta project={project} href={contactHref} copy={copy} />
       </div>
     </article>
   )
