@@ -174,7 +174,7 @@
   transition: color 0.35s;
 }
 .nx3-step.on .nx-n {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--on-accent);
   transform: scale(1.08);
 }

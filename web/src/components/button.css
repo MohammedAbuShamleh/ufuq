@@ -22,13 +22,13 @@
   font-size: 0.88rem;
 }
 .btn-primary {
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--on-accent);
 }
 .btn-primary:hover {
-  background: var(--accent-hover);
+  background: var(--accent-fill-hover);
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--accent-fill) 70%, transparent);
 }
 .btn-line {
   border-color: var(--accent);
@@ -36,7 +36,8 @@
   background: transparent;
 }
 .btn-line:hover {
-  background: var(--accent);
+  border-color: var(--accent-fill);
+  background: var(--accent-fill);
   color: var(--on-accent);
 }
 .btn-wa {

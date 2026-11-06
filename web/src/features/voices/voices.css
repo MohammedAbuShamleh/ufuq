@@ -130,7 +130,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   color: var(--on-accent);
-  background: linear-gradient(90deg, var(--accent) 50%, var(--olive) 50%);
+  background: linear-gradient(90deg, var(--accent-fill) 50%, var(--olive) 50%);
 }
 .tq figcaption b {
   display: block;

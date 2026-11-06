@@ -36,6 +36,10 @@
   --line: #e9e7e3;
   --accent: #a3463d;
   --accent-hover: #913b32;
+  /* Behind light text (buttons, the active step). One colour with --accent in
+     light mode; in dark mode --accent lightens for text and this stays deep. */
+  --accent-fill: #a3463d;
+  --accent-fill-hover: #913b32;
   --on-accent: #fbf8f3;
   --icon-bg: #f8f0ef;
   --deep: #4e4c34;
@@ -122,8 +126,10 @@
     --text: #eee8dd;
     --muted: #a9a595;
     --line: #2c2f35;
-    --accent: #c4564a;
-    --accent-hover: #d46a5e;
+    --accent: #d9705f;
+    --accent-hover: #e07a6e;
+    --accent-fill: #b54b40;
+    --accent-fill-hover: #a3463d;
     --icon-bg: #2b2122;
     --deep: #2a2a1f;
     --mark-a: #c4564a;
@@ -156,8 +162,10 @@
   --text: #eee8dd;
   --muted: #a9a595;
   --line: #2c2f35;
-  --accent: #c4564a;
-  --accent-hover: #d46a5e;
+  --accent: #d9705f;
+  --accent-hover: #e07a6e;
+  --accent-fill: #b54b40;
+  --accent-fill-hover: #a3463d;
   --icon-bg: #2b2122;
   --deep: #2a2a1f;
   --mark-a: #c4564a;
@@ -277,7 +285,7 @@
     border-radius: 6px;
   }
   ::selection {
-    background: var(--accent);
+    background: var(--accent-fill);
     color: var(--on-accent);
   }
 }
