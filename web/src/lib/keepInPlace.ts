@@ -13,13 +13,14 @@ import { flushSync } from 'react-dom'
 export function keepInPlace(pressed: Element, closing: Element | null | undefined, change: () => void) {
   const y = pressed.getBoundingClientRect().top
   const visibleTop = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
-  const hold = closing instanceof HTMLElement && closing !== pressed && closing.getBoundingClientRect().top < Math.min(y, visibleTop)
+  const hold = closing && closing !== pressed && closing.getBoundingClientRect().top < Math.min(y, visibleTop)
   if (!hold) return change()
 
-  closing.classList.add('no-glide')
   flushSync(change)
+  // Reading the layout starts the closing item's transitions; jumping them to
+  // their end closes it now. (Its classes belong to React, so a class that
+  // turned the transitions off would be gone by the time it mattered.)
+  closing.getBoundingClientRect()
+  for (const run of closing.getAnimations({ subtree: true })) if (run instanceof CSSTransition) run.finish()
   scrollBy({ top: pressed.getBoundingClientRect().top - y, behavior: 'instant' })
-  // The collapse was measured above with no transition, so it is done; lifting
-  // the class now changes nothing the eye can see.
-  closing.classList.remove('no-glide')
 }
