@@ -201,6 +201,20 @@ The seed loads the v7 content once; it skips any table that already has rows, be
 after launch the dashboard owns the content. Image uploads need PHP's GD or Imagick
 extension to build the webp sizes.
 
+English drafts of that content come from a separate seeder, run after the main seed
+(on the server too):
+
+```bash
+cd api && php artisan db:seed --class=EnglishDraftSeeder
+```
+
+It writes English only where none exists, so running it again changes nothing and never
+replaces English written in the dashboard. Drafts are matched to the exact Arabic in
+`database/seeders/data/english-drafts.php`. An item whose Arabic was edited since gets
+no English, stays off `/en`, and the run lists its text. The drafts are for the team to
+review in the dashboard's English tab. The privacy policy is a legal text, so a person
+must check its English before launch.
+
 ```bash
 cd web && npm install && cp .env.example .env.local && npm run dev
 ```
