@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { fill } from '@/i18n/config'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
 import { isPending, isShown } from '@/lib/format'
 import { imgAttrs } from '@/lib/media'
 import type { TeamMember } from '@/lib/types'
@@ -15,7 +17,9 @@ const TEAM_SIZES = '(max-width: 760px) 33vw, 200px'
  * shoulders up, then the rest of the team in a smaller row. Photos are grey
  * and turn to colour, with the name and role, when pressed.
  */
-export function TeamCards({ team }: { team: TeamMember[] }) {
+type Copy = Dictionary['team']
+
+export function TeamCards({ team, copy }: { team: TeamMember[]; copy: Copy }) {
   const founders = team.filter((m) => m.is_founder)
   // On the live site a teammate whose name has not arrived yet is left out.
   const rest = team.filter((m) => !m.is_founder && isShown(m.name))
@@ -26,16 +30,16 @@ export function TeamCards({ team }: { team: TeamMember[] }) {
       {founders.length > 0 && (
         <div className="tm-founders">
           {founders.map((m, i) => (
-            <TeamCard key={i} member={m} sign={null} sizes={FOUNDER_SIZES} />
+            <TeamCard key={i} member={m} sign={null} sizes={FOUNDER_SIZES} copy={copy} />
           ))}
         </div>
       )}
       {rest.length > 0 && (
         <>
-          <h3 className="tm-team-head">فريق العمل</h3>
+          <h3 className="tm-team-head">{copy.teamHead}</h3>
           <div className="tm-team">
             {rest.map((m, i) => (
-              <TeamCard key={i} member={m} sign={m.photo ? null : SIGNS[sign++ % SIGNS.length]} sizes={TEAM_SIZES} />
+              <TeamCard key={i} member={m} sign={m.photo ? null : SIGNS[sign++ % SIGNS.length]} sizes={TEAM_SIZES} copy={copy} />
             ))}
           </div>
         </>
@@ -44,10 +48,10 @@ export function TeamCards({ team }: { team: TeamMember[] }) {
   )
 }
 
-function TeamCard({ member, sign, sizes }: { member: TeamMember; sign: string | null; sizes: string }) {
+function TeamCard({ member, sign, sizes, copy }: { member: TeamMember; sign: string | null; sizes: string; copy: Copy }) {
   const [on, setOn] = useState(false)
   // A founder whose role has not arrived yet is still «شريك مؤسس» on the live site.
-  const role = member.is_founder ? (isShown(member.role) ? `شريك مؤسس · ${member.role}` : 'شريك مؤسس') : member.role
+  const role = member.is_founder ? (isShown(member.role) ? fill(copy.founderRole, { role: member.role }) : copy.founder) : member.role
   const rolePending = isShown(member.role) && isPending(member.role)
 
   return (
@@ -61,12 +65,12 @@ function TeamCard({ member, sign, sizes }: { member: TeamMember; sign: string | 
             <span className="tmc-init" aria-hidden="true">
               {sign}
             </span>
-            <span className="tmc-soon">الصورة قريباً</span>
+            <span className="tmc-soon">{copy.photoSoon}</span>
           </>
         )}
       </span>
       <span className="tmc-hint" aria-hidden="true">
-        اضغط للتعرّف
+        {copy.hint}
       </span>
       <span className="tmc-info">
         <b className={isPending(member.name) ? 'pending-txt' : undefined}>{member.name}</b>

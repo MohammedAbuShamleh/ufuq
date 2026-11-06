@@ -1,8 +1,11 @@
 'use client'
 
 import { useEffect, useId, useRef, useState } from 'react'
+import { fillNodes } from '@/i18n/config'
+import { useLocale } from '@/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/format'
 
-const twoDigits = new Intl.NumberFormat('ar-u-nu-arab', { minimumIntegerDigits: 2, useGrouping: false })
+const TWO_DIGITS = { minimumIntegerDigits: 2, useGrouping: false }
 
 // The logo's arch as one open line, from the foot of the right side, over the
 // point, down to the foot of the left: the direction an Arabic line reads.
@@ -15,7 +18,9 @@ const NICHE = 'M186 260V122.8C186 64.5 137.8 30.6 100 15.6 62.2 30.6 14 64.5 14 
  * been read, the number inside names the section at the reading line, and the
  * list under it jumps to any section.
  */
-export function PrivacyIndex({ sections }: { sections: { id: string; heading: string }[] }) {
+export function PrivacyIndex({ sections, copy }: { sections: { id: string; heading: string }[]; copy: { label: string; of: string } }) {
+  const { locale } = useLocale()
+  const two = (n: number) => formatNumber(locale, n, TWO_DIGITS)
   const [current, setCurrent] = useState(0)
   const trace = useRef<SVGPathElement>(null)
   const gradient = useId()
@@ -58,7 +63,7 @@ export function PrivacyIndex({ sections }: { sections: { id: string; heading: st
   }, [sections])
 
   return (
-    <nav className="pv-aside" aria-label="أقسام السياسة">
+    <nav className="pv-aside" aria-label={copy.label}>
       <div className="pv-arch" aria-hidden="true">
         <svg viewBox="-3 -3 206 266">
           <defs>
@@ -73,16 +78,16 @@ export function PrivacyIndex({ sections }: { sections: { id: string; heading: st
         </svg>
         <div className="pv-mark">
           <span key={current} className="pv-num">
-            {twoDigits.format(current + 1)}
+            {two(current + 1)}
           </span>
-          <span className="pv-of">من {twoDigits.format(sections.length)}</span>
+          <span className="pv-of">{fillNodes(copy.of, { total: two(sections.length) })}</span>
         </div>
       </div>
       <ol className="pv-toc">
         {sections.map((s, i) => (
           <li key={s.id}>
             <a href={`#${s.id}`} aria-current={i === current ? 'location' : undefined}>
-              <span className="pv-toc-n">{twoDigits.format(i + 1)}</span>
+              <span className="pv-toc-n">{two(i + 1)}</span>
               {s.heading}
             </a>
           </li>

@@ -1,5 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
+import { fillNodes } from '@/i18n/config'
+import { getDictionary, getLocale } from '@/i18n/server'
 import type { FeaturedLayout, FeaturedProject as Project } from '@/lib/types'
 import { PhonesLayout } from './layouts/PhonesLayout'
 import { ReelLayout } from './layouts/ReelLayout'
@@ -15,8 +17,6 @@ const LAYOUTS: Record<FeaturedLayout, ComponentType<LayoutProps>> = {
   sheet: SheetLayout,
   reel: ReelLayout,
 }
-
-const HOW_MANY: Record<number, string> = { 2: 'منظومتان', 3: 'ثلاث منظومات', 4: 'أربع منظومات', 5: 'خمس منظومات', 6: 'ست منظومات' }
 
 /**
  * A project drawn in its own layout. A project page for one that is not
@@ -34,20 +34,23 @@ export function FeaturedProject(props: LayoutProps) {
  * «أعمالنا»: the featured systems, each as it is used; the rest of the work
  * follows as children. The giant word stands in for the section's kicker.
  */
-export function FeaturedProjects({ projects, children }: { projects: Project[]; children?: ReactNode }) {
+export async function FeaturedProjects({ projects, children }: { projects: Project[]; children?: ReactNode }) {
+  const locale = await getLocale()
+  const t = await getDictionary(locale)
+  const copy = t.featured
   return (
     <section className="projects" id="projects" aria-labelledby="pj-title">
-      <WordStage word="أعمالنا">
+      <WordStage word={copy.word}>
         <div className="wrap">
           <div className="pj-head">
             <div>
-              <Reveal as="h2" id="pj-title" words={['أنظمة تعمل اليوم', 'في مؤسسات حقيقية.']} />
+              <Reveal as="h2" id="pj-title" words={copy.title} />
             </div>
-            <p className="muted">{HOW_MANY[projects.length] ?? 'منظومات مختارة'} من بين ما بنيناه، كلٌّ منها كما يُستخدم فعلاً.</p>
+            <p className="muted">{fillNodes(copy.lead, { count: copy.howMany[projects.length] ?? copy.someSystems })}</p>
           </div>
           <div className="fbw">
             {projects.map((p) => (
-              <FeaturedProject key={p.slug} project={p} heading="h3" linkTitle contactHref="#contact" />
+              <FeaturedProject key={p.slug} project={p} heading="h3" linkTitle contactHref="#contact" locale={locale} copy={t.layouts} />
             ))}
           </div>
         </div>

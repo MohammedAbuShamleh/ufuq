@@ -1,11 +1,20 @@
-// Arabic-Indic digits everywhere the visitor reads a number (٥٠، ٨٨، ٢٠٢٢).
-const counts = new Intl.NumberFormat('ar-u-nu-arab')
-const plain = new Intl.NumberFormat('ar-u-nu-arab', { useGrouping: false })
+import type { Locale } from '@/i18n/config'
 
-export const arNum = (n: number) => counts.format(n)
+// Arabic-Indic digits wherever an Arabic page shows a number (٥٠، ٨٨، ٢٠٢٢);
+// Western digits in English.
+const NUMBERING: Record<Locale, string> = { ar: 'ar-u-nu-arab', en: 'en' }
+const formats = new Map<string, Intl.NumberFormat>()
+
+/** A count in the page's digits, grouped (٢٬٠٢٢). `options` for other shapes, such as two digits (٠٧). */
+export function formatNumber(locale: Locale, n: number, options?: Intl.NumberFormatOptions) {
+  const key = `${locale}${JSON.stringify(options ?? {})}`
+  let format = formats.get(key)
+  if (!format) formats.set(key, (format = new Intl.NumberFormat(NUMBERING[locale], options)))
+  return format.format(n)
+}
 
 /** Years and codes: no thousands separator (٢٠٢٢, not ٢٬٠٢٢). */
-export const arYear = (n: number) => plain.format(n)
+export const formatYear = (locale: Locale, n: number) => formatNumber(locale, n, { useGrouping: false })
 
 /** Content still waiting for real text: null, or a [bracketed] placeholder. */
 export const isPending = (text: string | null | undefined): text is null | undefined | `[${string}]` =>

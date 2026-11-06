@@ -1,33 +1,36 @@
 import { SupportStrip } from '@/features/contact/SupportStrip'
+import { getDictionary, getLocale } from '@/i18n/server'
 import { getSettings } from '@/lib/api'
 import { SHOW_PENDING } from '@/lib/format'
 import { pageMetadata } from '@/lib/seo'
-import { PageHero } from '../_shell/PageHero'
+import { PageHero } from '../../_shell/PageHero'
 import { PrivacyIndex } from './PrivacyIndex'
 import './privacy.css'
 
-export const metadata = pageMetadata({
-  title: 'سياسة الخصوصية',
-  description: 'ما تجمعه أفق عبر موقعها، وكيف تُعامل بيانات المؤسسات في الأنظمة التي تبنيها، ولماذا لا تُشارك مع أحد.',
-  path: '/privacy',
-})
+export async function generateMetadata() {
+  const locale = await getLocale()
+  const t = await getDictionary(locale)
+  return pageMetadata({ locale, t, ...t.meta.privacy, path: '/privacy' })
+}
 
 const EMAIL = /([\w.+-]+@[\w-]+\.[\w.]+)/
 
 export default async function PrivacyPage() {
-  const settings = await getSettings()
+  const locale = await getLocale()
+  const [t, settings] = await Promise.all([getDictionary(locale), getSettings(locale)])
+  const copy = t.privacy
   const sections = (settings.privacy_policy ?? []).map((s, i) => ({ ...s, id: `pv-${i + 1}` }))
 
   return (
     <>
       <main id="top" className="inner privacy-page">
-        <PageHero kicker="الخصوصية" title="سياسة الخصوصية">
-          {SHOW_PENDING && settings.privacy_is_draft && <span className="pv-draft">مسودة للمراجعة</span>}
+        <PageHero kicker={copy.kicker} title={copy.title}>
+          {SHOW_PENDING && settings.privacy_is_draft && <span className="pv-draft">{copy.draft}</span>}
         </PageHero>
         <section className="pv-page">
           <div className="wrap pv-grid">
             <div className="pv-text">
-              {SHOW_PENDING && sections.length === 0 && <p className="pending-txt">[نص سياسة الخصوصية]</p>}
+              {SHOW_PENDING && sections.length === 0 && <p className="pending-txt">{copy.pending}</p>}
               {sections.map((s) => (
                 <section key={s.id} id={s.id}>
                   <h2>{s.heading}</h2>
@@ -37,7 +40,9 @@ export default async function PrivacyPage() {
                 </section>
               ))}
             </div>
-            {sections.length > 1 && <PrivacyIndex sections={sections.map(({ id, heading }) => ({ id, heading }))} />}
+            {sections.length > 1 && (
+              <PrivacyIndex sections={sections.map(({ id, heading }) => ({ id, heading }))} copy={{ label: copy.index, of: copy.of }} />
+            )}
           </div>
         </section>
       </main>
