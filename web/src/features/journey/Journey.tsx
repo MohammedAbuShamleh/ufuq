@@ -1,10 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArchClip } from '@/components/ArchClip'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
+import { keepInPlace } from '@/lib/keepInPlace'
 import './journey.css'
 
 // Where the camera looks in the road picture at each step.
@@ -43,6 +44,13 @@ const ORDINALS = ['١', '٢', '٣', '٤']
 export function Journey() {
   const [active, setActive] = useState(0)
   const [caption, setCaption] = useState(0)
+  const listRef = useRef<HTMLOListElement>(null)
+
+  // Opening a step closes the open one; if that one is above the screen, the
+  // pressed step is held where it was rather than sliding up under the nav.
+  const open = (i: number, pressed: Element) => {
+    if (i !== active) keepInPlace(pressed, listRef.current?.children[active], () => setActive(i))
+  }
 
   // The caption fades out, changes, and fades back in.
   useEffect(() => {
@@ -88,7 +96,7 @@ export function Journey() {
               <i />
               <b />
             </span>
-            <ol>
+            <ol ref={listRef}>
               {STEPS.map((s, i) => (
                 <li key={s.title} className={`nx3-step${i === active ? ' on' : ''}${i < active ? ' done' : ''}`}>
                   <button
@@ -96,7 +104,8 @@ export function Journey() {
                     className="nx3-head"
                     aria-expanded={i === active}
                     aria-controls={`nx3-det-${i}`}
-                    onClick={() => setActive(i)}
+                    data-moves-page
+                    onClick={(e) => open(i, e.currentTarget)}
                   >
                     <span className="nx-n">{ORDINALS[i]}</span>
                     <span className="nx3-t">{s.title}</span>

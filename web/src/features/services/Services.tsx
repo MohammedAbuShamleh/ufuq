@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
+import { keepInPlace } from '@/lib/keepInPlace'
 import './services.css'
 
 type Service = { title: string; text: string; points: string[]; tech: string; icon: ReactNode }
@@ -79,11 +80,21 @@ const SERVICES: Service[] = [
 /**
  * Five panels, not numbered: they are kinds of work, not steps in an order.
  * The open one widens and turns dark. A mouse opens a panel by
- * hovering, touch and keyboard by pressing it. Below 960px they stack into an accordion.
+ * hovering, touch and keyboard by pressing it. Below 960px they stack into an
+ * accordion, which opens on a press only: there, opening one moves the others
+ * up or down, and on hover the panel under a still pointer would keep changing.
  */
 export function Services() {
   const [open, setOpen] = useState(0)
-  const hoverOpens = () => matchMedia('(hover: hover) and (pointer: fine)').matches
+  const listRef = useRef<HTMLUListElement>(null)
+  const hoverOpens = () => matchMedia('(hover: hover) and (pointer: fine) and (min-width: 961px)').matches
+
+  // Stacked, opening a panel closes the open one; if that one is above the
+  // screen, the pressed panel is held where it was rather than sliding up
+  // under the nav. Side by side the panels share one row, so nothing moves.
+  const show = (i: number, pressed: Element) => {
+    if (i !== open) keepInPlace(pressed, listRef.current?.children[open], () => setOpen(i))
+  }
 
   return (
     <section className="sv" id="services" aria-labelledby="sv-title">
@@ -95,7 +106,7 @@ export function Services() {
           </div>
           <p className="muted">خمسة أنواع من البرمجيات، نبني كلاً منها حول طريقة عملكم.</p>
         </div>
-        <ul className="sv-panels">
+        <ul ref={listRef} className="sv-panels">
           {SERVICES.map((s, i) => (
             <li key={s.title} className={`sv-p${open === i ? ' on' : ''}`} onMouseEnter={() => hoverOpens() && setOpen(i)}>
               <button
@@ -104,8 +115,9 @@ export function Services() {
                 aria-labelledby={`sv-t-${i}`}
                 aria-expanded={open === i}
                 aria-controls={`sv-more-${i}`}
-                onClick={() => setOpen(i)}
-                onFocus={() => setOpen(i)}
+                data-moves-page
+                onClick={(e) => show(i, e.currentTarget)}
+                onFocus={(e) => show(i, e.currentTarget)}
               />
               <div className="sv-top">
                 <span className="sv-ic" aria-hidden="true">

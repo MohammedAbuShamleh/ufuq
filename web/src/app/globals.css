@@ -309,3 +309,8 @@ html.motion-off *::after {
   transition: none !important;
   scroll-behavior: auto !important;
 }
+/* An accordion item closing out of sight closes at once (keepInPlace). */
+.no-glide,
+.no-glide * {
+  transition: none !important;
+}
