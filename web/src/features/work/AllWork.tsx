@@ -5,7 +5,7 @@ import { arNum } from '@/lib/format'
 import type { ProjectCard, ProjectSector, ProjectType } from '@/lib/types'
 import { FilterButton } from './FilterButton'
 import { SECTOR_FILTERS, TYPE_FILTERS } from './labels'
-import { cardTones, WorkCard } from './WorkCard'
+import { cardTones, gridSpans, WorkCard } from './WorkCard'
 
 /**
  * Every published project, filtered by kind and by sector together. Each
@@ -19,6 +19,7 @@ export function AllWork({ projects }: { projects: ProjectCard[] }) {
   const match = (p: ProjectCard, t = type, s = sector) => (!t || p.type === t) && (!s || p.sector === s)
   const count = (t: ProjectType | null, s: ProjectSector | null) => projects.filter((p) => match(p, t, s)).length
   const shown = count(type, sector)
+  const spans = gridSpans(projects.filter((p) => match(p)))
 
   return (
     <>
@@ -41,7 +42,7 @@ export function AllWork({ projects }: { projects: ProjectCard[] }) {
       </p>
       <div className="pjt-grid">
         {projects.map((p, i) => (
-          <WorkCard key={p.slug} project={p} tone={tones[i]} hidden={!match(p)} />
+          <WorkCard key={p.slug} project={p} tone={tones[i]} hidden={!match(p)} spans={spans.get(p.slug)} />
         ))}
       </div>
     </>

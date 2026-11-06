@@ -103,11 +103,10 @@
 .pjt[hidden] {
   display: none;
 }
-.pjt.w2 {
-  grid-column: span 2;
-}
-.pjt.tall {
-  grid-row: span 2;
+/* Sizes come from WorkCard (see packGrid): packed so no cell is left empty. */
+.pjt {
+  grid-column: span var(--w4, 1);
+  grid-row: span var(--h4, 1);
 }
 .pjt:hover {
   transform: translateY(-6px);
@@ -192,6 +191,33 @@
   border: 5px solid var(--phone);
   box-shadow: 0 24px 40px -20px rgb(var(--ink-rgb) / 0.5);
 }
+/* A phone that had to widen (see WorkCard) stands beside the text, rising from the card's foot. */
+@media (min-width: 961px) {
+  .pjt.ph-side4 {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+  .pjt.ph-side4 .pjt-media.ph {
+    flex: none;
+    align-self: stretch;
+    width: 170px;
+    margin: 1.4rem 1.5rem -1.6rem;
+  }
+}
+@media (min-width: 601px) and (max-width: 960px) {
+  .pjt.ph-side2 {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+  .pjt.ph-side2 .pjt-media.ph {
+    flex: none;
+    align-self: stretch;
+    width: 150px;
+    margin: 1.4rem 1.5rem -1.6rem;
+  }
+}
 .pjt-big {
   position: absolute;
   top: -0.15em;
@@ -238,8 +264,9 @@
   .pjt-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .pjt.tall {
-    grid-row: span 1;
+  .pjt {
+    grid-column: span var(--w2, 1);
+    grid-row: span var(--h2, 1);
   }
   .pjt-media.ph {
     min-height: 220px;
@@ -249,7 +276,8 @@
   .pjt-grid {
     grid-template-columns: 1fr;
   }
-  .pjt.w2 {
+  .pjt {
     grid-column: auto;
+    grid-row: auto;
   }
 }

@@ -6,13 +6,15 @@ import { Arrow } from '@/components/Button'
 import type { ProjectCard, ProjectType } from '@/lib/types'
 import { FilterButton } from './FilterButton'
 import { TYPE_FILTERS } from './labels'
-import { cardTones, WorkCard } from './WorkCard'
+import { cardTones, gridSpans, WorkCard } from './WorkCard'
 
 /** The rest of the work: a grid of mixed card sizes with a filter by kind. */
 export function OtherWork({ projects }: { projects: ProjectCard[] }) {
   const [filter, setFilter] = useState<ProjectType | 'all'>('all')
   const count = (type: ProjectType) => projects.filter((p) => p.type === type).length
   const tones = cardTones(projects)
+  const match = (p: ProjectCard) => filter === 'all' || p.type === filter
+  const spans = gridSpans(projects.filter(match))
 
   return (
     <>
@@ -28,7 +30,7 @@ export function OtherWork({ projects }: { projects: ProjectCard[] }) {
       </div>
       <div className="pjt-grid">
         {projects.map((p, i) => (
-          <WorkCard key={p.slug} project={p} tone={tones[i]} hidden={filter !== 'all' && p.type !== filter} />
+          <WorkCard key={p.slug} project={p} tone={tones[i]} hidden={!match(p)} spans={spans.get(p.slug)} />
         ))}
       </div>
       <Link className="sx-go pj-all" href="/work">
