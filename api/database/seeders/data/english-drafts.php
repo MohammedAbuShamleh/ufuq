@@ -1,0 +1,202 @@
+<?php
+
+/*
+ * English drafts for the seeded content, keyed by the exact Arabic they translate
+ * (EnglishDraftSeeder). They are drafts: the team reviews them and edits the
+ * English tab in the dashboard. Proper names follow the slugs; confirm each
+ * client's own English spelling. [Bracketed] text is pending, as in Arabic.
+ * US spelling; Western digits.
+ */
+
+return [
+    // Clients and project names
+    'ساعد' => 'Saaed',
+    'دار الإتقان' => 'Dar Al-Itqan',
+    'جمعية ابن باز' => 'Ibn Baz Association',
+    'مدرسة شعاع الخاصة' => 'Shuaa Private School',
+    'وزارة الأوقاف والشؤون الدينية' => 'Ministry of Awqaf and Religious Affairs',
+    'الرابطة العالمية لدعاة فلسطين' => 'World League of Palestine Preachers',
+    'رصرص للبلاستيك' => 'Rasras Plastics',
+    'NexaBridge' => 'NexaBridge',
+    'Elegarden' => 'Elegarden',
+    'نظام إدارة المدارس' => 'School management system',
+    'حفّاظ الوحيين' => 'Huffaz Al-Wahyayn',
+    'منظومة رشيد' => 'Rashid',
+    'أثر' => 'Athar',
+    'موقع دار الإتقان' => 'Dar Al-Itqan website',
+    'سفراء الدعوة' => 'Sufaraa Al-Dawah',
+
+    // Client sectors and places
+    'جمعية خيرية' => 'Charity',
+    'تحفيظ القرآن' => 'Quran memorization',
+    'جمعية دعوية' => 'Dawah association',
+    'تعليم' => 'Education',
+    'مشروع حفّاظ الوحيين' => 'Huffaz Al-Wahyayn project',
+    'رابطة دعوية' => 'Dawah league',
+    'صناعة' => 'Industry',
+    'تجارة' => 'Trade',
+    'غزة' => 'Gaza',
+    'تركيا' => 'Türkiye',
+    'مصر' => 'Egypt',
+    'دبي' => 'Dubai',
+
+    // Project tags
+    'منصة · إدارة المشاريع الإنسانية' => 'Platform · Humanitarian project management',
+    'نظام وتطبيق · تحفيظ القرآن' => 'System and app · Quran memorization',
+    'ERP · استيراد وتوزيع · مصر' => 'ERP · Import and distribution · Egypt',
+    'موقع ومنصة منتجات · دبي' => 'Website and product platform · Dubai',
+    'نظام ERP' => 'ERP system',
+    'منصة' => 'Platform',
+    'نظام مالي' => 'Financial system',
+    'نظام إدارة' => 'Management system',
+    'موقع تعريفي' => 'Profile website',
+    'موقع ومنصة' => 'Website and platform',
+
+    // Project summaries
+    'منصة تدير بها جمعية ساعد مشاريعها الإنسانية، من تبرّع الجهة المانحة إلى وصول المساعدة وتقريرها.' => 'The platform Saaed runs its humanitarian projects on, from the donor’s contribution to the aid reaching people and the report on it.',
+    'نظام لإدارة حلقات التحفيظ، وتطبيق يسجّل فيه المحفّظ جلسة كل طالب من داخل الحلقة.' => 'A system for running Quran memorization circles, and an app where the teacher records each student’s session from inside the circle.',
+    'نظام ERP وموقع تعريفي لشركة مصرية تستورد خامات البلاستيك وتوزّعها من أربعة مستودعات.' => 'An ERP system and a company website for an Egyptian firm that imports plastic raw materials and distributes them from four warehouses.',
+    'منصة لشركة في دبي توزّع أنظمة طاقة وإنارة ذكية من الصين إلى العالم.' => 'A platform for a Dubai company that distributes energy systems and smart lighting from China to the world.',
+    'مدرسة شعاع: من ملف Excel من ٥٨ ورقة إلى نظام واحد للطلاب والرسوم والرواتب والمخزن والحضور.' => 'Shuaa School: from a 58-sheet Excel file to one system for students, fees, payroll, inventory and attendance.',
+    'منصة لوزارة الأوقاف والشؤون الدينية بغزة، تتابع مشروع حفظ الأحاديث «الجمع بين الصحيحين» في خمس محافظات: ٥ مستويات وصول و٣٤ صلاحية موثّقة.' => 'A platform for the Ministry of Awqaf and Religious Affairs in Gaza that follows the “Al-Jam‘ Bayn Al-Sahihayn” hadith memorization project across five governorates: 5 access levels and 34 documented permissions.',
+    'قيود يومية وصناديق ومخزون وتقارير، وسجل تدقيق لكل تعديل.' => 'Journal entries, cash boxes, inventory and reports, with an audit log of every change.',
+    'من طلب الجهة إلى النشر: لوحة تكليفات للمكتب الإعلامي، ٤ أدوار و٨٨ اختباراً آلياً.' => 'From a department’s request to publication: an assignments board for the media office, with 4 roles and 88 automated tests.',
+    'برامج الدار وأخبارها.' => 'Dar Al-Itqan’s programs and news.',
+    'متابعة الأنشطة الدعوية.' => 'Tracking dawah activities.',
+    'موقع ومنصة الرابطة.' => 'The league’s website and platform.',
+    'شركة تنسيق حدائق.' => 'A landscaping company.',
+
+    // Highlights
+    'مسار كامل للمشروع: التوريد والترسية والتوزيع والتنفيذ والمونتاج' => 'The whole project path: procurement, awarding, distribution, delivery and video editing',
+    'ترسية بمقارنة عروض الموردين، ومخزن بتنبيهات الحد الأدنى' => 'Awards made by comparing supplier quotes, and a warehouse that warns at minimum stock',
+    'لوحة لكل قسم، وإحصاءات للأيتام والمخيمات والمستفيدين' => 'A dashboard for each department, with statistics on orphans, camps and beneficiaries',
+    'جلسة بالموضع: السورة والآية والصفحة والسطر، والآيات تظهر فوراً' => 'Sessions recorded by position: surah, verse, page and line, with the verses shown at once',
+    'إجازة الأجزاء من المشرف، وتقييم المحفّظين بمعايير معتمدة' => 'Supervisors certify each completed juz, and teachers are evaluated against approved criteria',
+    'لوحة للإدارة بالطلاب والحلقات والمتميزين والإحصاءات، ووضع داكن في التطبيق' => 'An admin dashboard of students, circles, top performers and statistics, and a dark mode in the app',
+    'دورة شراء كاملة: طلب، فعروض موردين، فمقارنة، فأمر شراء' => 'The full purchasing cycle: request, supplier quotes, comparison, purchase order',
+    'مبيعات ومخازن متعددة وموارد بشرية ورواتب' => 'Sales, multiple warehouses, HR and payroll',
+    'بريد اعتمادات يتحدّث لحظياً، على الكمبيوتر والجوال' => 'An approvals inbox that updates live, on desktop and mobile',
+    'بلغتين وبوضعين فاتح وداكن، يتبدّلان دون إعادة تحميل' => 'Two languages, light and dark modes, all switching without a reload',
+    'مصمّم ألواح Aurora وكتالوج بمقارنة المنتجات' => 'An Aurora panel designer, and a catalog that compares products',
+    'منتجات تتحكم بلونها وحرارتها وسطوعها مباشرة' => 'Products whose color, temperature and brightness you control live',
+
+    // Facts (the number comes from the fact's value)
+    'حالة لكل مشروع' => 'statuses per project',
+    'لوحات تحكم' => 'dashboards',
+    'تقارير تُصدَّر مباشرة' => 'reports, exported directly',
+    'أنواع للجلسة: جديد ومراجعة واختبار' => 'session types: new, review and test',
+    'مستويات للتقييم' => 'evaluation levels',
+    'صفحات في المصحف المدمج' => 'pages in the built-in Mushaf',
+    'أقسام مترابطة' => 'connected modules',
+    'مستودعات' => 'warehouses',
+    'نظام وموقع' => 'builds: a system and a website',
+    'لغتان' => 'languages',
+    'وضعان' => 'display modes',
+    'منتجاً في الكتالوج' => 'products in the catalog',
+
+    // Screen labels
+    'الرئيسية' => 'Home',
+    'المشاريع' => 'Projects',
+    'الترسية' => 'Awarding',
+    'المخزن' => 'Warehouse',
+    'الإعلام' => 'Media',
+    'الأيتام' => 'Orphans',
+    'لوحة التحكم' => 'Dashboard',
+    'الطلاب' => 'Students',
+    'الإحصائيات' => 'Statistics',
+    'المتميزون' => 'Top performers',
+    'معايير التقييم' => 'Evaluation criteria',
+    'جلسة الحفظ بالموضع' => 'Session by position',
+    'رئيسية المحفّظ' => 'Teacher’s home',
+    'المصحف بالوضع الداكن' => 'The Mushaf in dark mode',
+    'المقدمة' => 'Intro',
+    'اللغة والوضع' => 'Language and mode',
+    'لوحة الألوان' => 'Color palette',
+    'حرارة الضوء' => 'Light temperature',
+    'خريطة المشاريع' => 'Project map',
+    'مصمّم Aurora' => 'Aurora designer',
+    'CACHI' => 'CACHI',
+    'الكتالوج' => 'Catalog',
+    'لوحة القيادة' => 'Dashboard',
+    'الاعتمادات' => 'Approvals',
+    'مقارنة العروض' => 'Quote comparison',
+    'أوامر الشراء' => 'Purchase orders',
+    'المخزون' => 'Inventory',
+    'الحضور' => 'Attendance',
+
+    // Screen descriptions (alt text)
+    'لوحة مدير المشاريع: المشاريع حسب الحالة والقيمة الإجمالية' => 'Project manager’s dashboard: projects by status and total value',
+    'قائمة المشاريع بالمتبرعين والعملات والأيام المتبقية' => 'Project list with donors, currencies and days remaining',
+    'ترسية طلبات الشراء بمقارنة عروض الموردين' => 'Awarding purchase requests by comparing supplier quotes',
+    'لوحة المخزن وتنبيهات الحد الأدنى' => 'Warehouse dashboard with minimum-stock alerts',
+    'لوحة قسم الإعلام لمتابعة المونتاج' => 'Media department dashboard for tracking video edits',
+    'إحصاءات الأيتام حسب الجنس والمحافظة والفئة العمرية' => 'Orphan statistics by gender, governorate and age group',
+    'لوحة نظام دار الإتقان: الطلاب والحلقات والمحفّظون ونشاط الحفظ والمراجعة' => 'Dar Al-Itqan dashboard: students, circles, teachers, and memorization and review activity',
+    'إدارة الطلاب وحلقاتهم ونسب إنجازهم' => 'Managing students, their circles and their progress',
+    'لوحة الإحصائيات الشاملة للمراكز والحلقات والطلاب' => 'Full statistics for centers, circles and students',
+    'أفضل الحلقات والطلاب المتميزون' => 'The best circles and the top-performing students',
+    'معايير تقييم المحفّظين والطلاب وأوزانها' => 'Criteria for evaluating teachers and students, and their weights',
+    'تطبيق المحفّظين' => 'The teachers’ app',
+    'شاشة التحميل ثم الجسر بين الصين والعالم' => 'The loading screen, then the bridge between China and the world',
+    'التبديل بين العربية والإنجليزية والوضعين الفاتح والداكن' => 'Switching between Arabic and English, and between light and dark modes',
+    'تغيير لون مصابيح BWEE من لوحة الألوان' => 'Changing the color of BWEE lamps from the palette',
+    'شريط حرارة اللون من 2200K إلى 6500K' => 'Color temperature slider from 2200K to 6500K',
+    'خريطة الصين بالمشاريع الثمانية' => 'Map of China with the eight projects',
+    'مصمّم ألواح Aurora التفاعلي' => 'The interactive Aurora panel designer',
+    'صفحة CACHI: Symbiosis' => 'The CACHI page: Symbiosis',
+    'الكتالوج مع شريط مقارنة المنتجات' => 'The catalog with the product comparison bar',
+    'NexaBridge على الجوال' => 'NexaBridge on mobile',
+    'صفحة CACHI على الجوال' => 'The CACHI page on mobile',
+    'لوحة قيادة نظام رصرص: مديونية العملاء ومستحقات الموردين وملخص الأقسام' => 'Rasras dashboard: customer balances, supplier payables and a summary of each module',
+    'بريد الاعتمادات بطلبات تنتظر المراجعة' => 'The approvals inbox with requests awaiting review',
+    'مقارنة عروض أسعار الموردين واختيار المورد الأفضل' => 'Comparing supplier quotes and choosing the best supplier',
+    'قائمة أوامر الشراء وحالاتها' => 'Purchase orders and their statuses',
+    'أرصدة المخزون في جميع المستودعات' => 'Stock levels across all warehouses',
+    'تسجيل الحضور والانصراف اليومي للموظفين' => 'Daily staff check-in and check-out',
+    'لوحة القيادة في نظام رصرص على الجوال' => 'The Rasras dashboard on mobile',
+    'بريد الاعتمادات على الجوال' => 'The approvals inbox on mobile',
+
+    // Team
+    'م. محمد أبو شمله' => 'Mohammed Abu Shamleh',
+    'م. شادي الأخرس' => 'Shadi Al-Akhras',
+    'الواجهات وتجربة الاستخدام' => 'Front end and user experience',
+    'مصمم جرافيك' => 'Graphic designer',
+    'مبرمج واجهات أمامية' => 'Front-end developer',
+    'مصمم واجهات وتجربة مستخدم' => 'UI and UX designer',
+
+    // Testimonials (still pending)
+    '[شهادة من إدارة مدرسة شعاع الخاصة: ماذا تغيّر بعد الانتقال من ملف Excel إلى النظام؟]' => '[A testimonial from Shuaa Private School’s management: what changed after moving from the Excel file to the system?]',
+    '[شهادة من ساعد: كيف صارت متابعة المشاريع والتقارير بعد المنصة؟]' => '[A testimonial from Saaed: how has tracking projects and reports changed with the platform?]',
+    '[شهادة من دار الإتقان: تجربتهم مع المنصة والموقع.]' => '[A testimonial from Dar Al-Itqan: their experience with the platform and the website.]',
+
+    // Pending placeholders
+    '[الاسم]' => '[Name]',
+    '[المنصب]' => '[Title]',
+    '[الدور]' => '[Role]',
+
+    // FAQs
+    'كم يكلف النظام؟' => 'How much does a system cost?',
+    'يختلف حسب ما سيُبنى. بعد الجلسة الأولى المجانية نرسل لك عرضاً مكتوباً بالتكلفة والمدة، ولا التزام قبل أن توافق.' => 'It depends on what we build. After the free first session we send you a written quote with the cost and the timeline, and nothing binds you until you agree.',
+    'كم يستغرق البناء؟' => 'How long does it take to build?',
+    'نقسّم العمل إلى دفعات، ومع كل دفعة نسخة تعمل تجربها بيدك. المدة الكاملة تُكتب في الاتفاق قبل أن نبدأ.' => 'We split the work into stages, and each stage ends with a working version you try yourself. The full timeline is written into the agreement before we start.',
+    'من يملك الكود والبيانات؟' => 'Who owns the code and the data?',
+    'أنتم. نسلّمكم الكود والتوثيق وبيانات الخوادم، وبيانات النظام ملك مؤسستكم ولا نصل إليها إلا بإذنكم.' => 'You do. We hand over the code, the documentation and the server credentials. The system’s data belongs to your organization, and we only access it with your permission.',
+    'ماذا بعد الإطلاق؟' => 'What happens after launch?',
+    'نبقى معكم بالدعم الفني حتى يستقر النظام.' => 'We stay with you on technical support until the system settles in.',
+    'هل تعملون مع مؤسسات خارج غزة؟' => 'Do you work with organizations outside Gaza?',
+    'نعم. أنظمتنا تعمل في مصر والإمارات وتركيا، ونعمل عن بُعد.' => 'Yes. Our systems run in Egypt, the UAE and Türkiye, and we work remotely.',
+
+    // Settings
+    'أنظمة وبرمجيات للجمعيات والمدارس والشركات' => 'Systems and software for charities, schools and companies',
+
+    // Privacy policy: a legal text, so a person must review the English before launch
+    'ما نجمعه عبر هذا الموقع' => 'What we collect through this site',
+    'الاسم ووسيلة التواصل ونوع المشروع، حين تملأ نموذج التواصل. نستخدمها للرد عليك فقط، ولا نضيفك إلى قوائم بريدية.' => 'Your name, how to reach you and the type of project, when you fill in the contact form. We use them only to reply to you, and we never add you to a mailing list.',
+    'البيانات في الأنظمة التي نبنيها' => 'Data in the systems we build',
+    'بيانات نظامك ملك مؤسستك: المستفيدون والطلاب والموظفون والحسابات. تُستضاف حيث تختار، ولا نصل إليها إلا بإذن منك ولغرض محدد كالدعم الفني، ويُسجَّل كل وصول.' => 'Your system’s data belongs to your organization: beneficiaries, students, staff and accounts. It is hosted where you choose. We access it only with your permission and for a specific purpose, such as technical support, and every access is logged.',
+    'نأخذ نسخاً احتياطية دورية، ونسلّمك بياناتك كاملة ونحذف نسخنا منها عند انتهاء التعاقد إن طلبت ذلك.' => 'We take regular backups. When the contract ends we hand over all of your data and, if you ask, delete our copies of it.',
+    'لا نشارك بياناتك' => 'We don’t share your data',
+    'لا نبيع أي بيانات ولا نشاركها مع أي طرف ثالث، ولا نعرض بيانات عملائنا في أعمالنا. الشاشات المعروضة في هذا الموقع ببيانات تجريبية.' => 'We don’t sell any data or share it with any third party, and we never show our clients’ data in our work. The screens on this site use sample data.',
+    'للتواصل' => 'Contact',
+    'لأي سؤال عن بياناتك: hello@ufuq.ps' => 'For any question about your data: hello@ufuq.ps',
+];
