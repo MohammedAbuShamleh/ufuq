@@ -112,6 +112,8 @@
   backdrop-filter: blur(6px);
 }
 .ba-tag.before {
+  /* Under the sheet's title and formula bars, so the file name stays readable. */
+  top: 5.6rem;
   right: 16px;
   background: color-mix(in srgb, var(--alarm) 90%, transparent);
   color: var(--frame);
@@ -295,6 +297,9 @@
   }
   .xl {
     font-size: 0.75rem;
+  }
+  .ba-tag.before {
+    top: 5.2rem;
   }
   .xl th:nth-child(n + 6),
   .xl td:nth-child(n + 6) {
