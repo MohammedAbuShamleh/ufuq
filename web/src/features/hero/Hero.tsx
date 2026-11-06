@@ -69,7 +69,9 @@ export function Hero({ tagline }: { tagline: string | null }) {
                 height={1402}
                 alt=""
                 preload
-                sizes="(max-width: 960px) 80vw, 42vw"
+                // The arch grows almost 4x while crossing, so desktops take the full
+                // 1122px picture; at 42vw a 1x screen got 806px, which went soft.
+                sizes="(max-width: 960px) 80vw, 1122px"
               />
             </ArchClip>
             <svg className="hx-outline" viewBox="0 0 300 340" preserveAspectRatio="none">

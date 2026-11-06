@@ -26,13 +26,27 @@
 }
 /*
  * The arch never fades out: the next section rises over it from mid-crossing
- * (the -75vh above) on the page colour, its top edge a soft mist. Before, the
- * arch faded to white well before that section arrived and left a blank
- * screen. Below the overlap the section is clear again, over the horizon lines.
+ * (the -75vh above) as a sheet of the page colour with a clean, rounded top
+ * edge and a shadow on the scene. A soft mist edge used to dissolve the sun
+ * and trees into a muddy band. Below the overlap the section is clear again,
+ * over the horizon lines.
  */
 @media (prefers-reduced-motion: no-preference) {
   html:not(.motion-off) .hx + section {
-    background: linear-gradient(to bottom, transparent, var(--bg) 5rem, var(--bg) 75vh, transparent 100vh);
+    --sheet-r: clamp(1.5rem, 2.5vw, 3rem);
+    background: linear-gradient(to bottom, var(--bg) 75vh, transparent 100vh);
+    border-radius: var(--sheet-r) var(--sheet-r) 0 0;
+  }
+  /* A shadow cast up onto the scene; the clip keeps its blur from showing as a line under the box. */
+  html:not(.motion-off) .hx + section::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 8rem;
+    border-radius: inherit;
+    box-shadow: 0 -18px 50px -12px rgb(var(--ink-rgb) / 0.28);
+    clip-path: inset(-6rem 0 0 0);
+    pointer-events: none;
   }
 }
 /* The words flow from the top; the stage takes the rest of the screen. */
