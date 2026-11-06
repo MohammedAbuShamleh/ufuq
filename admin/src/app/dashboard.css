@@ -50,8 +50,9 @@
   dialog::backdrop {
     background: var(--scrim);
   }
-  /* Latin-only values (links, emails, slugs) read left to right inside RTL forms. */
-  input[dir="ltr"] {
+  /* Latin-only values (links, emails, slugs) and English text read left to right inside RTL forms. */
+  input[dir="ltr"],
+  textarea[dir="ltr"] {
     text-align: left;
   }
 }

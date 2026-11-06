@@ -1,3 +1,4 @@
+import { EnglishBadge } from '@/components/EnglishBadge'
 import { MediaThumb } from '@/components/MediaThumb'
 import { Badge, PageHeader } from '@/components/Page'
 import { ResourceList } from '@/components/ResourceList'
@@ -28,6 +29,7 @@ export function TeamPage() {
               <span className="block truncate font-display text-sm">{ar(m.name) || '—'}</span>
               <span className="block truncate text-xs text-muted">{ar(m.role)}</span>
             </span>
+            <EnglishBadge locales={m.locales} />
             {m.is_founder && <Badge tone="accent">مؤسس</Badge>}
             {!m.is_visible && <Badge>مخفي</Badge>}
           </>

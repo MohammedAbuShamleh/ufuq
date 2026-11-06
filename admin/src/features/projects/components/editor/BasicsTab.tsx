@@ -10,7 +10,7 @@ import type { TabProps } from './tabProps'
 export function BasicsTab({ values, set, errors }: TabProps) {
   return (
     <div className="grid gap-6">
-      <Translated>
+      <Translated errors={errors} fields={['title', 'client_name', 'tag', 'summary']}>
         {(l) => (
           <>
             <div className="grid gap-5 sm:grid-cols-2">

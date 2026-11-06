@@ -1,4 +1,5 @@
 import { Badge, PageHeader } from '@/components/Page'
+import { EnglishBadge } from '@/components/EnglishBadge'
 import { ResourceList } from '@/components/ResourceList'
 import { LinkButton } from '@/components/ui/Button'
 import { ar } from '@/lib/i18n'
@@ -32,6 +33,7 @@ export function TestimonialsPage() {
                 {[ar(t.organization), t.project && `مشروع: ${ar(t.project.title)}`].filter(Boolean).join(' · ')}
               </span>
             </span>
+            <EnglishBadge locales={t.locales} />
             {t.status === 'published' ? <Badge tone="ok">منشورة</Badge> : <Badge>مسودة</Badge>}
           </>
         )}

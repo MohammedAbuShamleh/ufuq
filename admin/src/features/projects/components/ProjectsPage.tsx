@@ -1,3 +1,4 @@
+import { EnglishBadge } from '@/components/EnglishBadge'
 import { MediaThumb } from '@/components/MediaThumb'
 import { Badge, PageHeader } from '@/components/Page'
 import { ResourceList } from '@/components/ResourceList'
@@ -38,6 +39,7 @@ export function ProjectsPage() {
                 {[label(TYPE_OPTIONS, p.type), ar(p.client_name), formatCount(p.screens_count, SCREENS)].filter(Boolean).join(' · ')}
               </span>
             </span>
+            <EnglishBadge locales={p.locales} />
             {p.is_featured && <Badge tone="accent">مميز</Badge>}
             {p.status === 'published' ? <Badge tone="ok">منشور</Badge> : <Badge>مسودة</Badge>}
           </>

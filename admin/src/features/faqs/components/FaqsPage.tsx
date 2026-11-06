@@ -1,4 +1,5 @@
 import { Badge, PageHeader } from '@/components/Page'
+import { EnglishBadge } from '@/components/EnglishBadge'
 import { ResourceList } from '@/components/ResourceList'
 import { LinkButton } from '@/components/ui/Button'
 import { ar } from '@/lib/i18n'
@@ -23,6 +24,7 @@ export function FaqsPage() {
         {(f) => (
           <>
             <span className="min-w-0 flex-1 truncate font-display text-sm">{ar(f.question) || '—'}</span>
+            <EnglishBadge locales={f.locales} />
             {!f.is_visible && <Badge>مخفي</Badge>}
           </>
         )}

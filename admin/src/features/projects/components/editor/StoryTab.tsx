@@ -11,7 +11,7 @@ export function StoryTab({ values, set, errors }: TabProps) {
   return (
     <div className="grid gap-6">
       <p className="text-sm leading-relaxed text-muted">قصة المشروع في صفحته على الموقع. اكتبها بلغة العميل لا بلغة المبرمجين، وكل جزء فقرة أو فقرتان.</p>
-      <Translated>
+      <Translated errors={errors} fields={['challenge', 'solution', 'results']}>
         {(l) => (
           <>
             {field('challenge', 'التحدي', 'ما المشكلة التي كانت عند العميل قبلنا؟')(l)}

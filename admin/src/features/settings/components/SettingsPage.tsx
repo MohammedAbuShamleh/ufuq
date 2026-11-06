@@ -83,7 +83,7 @@ function SettingsForm({ saved }: { saved: Settings }) {
         />
       </Panel>
 
-      <Translated title="نصوص الموقع">
+      <Translated title="نصوص الموقع" errors={errors} fields={['hero_tagline', 'why_we_started', 'legal_registration', 'memberships']}>
         {(l) => (
           <>
             <TextField label="السطر التعريفي" max={160} hint="تحت الشعار في التذييل وفي وصف الموقع." value={values.hero_tagline[l] ?? ''} onChange={(v) => set('hero_tagline', { ...values.hero_tagline, [l]: v })} error={errors[`hero_tagline.${l}`]} />
@@ -96,7 +96,7 @@ function SettingsForm({ saved }: { saved: Settings }) {
         )}
       </Translated>
 
-      <Translated title="سياسة الخصوصية">
+      <Translated title="سياسة الخصوصية" errors={errors} fields={['privacy_policy']}>
         {(l) => (
           <PolicyEditor
             sections={values.privacy_policy[l] ?? []}

@@ -35,7 +35,7 @@ export function TestimonialForm() {
           }}
           className="grid gap-6"
         >
-          <Translated>
+          <Translated errors={errors} fields={['quote', 'author_name', 'author_title', 'organization']}>
             {(l) => (
               <>
                 <TextAreaField label="نص الشهادة" required max={600} rows={5} hint="بكلمات العميل كما قالها، دون علامات تنصيص." value={values.quote[l] ?? ''} onChange={(v) => set('quote', { ...values.quote, [l]: v })} error={errors[`quote.${l}`]} />

@@ -1,8 +1,10 @@
-import type { T } from '@/lib/i18n'
+import type { Locale, T } from '@/lib/i18n'
 import type { PublishStatus } from '@/lib/types'
 
 export type Testimonial = {
   id: number
+  /** The languages the site shows it in. */
+  locales: Locale[]
   project_id: number | null
   project: { id: number; title: T } | null
   quote: T

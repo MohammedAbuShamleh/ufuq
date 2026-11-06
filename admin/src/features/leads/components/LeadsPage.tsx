@@ -70,6 +70,7 @@ export function LeadsPage() {
                     </p>
                   </div>
                   <span className="text-xs text-muted">{formatDateTime(lead.created_at)}</span>
+                  {lead.locale === 'en' && <Badge>من النسخة الإنجليزية</Badge>}
                   <Badge tone={STATUS_TONE[lead.status]}>{STATUS_LABEL[lead.status]}</Badge>
                 </Link>
               </li>
