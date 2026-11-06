@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Alexandria, Cormorant_Garamond, IBM_Plex_Sans_Arabic } from 'next/font/google'
+import { Alexandria, IBM_Plex_Sans_Arabic } from 'next/font/google'
 import { getSettings } from '@/lib/api'
 import { whatsappLink } from '@/lib/format'
 import { MOTION_SCRIPT } from '@/lib/motion'
@@ -29,14 +29,6 @@ const plex = IBM_Plex_Sans_Arabic({
   variable: '--font-plex',
 })
 
-// NexaBridge's own wordmark face, for its card title only.
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: '500',
-  display: 'swap',
-  variable: '--font-cormorant',
-})
-
 // The home page's metadata, and every other page's defaults (see lib/seo.ts → pageMetadata).
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -60,7 +52,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
 
   return (
     // The head script sets data-theme and classes before hydration, hence suppressHydrationWarning.
-    <html lang="ar" dir="rtl" className={`${alexandria.variable} ${plex.variable} ${cormorant.variable}`} suppressHydrationWarning>
+    <html lang="ar" dir="rtl" className={`${alexandria.variable} ${plex.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT + MOTION_SCRIPT }} />
       </head>

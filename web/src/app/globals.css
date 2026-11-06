@@ -236,7 +236,8 @@
 
   --font-display: var(--font-alexandria), var(--font-plex), system-ui, sans-serif;
   --font-sans: var(--font-plex), var(--font-alexandria), system-ui, sans-serif;
-  --font-serif: var(--font-cormorant), Georgia, serif;
+  /* Two ornaments only (Excel's «fx», the quote mark): a system face, nothing to download. */
+  --font-serif: Georgia, 'Times New Roman', serif;
 }
 
 @utility wrap {
