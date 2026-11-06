@@ -1,7 +1,7 @@
 /*
  * UFUQ design system — values copied from the approved v7 CSS.
  * Twin of web/src/app/globals.css: the two files differ only in the font
- * stacks (next/font there, @fontsource here). Change both together.
+ * stacks (next/font there, app/fonts.css + @fontsource here). Change both together.
  * Components never use a raw color or spacing value: only the classes below.
  */
 @import "tailwindcss";
@@ -129,8 +129,12 @@
   --color-mark-b: var(--mark-b);
   --color-mark-w: var(--mark-w);
 
-  --font-display: "Alexandria", "IBM Plex Sans Arabic", system-ui, sans-serif;
-  --font-sans: "IBM Plex Sans Arabic", "Alexandria", system-ui, sans-serif;
+  /* Big type: h1–h3, the large figures (Bold); big lists and quotes (Medium). */
+  --font-heading: "Thmanyah Serif Display", "Thmanyah Sans", system-ui, serif;
+  /* The interface: nav, buttons, labels, small titles. */
+  --font-display: "Thmanyah Sans", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  /* Running text: paragraphs, lists, quotes. */
+  --font-sans: "IBM Plex Sans Arabic", "Thmanyah Sans", system-ui, sans-serif;
 }
 
 @utility wrap {
@@ -153,7 +157,7 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-heading);
     font-weight: 600;
     line-height: 1.3;
   }

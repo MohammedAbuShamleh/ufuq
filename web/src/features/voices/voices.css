@@ -75,7 +75,7 @@
 .tq blockquote {
   margin: 0;
   max-width: 30ch;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 500;
   font-size: clamp(1.35rem, 2.6vw, 2.15rem);
   line-height: 1.75;

@@ -450,14 +450,31 @@ export const ar = {
 
   project: {
     back: 'كل الأعمال',
-    moreKicker: 'أعمال قريبة',
     moreTitle: 'مؤسسات تشبه هذه.',
     allWork: 'كل الأعمال',
     cta: 'مؤسستك تحتاج شيئاً مشابهاً؟ نبدأ بجلسة نسمعك فيها.',
     ctaWork: 'كل الأعمال',
-    factsLabel: 'عن المشروع',
-    facts: { client: 'العميل', sector: 'القطاع', country: 'الدولة', type: 'نوع العمل' },
-    storyKicker: 'قصة المشروع',
+    facts: { client: 'العميل', sector: 'القطاع', country: 'الدولة', type: 'نوع العمل', stack: 'التقنيات' },
+    /** The section headings speak of the kind of work by its name. */
+    kinds: {
+      system: { offers: 'ما يقدّمه النظام', inside: 'داخل النظام' },
+      platform: { offers: 'ما تقدّمه المنصة', inside: 'داخل المنصة' },
+      app: { offers: 'ما يقدّمه التطبيق', inside: 'داخل التطبيق' },
+      website: { offers: 'ما يقدّمه الموقع', inside: 'داخل الموقع' },
+    } satisfies Record<ProjectType, { offers: string; inside: string }>,
+    figures: 'بالأرقام',
+    /** The screens: cover, walk-through, phones and the full-size dialog (ProjectMedia). */
+    media: {
+      cover: 'واجهة {title}',
+      stage: 'شاشات {title}',
+      hint: 'اضغط أي شاشة لتراها بحجمها.',
+      zoom: 'تكبير {name}',
+      screen: 'الشاشة',
+      onPhone: 'على الجوال',
+      phones: 'شاشات {title} على الجوال',
+      box: 'شاشة من {title}',
+      close: 'إغلاق',
+    },
     storyTitle: 'من المشكلة إلى نظام يعمل.',
     // Challenge, solution, result: the client fills them.
     story: {

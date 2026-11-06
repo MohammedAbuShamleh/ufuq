@@ -222,7 +222,7 @@
   position: absolute;
   top: -0.15em;
   inset-inline-end: 0.1em;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 9rem;
   line-height: 1;

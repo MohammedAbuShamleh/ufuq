@@ -34,7 +34,7 @@
 }
 .ab-stats b {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   line-height: 1;

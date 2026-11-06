@@ -17,17 +17,18 @@
 }
 
 /* ---------- The giant word (WordStage) ----------
-   Sized to span most of the content width; it fades from the text colour at
-   its start to a faint trace at its end, like a line toward the horizon.
-   The hamza on its alef rises about 0.12em above the line box, and a
-   text-clipped background (and the mask below) paint only inside the box, so
-   the box gets 0.2em more on top for it, taken back by the margin. */
+   Sized to span most of the content width (the Serif's «أعمالنا» is about
+   2.45em wide); it fades from the text colour at its start to a faint trace
+   at its end, like a line toward the horizon.
+   A text-clipped background (and the mask below) paint only inside the box,
+   so a mark that rises above the line box, like the hamza on the alef, would
+   be cut flat: the box gets 0.2em more on top for it, taken back by the margin. */
 .ws-word {
-  --ws: clamp(5.5rem, 27vw, 21rem);
+  --ws: clamp(7rem, 34vw, 26rem);
   width: fit-content;
   padding-top: 0.2em;
   margin: -0.2em auto 2.5rem;
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: var(--ws);
   line-height: 1.2;
@@ -70,7 +71,7 @@
   margin-top: 2.5rem;
 }
 .fb :is(h1, h3) {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: clamp(1.7rem, 3vw, 2.5rem);
   line-height: 1.2;
@@ -137,7 +138,7 @@
   white-space: nowrap;
 }
 .fb1-facts b {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: 1.5rem;
   color: var(--accent);
   margin-inline-end: 0.2rem;
