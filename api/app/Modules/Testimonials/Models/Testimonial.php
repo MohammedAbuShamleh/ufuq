@@ -17,6 +17,9 @@ class Testimonial extends Model
 
     public array $translatable = ['quote', 'author_name', 'author_title', 'organization'];
 
+    /** What must have text in a language before the site shows this testimonial in it. */
+    public const REQUIRED_TEXT = ['quote', 'author_name', 'author_title', 'organization'];
+
     protected function casts(): array
     {
         return ['status' => PublishStatus::class];

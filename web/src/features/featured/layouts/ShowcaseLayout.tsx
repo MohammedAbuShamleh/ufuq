@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { DemoPill } from '@/components/DemoPill'
 import { MediaImage } from '@/components/MediaImage'
-import { arNum } from '@/lib/format'
+import { fill } from '@/i18n/config'
+import { formatNumber } from '@/lib/format'
 import { Meta, shown, SimilarCta, Tech, Title, type LayoutProps } from '../parts'
 
 const MAIN_SIZES = '(max-width: 1288px) calc(100vw - 3rem), 1240px'
@@ -13,7 +14,7 @@ const THUMB_SIZES = '(max-width: 960px) 33vw, 200px'
  * Saiid: one large desktop screen, every desktop screen under it as a
  * thumbnail that swaps it in. The figures sit on the title row.
  */
-export function ShowcaseLayout({ project, heading, linkTitle, contactHref }: LayoutProps) {
+export function ShowcaseLayout({ project, heading, linkTitle, contactHref, locale, copy }: LayoutProps) {
   const screens = shown(project.screens, (k) => k === 'desktop')
   const [active, setActive] = useState(0)
 
@@ -22,7 +23,7 @@ export function ShowcaseLayout({ project, heading, linkTitle, contactHref }: Lay
       <div className="fb1-copy">
         <div>
           <Meta project={project} />
-          <Title project={project} heading={heading} linkTitle={linkTitle} />
+          <Title project={project} heading={heading} linkTitle={linkTitle} locale={locale} />
         </div>
         {project.summary && <p>{project.summary}</p>}
         {project.featured_facts.length > 0 && (
@@ -50,16 +51,16 @@ export function ShowcaseLayout({ project, heading, linkTitle, contactHref }: Lay
                 aria-hidden={i !== active || undefined}
               />
             ))}
-            {project.has_demo_data && <DemoPill />}
+            {project.has_demo_data && <DemoPill label={copy.demoData} />}
           </div>
           {screens.length > 1 && (
-            <div className="fb1-thumbs" role="group" aria-label={`شاشات ${project.title}`}>
+            <div className="fb1-thumbs" role="group" aria-label={fill(copy.screens, { title: project.title })}>
               {screens.map((s, i) => (
                 <button key={s.file.url} type="button" aria-pressed={i === active} className={i === active ? 'on' : undefined} onClick={() => setActive(i)}>
                   <span className="fb-th">
                     <MediaImage media={s.file} alt={s.alt ?? ''} fill sizes={THUMB_SIZES} />
                   </span>
-                  <span>{s.label ?? arNum(i + 1)}</span>
+                  <span>{s.label ?? formatNumber(locale, i + 1)}</span>
                 </button>
               ))}
             </div>
@@ -69,7 +70,7 @@ export function ShowcaseLayout({ project, heading, linkTitle, contactHref }: Lay
 
       <div className="fb-foot">
         <Tech project={project} />
-        <SimilarCta project={project} href={contactHref} />
+        <SimilarCta project={project} href={contactHref} copy={copy} />
       </div>
     </article>
   )

@@ -1,8 +1,10 @@
-import type { T } from '@/lib/i18n'
+import type { Locale, T } from '@/lib/i18n'
 import type { Media } from '@/lib/types'
 
 export type Member = {
   id: number
+  /** The languages the site shows it in. */
+  locales: Locale[]
   name: T
   role: T
   bio: T | null

@@ -2,14 +2,22 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import { ArchClip } from '@/components/ArchClip'
 import { Arrow, Button } from '@/components/Button'
+import { href } from '@/i18n/config'
+import { getDictionary, getLocale } from '@/i18n/server'
+import { HeadScriptReplay } from '../_shell/HeadScriptReplay'
 import './not-found.css'
 
-export const metadata: Metadata = { title: 'الصفحة غير موجودة' }
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getDictionary()).meta.notFound }
+}
 
-/** Any address with no page, and any project that is not published. */
-export default function NotFound() {
+/** Any address with no page (see [...missing]), and any project that is not published. */
+export default async function NotFound() {
+  const locale = await getLocale()
+  const copy = (await getDictionary(locale)).notFound
   return (
     <main id="top" className="nf-page">
+      <HeadScriptReplay />
       <section className="nf" aria-labelledby="nf-title">
         <div className="wrap nf-grid">
           <figure className="nf-art">
@@ -18,7 +26,7 @@ export default function NotFound() {
                 src="/illustrations/404-dead-end.png"
                 width={1122}
                 height={1402}
-                alt="طريق ورقي بين التلال ينتهي عند حافة، وعليه لافتة خشبية تشير إلى الخلف"
+                alt={copy.alt}
                 sizes="(max-width: 960px) 300px, 420px"
                 preload
               />
@@ -26,23 +34,23 @@ export default function NotFound() {
           </figure>
           <div className="nf-body">
             <span className="nf-code" aria-hidden="true">
-              ٤٠٤
+              {copy.code}
             </span>
             <h1 id="nf-title">
-              هذا الطريق
+              {copy.title[0]}
               <br />
-              <span>لا يؤدي إلى الأفق.</span>
+              <span>{copy.title[1]}</span>
             </h1>
-            <p>الصفحة التي تبحث عنها غير موجودة، أو نُقلت إلى مكان آخر. اللافتة تشير إلى طريق العودة.</p>
+            <p>{copy.text}</p>
             <div className="nf-actions">
-              <Button href="/">
-                <Arrow className="ico-arrow back" /> العودة للرئيسية
+              <Button href={href(locale, '/')}>
+                <Arrow className="ico-arrow back" /> {copy.home}
               </Button>
-              <Button variant="line" href="/work">
-                أعمالنا
+              <Button variant="line" href={href(locale, '/work')}>
+                {copy.work}
               </Button>
-              <Button variant="line" href="/#contact">
-                تواصل معنا
+              <Button variant="line" href={href(locale, '/#contact')}>
+                {copy.contact}
               </Button>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
+import { href, type Locale } from '@/i18n/config'
 import { imgAttrs, isVideo } from '@/lib/media'
 import type { ProjectCard } from '@/lib/types'
 import { packGrid, type Cell, type Span } from './packGrid'
@@ -44,7 +45,20 @@ export function gridSpans(shown: ProjectCard[]): Map<string, CardSpans> {
  * hit area covers the card, so the whole card opens it. Without `spans` the
  * card takes the size it asks for.
  */
-export function WorkCard({ project, tone, hidden, spans }: { project: ProjectCard; tone: number; hidden?: boolean; spans?: CardSpans }) {
+export function WorkCard({
+  project,
+  tone,
+  hidden,
+  spans,
+  locale,
+}: {
+  project: ProjectCard
+  tone: number
+  hidden?: boolean
+  spans?: CardSpans
+  /** The page's language, for the link (the card renders on the server and in the client lists). */
+  locale: Locale
+}) {
   const cover = project.cover?.file
   const { c4, c2 } = spans ?? { c4: cardCell(project, 4), c2: cardCell(project, 2) }
   const size = { '--w4': c4.w, '--h4': c4.h, '--w2': c2.w, '--h2': c2.h } as CSSProperties
@@ -74,7 +88,7 @@ export function WorkCard({ project, tone, hidden, spans }: { project: ProjectCar
       <div className="pjt-body">
         {project.tag && <span className="pjt-tag">{project.tag}</span>}
         <h3>
-          <Link className="pjt-link" href={`/work/${project.slug}`}>
+          <Link className="pjt-link" href={href(locale, `/work/${project.slug}`)}>
             {project.title}
           </Link>
         </h3>

@@ -1,12 +1,17 @@
+import { href, type Locale } from '@/i18n/config'
+import type { LeadType } from '@/i18n/dictionaries/ar'
 import type { ProjectType } from '@/lib/types'
 
-/** «I want something like this»: the link text and the project type it picks in the contact form. */
-export const SIMILAR: Record<ProjectType, { label: string; formType: string }> = {
-  platform: { label: 'أريد منصة مشابهة', formType: 'منصة إلكترونية' },
-  app: { label: 'أريد تطبيقاً مشابهاً', formType: 'تطبيق جوال' },
-  website: { label: 'أريد موقعاً مشابهاً', formType: 'موقع إبداعي' },
-  system: { label: 'أريد نظاماً مشابهاً', formType: 'نظام ERP' },
+/**
+ * «I want something like this»: the project kind it picks in the contact form.
+ * The link's words are in the dictionary (layouts.similar).
+ */
+export const SIMILAR: Record<ProjectType, LeadType> = {
+  platform: 'platform',
+  app: 'app',
+  website: 'website',
+  system: 'system',
 }
 
-/** From another page: the home contact form, with the project type picked through ?type=. */
-export const similarHref = (type: ProjectType) => `/?type=${encodeURIComponent(SIMILAR[type].formType)}#contact`
+/** From another page: the home contact form, with the project kind picked through ?type=. */
+export const similarHref = (locale: Locale, type: ProjectType) => href(locale, `/?type=${SIMILAR[type]}#contact`)

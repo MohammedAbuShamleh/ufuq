@@ -39,6 +39,14 @@
   user-select: none;
   pointer-events: none;
 }
+/* LTR: it fades toward its end on the right. */
+.ws-word:dir(ltr) {
+  background-image: linear-gradient(to right, var(--text) 20%, color-mix(in srgb, var(--text) 22%, transparent));
+}
+/* «Work» is about 2.75em wide, so it takes a smaller size to span the same width. */
+.ws-word:lang(en) {
+  --ws: clamp(6.2rem, 30vw, 23rem);
+}
 /*
  * With motion the word stops in the middle of the screen and the content
  * rises over it. The mask hides the word from just above the content's top

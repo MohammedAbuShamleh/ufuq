@@ -8,7 +8,7 @@ import { WhatsAppIcon } from './SvgSprite'
  * Shows once the hero is behind the visitor, and steps aside at the contact
  * section. With no number yet it is left out (a dashed mark in a preview build).
  */
-export function WhatsAppFloat({ href }: { href: string | null }) {
+export function WhatsAppFloat({ href, copy }: { href: string | null; copy: { label: string; pending: string } }) {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
@@ -33,13 +33,13 @@ export function WhatsAppFloat({ href }: { href: string | null }) {
   const cls = `wa-float${show ? ' show' : ''}${href ? '' : ' pending'}`
   if (!href) {
     return SHOW_PENDING ? (
-      <span className={cls} title="رقم واتساب قيد الإعداد" aria-hidden="true">
+      <span className={cls} title={copy.pending} aria-hidden="true">
         <WhatsAppIcon size={26} />
       </span>
     ) : null
   }
   return (
-    <a className={cls} href={href} target="_blank" rel="noopener" aria-label="تحدّث معنا على واتساب" tabIndex={show ? undefined : -1}>
+    <a className={cls} href={href} target="_blank" rel="noopener" aria-label={copy.label} tabIndex={show ? undefined : -1}>
       <WhatsAppIcon size={26} />
     </a>
   )

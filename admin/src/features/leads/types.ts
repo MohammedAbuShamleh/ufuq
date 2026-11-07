@@ -7,6 +7,8 @@ export type Lead = {
   project_type: string | null
   message: string | null
   source_page: string | null
+  /** The site version it was sent from: answer in that language. */
+  locale: 'ar' | 'en'
   status: LeadStatus
   next_status: Exclude<LeadStatus, 'new'> | null
   created_at: string

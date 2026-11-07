@@ -36,7 +36,7 @@ export function TeamForm() {
           }}
           className="grid gap-6"
         >
-          <Translated>
+          <Translated errors={errors} fields={['name', 'role', 'bio']}>
             {(l) => (
               <>
                 <div className="grid gap-5 sm:grid-cols-2">

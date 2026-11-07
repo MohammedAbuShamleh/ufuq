@@ -1,4 +1,4 @@
-import type { T } from '@/lib/i18n'
+import type { Locale, T } from '@/lib/i18n'
 import type { Media, PublishStatus } from '@/lib/types'
 
 export type ProjectType = 'system' | 'website' | 'platform' | 'app'
@@ -15,6 +15,8 @@ export type Highlight = { id?: number; text: T }
 
 export type ProjectRow = {
   id: number
+  /** The languages the site shows it in. */
+  locales: Locale[]
   slug: string
   title: T
   client_name: T

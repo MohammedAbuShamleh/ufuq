@@ -1,21 +1,23 @@
 'use client'
 
 import { useState } from 'react'
+import { fill } from '@/i18n/config'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
 import { isPending, isShown } from '@/lib/format'
 import { imgAttrs } from '@/lib/media'
 import type { TeamMember } from '@/lib/types'
 
 /** A teammate: the photo is grey until clicked (or hovered with a mouse). */
-export function TeamPerson({ member }: { member: TeamMember }) {
+export function TeamPerson({ member, copy }: { member: TeamMember; copy: Dictionary['team'] }) {
   const [color, setColor] = useState(false)
   // A founder whose role has not arrived yet is still «شريك مؤسس» on the live site.
-  const role = member.is_founder ? (isShown(member.role) ? `شريك مؤسس · ${member.role}` : 'شريك مؤسس') : member.role
+  const role = member.is_founder ? (isShown(member.role) ? fill(copy.founderRole, { role: member.role }) : copy.founder) : member.role
   const rolePending = isShown(member.role) && isPending(member.role)
 
   return (
     <div className={`ab-p${color ? ' color' : ''}`}>
       {member.photo ? (
-        <button type="button" className="ab-av ph" aria-pressed={color} aria-label="إظهار الصورة بالألوان" onClick={() => setColor((c) => !c)}>
+        <button type="button" className="ab-av ph" aria-pressed={color} aria-label={copy.inColor} onClick={() => setColor((c) => !c)}>
           {/* eslint-disable-next-line @next/next/no-img-element -- the API already serves the webp widths (see imgAttrs) */}
           <img {...imgAttrs(member.photo, '58px')} alt={member.name} />
         </button>

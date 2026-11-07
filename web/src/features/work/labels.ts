@@ -1,27 +1,11 @@
 import type { ProjectSector, ProjectType } from '@/lib/types'
 
-/** Filter names: plural, as the visitor reads a shelf of work. */
-export const TYPE_FILTERS: { type: ProjectType; label: string }[] = [
-  { type: 'system', label: 'أنظمة' },
-  { type: 'website', label: 'مواقع' },
-  { type: 'platform', label: 'منصات' },
-  { type: 'app', label: 'تطبيقات' },
-]
+// The order the filters show the kinds and sectors in. Their names are in the
+// dictionary: work.types (plural, as the visitor reads a shelf of work),
+// work.sectors, and work.type for one project's kind.
+export const TYPES: ProjectType[] = ['system', 'website', 'platform', 'app']
 
-export const SECTOR_FILTERS: { sector: ProjectSector; label: string }[] = [
-  { sector: 'charity', label: 'جمعيات خيرية' },
-  { sector: 'education', label: 'مدارس وتعليم' },
-  { sector: 'government', label: 'جهات حكومية' },
-  { sector: 'dawah', label: 'دعوة وتحفيظ' },
-  { sector: 'business', label: 'شركات' },
-]
+export const SECTORS: ProjectSector[] = ['charity', 'education', 'government', 'dawah', 'business']
 
-/** One project's kind, singular. */
-export const TYPE_LABEL: Record<ProjectType, string> = { system: 'نظام', website: 'موقع', platform: 'منصة', app: 'تطبيق جوال' }
-
-export const SECTOR_LABEL = Object.fromEntries(SECTOR_FILTERS.map((s) => [s.sector, s.label])) as Record<ProjectSector, string>
-
-/** The four countries the work runs in today; any other code shows as is. */
-const COUNTRIES: Record<string, string> = { PS: 'فلسطين', EG: 'مصر', AE: 'الإمارات', TR: 'تركيا' }
-
-export const countryName = (code: string | null) => (code ? (COUNTRIES[code] ?? code) : null)
+/** A country's name from the dictionary's work.countries; any other code shows as is. */
+export const countryName = (countries: Record<string, string>, code: string | null) => (code ? (countries[code] ?? code) : null)

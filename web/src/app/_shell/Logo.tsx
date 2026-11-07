@@ -9,10 +9,11 @@ const WORD_AR = 'M0 96.65ZM98.57 96.65H85.49V100.69Q85.49 107.5 82.41 113.24Q79.
 
 type LogoProps = {
   className?: string
-  label?: string
+  /** What a screen reader says for it (the dictionary's common.logo). */
+  label: string
 }
 
-export function Logo({ className, label = 'أفق UFUQ' }: LogoProps) {
+export function Logo({ className, label }: LogoProps) {
   // Unique clip ids: the logo appears more than once per page (nav and footer).
   const id = useId()
   const left = `${id}left`

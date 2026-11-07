@@ -1,5 +1,6 @@
 import { useId, type ReactNode } from 'react'
 import { formatNumber } from '@/lib/format'
+import { useFieldLocale } from './fieldLocale'
 
 export type FieldA11y = {
   id: string
@@ -69,21 +70,35 @@ export function Field({ label, hint, error, required, count, className, children
 
 type Common = { label: string; hint?: ReactNode; error?: string; required?: boolean; className?: string; max?: number; placeholder?: string; dir?: 'rtl' | 'ltr' }
 
+/** Inside a translated card, the field takes the tab's language (see FieldLocale). */
+function useLocalized(p: Common) {
+  const locale = useFieldLocale()
+  const second = locale !== null && !locale.primary
+  return {
+    required: second ? false : p.required,
+    placeholder: second ? undefined : p.placeholder,
+    dir: p.dir ?? locale?.dir,
+    lang: locale?.code,
+  }
+}
+
 export function TextField({ value, onChange, type = 'text', autoComplete, ...p }: Common & { value: string; onChange: (v: string) => void; type?: string; autoComplete?: string }) {
+  const l = useLocalized(p)
   return (
-    <Field label={p.label} hint={p.hint} error={p.error} required={p.required} className={p.className} count={p.max ? { value: value.length, max: p.max } : undefined}>
+    <Field label={p.label} hint={p.hint} error={p.error} required={l.required} className={p.className} count={p.max ? { value: value.length, max: p.max } : undefined}>
       {(a11y) => (
-        <input {...a11y} type={type} dir={p.dir} value={value} placeholder={p.placeholder} autoComplete={autoComplete} onChange={(e) => onChange(e.target.value)} className={inputClass} />
+        <input {...a11y} type={type} dir={l.dir} lang={l.lang} value={value} placeholder={l.placeholder} autoComplete={autoComplete} onChange={(e) => onChange(e.target.value)} className={inputClass} />
       )}
     </Field>
   )
 }
 
 export function TextAreaField({ value, onChange, rows = 4, ...p }: Common & { value: string; onChange: (v: string) => void; rows?: number }) {
+  const l = useLocalized(p)
   return (
-    <Field label={p.label} hint={p.hint} error={p.error} required={p.required} className={p.className} count={p.max ? { value: value.length, max: p.max } : undefined}>
+    <Field label={p.label} hint={p.hint} error={p.error} required={l.required} className={p.className} count={p.max ? { value: value.length, max: p.max } : undefined}>
       {(a11y) => (
-        <textarea {...a11y} rows={rows} dir={p.dir} value={value} placeholder={p.placeholder} onChange={(e) => onChange(e.target.value)} className={`${inputClass} resize-y leading-loose`} />
+        <textarea {...a11y} rows={rows} dir={l.dir} lang={l.lang} value={value} placeholder={l.placeholder} onChange={(e) => onChange(e.target.value)} className={`${inputClass} resize-y leading-loose`} />
       )}
     </Field>
   )

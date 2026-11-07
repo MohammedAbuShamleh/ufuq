@@ -15,6 +15,8 @@ class ClientResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            // The languages the site shows this item in (Arabic always; English once complete).
+            'locales' => Translations::locales($this->resource, Client::REQUIRED_TEXT),
             'name' => Translations::of($this->resource, 'name'),
             'sector_label' => Translations::of($this->resource, 'sector_label'),
             'location' => Translations::of($this->resource, 'location'),

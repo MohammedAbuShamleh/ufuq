@@ -28,7 +28,7 @@ export function FaqForm() {
           }}
           className="grid gap-6"
         >
-          <Translated>
+          <Translated errors={errors} fields={['question', 'answer']}>
             {(l) => (
               <>
                 <TextField label="السؤال" required max={200} value={values.question[l] ?? ''} onChange={(v) => set('question', { ...values.question, [l]: v })} error={errors[`question.${l}`]} />

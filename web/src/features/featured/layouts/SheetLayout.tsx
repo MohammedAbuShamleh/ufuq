@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { DemoPill } from '@/components/DemoPill'
 import { MediaImage } from '@/components/MediaImage'
+import { fill } from '@/i18n/config'
 import { Meta, shown, SimilarCta, Tech, Title, type LayoutProps, type Shown } from '../parts'
 
 const CELL_SIZES = '(max-width: 960px) 50vw, 400px'
@@ -12,7 +13,7 @@ const FULL_SIZES = '(max-width: 1170px) 94vw, 1100px'
  * RasRas: the copy and its points on one row, then every desktop screen in
  * a sheet. A screen opens full size in a dialog.
  */
-export function SheetLayout({ project, heading, linkTitle, contactHref }: LayoutProps) {
+export function SheetLayout({ project, heading, linkTitle, contactHref, locale, copy }: LayoutProps) {
   const screens = shown(project.screens, (k) => k === 'desktop')
   const [open, setOpen] = useState<Shown | null>(null)
   const dialog = useRef<HTMLDialogElement>(null)
@@ -26,7 +27,7 @@ export function SheetLayout({ project, heading, linkTitle, contactHref }: Layout
     <article className="fb fb3">
       <div className="fb3-copy">
         <Meta project={project} />
-        <Title project={project} heading={heading} linkTitle={linkTitle} />
+        <Title project={project} heading={heading} linkTitle={linkTitle} locale={locale} />
         {project.summary && <p>{project.summary}</p>}
         {project.highlights.length > 0 && (
           <ul>
@@ -37,7 +38,7 @@ export function SheetLayout({ project, heading, linkTitle, contactHref }: Layout
         )}
         <div className="fb-foot">
           <Tech project={project} />
-          <SimilarCta project={project} href={contactHref} />
+          <SimilarCta project={project} href={contactHref} copy={copy} />
         </div>
       </div>
 
@@ -54,8 +55,8 @@ export function SheetLayout({ project, heading, linkTitle, contactHref }: Layout
             ))}
           </div>
           <div className="fb3-note">
-            <span>اضغط أي شاشة لتكبيرها.</span>
-            {project.has_demo_data && <DemoPill />}
+            <span>{copy.enlarge}</span>
+            {project.has_demo_data && <DemoPill label={copy.demoData} />}
           </div>
         </div>
       )}
@@ -64,13 +65,13 @@ export function SheetLayout({ project, heading, linkTitle, contactHref }: Layout
       <dialog
         ref={dialog}
         className="fb3-box"
-        aria-label={`شاشة من ${project.title}`}
+        aria-label={fill(copy.screen, { title: project.title })}
         onClose={() => setOpen(null)}
         onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
       >
         {open && (
           <>
-            <button type="button" className="fb3-x" aria-label="إغلاق" onClick={() => dialog.current?.close()}>
+            <button type="button" className="fb3-x" aria-label={copy.close} onClick={() => dialog.current?.close()}>
               ×
             </button>
             <MediaImage media={open.file} alt={open.alt ?? ''} sizes={FULL_SIZES} />

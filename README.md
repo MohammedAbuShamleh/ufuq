@@ -50,6 +50,8 @@ Text that is still pending comes out as `null` or wrapped in `[brackets]`; the s
 both with the pending marker. Every image comes with its original `width` and `height` and
 three webp `sizes` (480, 960, 1600).
 
+Every read answers in Arabic unless it asks for `?lang=en` (see [Languages](#languages)).
+
 ## Admin API
 
 Served under `/admin/v1` for the dashboard only. It signs in with Sanctum's cookie
@@ -112,6 +114,9 @@ web/src
 | `/work/[slug]` | `GET /v1/projects/{slug}`      | `project:<slug>`, `projects` |
 | `/about`       | `GET /v1/team`, `/v1/settings` | `team`, `settings`    |
 | `/privacy`     | `GET /v1/settings`             | `settings`            |
+
+Each route also exists in English under `/en` (`/en/work/[slug]`, …), from the same reads
+with `?lang=en` and the same tags; see [Languages](#languages).
 
 Every read is tagged and kept for an hour. After a dashboard save the API posts the tags it
 touched to `POST /api/revalidate` (`Authorization: Bearer <REVALIDATE_SECRET>`), which
@@ -176,11 +181,50 @@ drop; uploads save on their own, with a progress bar. Deletes ask first, naming 
 content is soft-deleted, a user is removed for good, and nobody can delete their own
 account or the last admin. Removing an uploaded photo, logo or PDF asks first too. A form
 with unsaved edits asks before you leave it. Numbers show in Arabic-Indic digits, as on
-the site. Translated fields sit under an «العربية» tab: adding English later is one
-entry in `lib/i18n.ts`, not a change to each form.
+the site. Translated fields sit under «العربية» and «English» tabs (`lib/i18n.ts`): a tab
+holding an error is marked, and opened after a failed save. Each list marks with «EN» the
+items that have English, which are the ones `/en` shows.
 
 The dashboard builds to static files (`npm run build` → `dist/`); `public/.htaccess` sends
 every path to `index.html` on the host.
+
+## Languages
+
+Arabic is the site's own language, at `/` with no prefix; English is at `/en/…`. Nothing
+redirects by browser language: the language switch in the header and the footer opens the
+same page in the other language.
+
+- **Routing.** Every page lives under `app/[lang]/`. `src/proxy.ts` rewrites an unprefixed
+  address to `/ar…` and sends `/ar…` to the unprefixed one with a 308, so each page has one
+  address; `/en…` passes through. Unknown addresses get the 404 in their own language.
+- **Site copy.** Every word of the interface is in `src/i18n/dictionaries/ar.ts` and `en.ts`.
+  `en.ts` is typed from `ar.ts`, so a missing key fails the build. Server components read the
+  dictionary with `getDictionary()`; client components get their words as a `copy` prop.
+  English layout fixes sit in `:dir(ltr)` rules beside the Arabic ones, and English type
+  sizes in `:lang(en)` rules, so the Arabic pages stay exactly as they are.
+- **Content.** Every translated field is stored as `{"ar": …, "en": …}`. An item has English
+  when each field that is required in Arabic has English (the model's `REQUIRED_TEXT`);
+  `?lang=en` leaves out every item without it, never shows Arabic in its place, and answers
+  404 for an untranslated project. On `/en` its language switch goes to `/en/work` instead.
+  English is all or nothing on save: the dashboard refuses half an item. Facts and
+  highlights without English are dropped; screens always show, as they are images.
+- **Numbers.** Arabic pages show Arabic-Indic digits and English pages Western ones; text
+  from the API that holds Arabic-Indic digits is converted on `/en`.
+- **Search.** Each page names its other language (`hreflang`, with Arabic as `x-default`)
+  only when that page exists; `sitemap.xml` lists both languages, and a project's English
+  address only once it is translated. Each language has its own share image
+  (`public/og/og-ufuq-ar.png`, `og-ufuq-en.png`).
+- **Revalidation.** The tags are the same in both languages, so one save refreshes both.
+- **Leads.** A message sent from `/en` is stored with `locale = en` and its errors come back
+  in English. The dashboard marks it «من النسخة الإنجليزية», and the team's email, still in
+  Arabic, says which language it came in.
+
+`docs/i18n/english-review.html` lists every Arabic text beside its English, the site copy and
+the content drafts, for review in one place. Rebuild it after changing either:
+
+```bash
+node --experimental-strip-types web/scripts/english-review.mjs
+```
 
 ## Design system
 
@@ -211,6 +255,20 @@ cd api && composer install && cp .env.example .env && php artisan key:generate &
 The seed loads the v7 content once; it skips any table that already has rows, because
 after launch the dashboard owns the content. Image uploads need PHP's GD or Imagick
 extension to build the webp sizes.
+
+English drafts of that content come from a separate seeder, run after the main seed
+(on the server too):
+
+```bash
+cd api && php artisan db:seed --class=EnglishDraftSeeder
+```
+
+It writes English only where none exists, so running it again changes nothing and never
+replaces English written in the dashboard. Drafts are matched to the exact Arabic in
+`database/seeders/data/english-drafts.php`. An item whose Arabic was edited since gets
+no English, stays off `/en`, and the run lists its text. The drafts are for the team to
+review in the dashboard's English tab. The privacy policy is a legal text, so a person
+must check its English before launch.
 
 ```bash
 cd web && npm install && cp .env.example .env.local && npm run dev

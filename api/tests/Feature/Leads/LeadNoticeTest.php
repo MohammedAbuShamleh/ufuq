@@ -71,6 +71,17 @@ class LeadNoticeTest extends TestCase
         $mail->assertSeeInText('نوع المشروع: نظام');
         // A phone number is no address to reply to.
         $this->assertFalse($mail->hasReplyTo('0599 123 456'));
+        $mail->assertDontSeeInText('اللغة:');
+    }
+
+    public function test_the_notice_says_when_the_message_came_from_the_english_site(): void
+    {
+        $lead = Lead::create([...self::MESSAGE, 'locale' => 'en', 'ip_hash' => str_repeat('a', 64)]);
+
+        $mail = new NewLeadMail($lead);
+
+        $mail->assertSeeInHtml('كتب من النسخة الإنجليزية من الموقع');
+        $mail->assertSeeInText('اللغة: الإنجليزية');
     }
 
     public function test_a_repeated_send_is_kept_and_emailed_once(): void

@@ -23,6 +23,7 @@ class LeadResource extends JsonResource
             'project_type' => $this->project_type,
             'message' => $this->message,
             'source_page' => $this->source_page,
+            'locale' => $this->locale,
             'status' => $this->status->value,
             'next_status' => $this->status->next()?->value,
             'created_at' => $this->created_at?->toIso8601String(),

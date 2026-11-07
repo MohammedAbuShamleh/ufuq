@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import { Arrow } from '@/components/Button'
-import { SIMILAR, similarHref } from '@/features/featured/similar'
+import { similarHref } from '@/features/featured/similar'
+import { fill, href } from '@/i18n/config'
+import { getDictionary, getLocale } from '@/i18n/server'
 import { isPending, isShown } from '@/lib/format'
 import type { ProjectDetail, Testimonial } from '@/lib/types'
-import { countryName, SECTOR_LABEL, TYPE_LABEL } from '../work/labels'
+import { countryName } from '../work/labels'
 import './project.css'
 
 type Figure = { value: string; label: string | null }
@@ -27,21 +29,23 @@ const LONG_TITLE = 16
  * and the way to ask for something similar on the other, then who it was
  * built for, where, what kind of work, and on what, in one ruled row.
  */
-export function ProjectHero({ project }: { project: ProjectDetail }) {
-  const similar = SIMILAR[project.type]
+export async function ProjectHero({ project }: { project: ProjectDetail }) {
+  const locale = await getLocale()
+  const t = await getDictionary(locale)
+  const { facts: label } = t.project
   const facts = [
-    { label: 'العميل', value: project.client_name },
-    { label: 'القطاع', value: SECTOR_LABEL[project.sector] },
-    { label: 'الدولة', value: countryName(project.country) },
-    { label: 'نوع العمل', value: TYPE_LABEL[project.type] },
+    { label: label.client, value: project.client_name },
+    { label: label.sector, value: t.work.sectors[project.sector] },
+    { label: label.country, value: countryName(t.work.countries, project.country) },
+    { label: label.type, value: t.work.type[project.type] },
   ].filter((f): f is { label: string; value: string } => Boolean(f.value))
   const stack = project.tech_stack?.length ? project.tech_stack : null
 
   return (
     <section className="pp-hero" aria-labelledby="pp-title">
       <div className="wrap">
-        <Link className="sx-go pp-back" href="/work">
-          <Arrow className="ico-arrow back" /> كل الأعمال
+        <Link className="sx-go pp-back" href={href(locale, '/work')}>
+          <Arrow className="ico-arrow back" /> {t.project.back}
         </Link>
 
         <div className="pp-head">
@@ -53,8 +57,8 @@ export function ProjectHero({ project }: { project: ProjectDetail }) {
           </div>
           <div className="pp-lede">
             {project.summary && <p>{project.summary}</p>}
-            <a className="pp-similar" href={similarHref(project.type)}>
-              {similar.label} <Arrow />
+            <a className="pp-similar" href={similarHref(locale, project.type)}>
+              {t.layouts.similar[project.type]} <Arrow />
             </a>
           </div>
         </div>
@@ -68,7 +72,7 @@ export function ProjectHero({ project }: { project: ProjectDetail }) {
           ))}
           {stack && (
             <div className="pp-ledger-stack">
-              <dt>التقنيات</dt>
+              <dt>{label.stack}</dt>
               <dd>
                 <bdi dir="ltr">{stack.join(' · ')}</bdi>
               </dd>
@@ -87,7 +91,8 @@ export const hasOffers = (project: ProjectDetail) => project.highlights.length >
  * The dark band under the cover: what the work does, in its own points, and
  * its figures down the side, each on a rule rather than in a tile.
  */
-export function ProjectOffers({ project, heading }: { project: ProjectDetail; heading: string }) {
+export async function ProjectOffers({ project }: { project: ProjectDetail }) {
+  const copy = (await getDictionary()).project
   const figures = figuresOf(project)
   const points = project.highlights
 
@@ -95,7 +100,7 @@ export function ProjectOffers({ project, heading }: { project: ProjectDetail; he
     <section className={`pp-offers${points.length === 0 ? ' pp-offers-figures' : ''}`} aria-labelledby="offers-title">
       <div className="wrap pp-offers-in">
         <div className="pp-points">
-          <h2 id="offers-title">{heading}</h2>
+          <h2 id="offers-title">{copy.kinds[project.type].offers}</h2>
           {points.length > 0 && (
             <ul>
               {points.map((h) => (
@@ -110,7 +115,7 @@ export function ProjectOffers({ project, heading }: { project: ProjectDetail; he
           )}
         </div>
         {figures.length > 0 && (
-          <ul className="pp-figures" aria-label="بالأرقام">
+          <ul className="pp-figures" aria-label={copy.figures}>
             {figures.map((f) => (
               <li key={`${f.value}\n${f.label}`}>
                 <b>{f.value}</b>
@@ -124,13 +129,7 @@ export function ProjectOffers({ project, heading }: { project: ProjectDetail; he
   )
 }
 
-const STORY = [
-  { key: 'challenge', title: 'التحدي', placeholder: '[التحدي: كيف كانت المؤسسة تعمل قبل النظام، وما الذي كان يتعطّل؟]' },
-  { key: 'solution', title: 'الحل', placeholder: '[الحل: ما الذي بنيناه، ومن يستخدمه في المؤسسة؟]' },
-  { key: 'results', title: 'النتيجة', placeholder: '[النتيجة: ما الذي تغيّر بعد الإطلاق، بالأرقام إن وُجدت.]' },
-] as const
-
-const STEP_NUM = ['١', '٢', '٣']
+const STORY = ['challenge', 'solution', 'results'] as const
 
 /**
  * Challenge, solution, result: the client fills them. A step still waiting
@@ -138,26 +137,28 @@ const STEP_NUM = ['١', '٢', '٣']
  * site; with no step written, the section is left out. The heading holds its
  * place while the steps pass beside it.
  */
-export function ProjectStory({ project }: { project: ProjectDetail }) {
-  const steps = STORY.filter((s) => isShown(project[s.key]))
+export async function ProjectStory({ project }: { project: ProjectDetail }) {
+  const steps = STORY.filter((key) => isShown(project[key]))
   if (steps.length === 0) return null
+  const copy = (await getDictionary()).project
 
   return (
     <section className="pp-story" aria-labelledby="story-title">
       <div className="wrap pp-story-in">
-        <h2 id="story-title">من المشكلة إلى نظام يعمل.</h2>
+        <h2 id="story-title">{copy.storyTitle}</h2>
         <ol className="pp-steps">
-          {steps.map((s, i) => {
-            const text = project[s.key]
+          {steps.map((key, i) => {
+            const text = project[key]
             const pending = isPending(text)
+            const step = copy.story[key]
             return (
-              <li key={s.key}>
+              <li key={key}>
                 <span className="pp-n" aria-hidden="true">
-                  {STEP_NUM[i]}
+                  {copy.stepNumbers[i]}
                 </span>
                 <div>
-                  <h3>{s.title}</h3>
-                  <p className={pending ? 'pending-txt' : undefined}>{pending ? (text ?? s.placeholder) : text}</p>
+                  <h3>{step.title}</h3>
+                  <p className={pending ? 'pending-txt' : undefined}>{pending ? (text ?? step.pending) : text}</p>
                 </div>
               </li>
             )
@@ -169,20 +170,21 @@ export function ProjectStory({ project }: { project: ProjectDetail }) {
 }
 
 /** The client's own words about the project, when there are any (on the live site, only once written). */
-export function ProjectQuote({ testimonial: t }: { testimonial: Testimonial }) {
+export async function ProjectQuote({ testimonial: t }: { testimonial: Testimonial }) {
   if (!isShown(t.quote) || !isShown(t.author_name)) return null
+  const copy = (await getDictionary()).project
   const mark = (text: string | null) => (isPending(text) ? 'pending-txt' : undefined)
   return (
-    <section className="pp-voice" aria-label={`شهادة ${t.organization}`}>
+    <section className="pp-voice" aria-label={fill(copy.quoteLabel, { organization: t.organization })}>
       <div className="wrap">
         <figure className="pp-quote">
-          <blockquote className={mark(t.quote)}>{t.quote ?? '[نص الشهادة]'}</blockquote>
+          <blockquote className={mark(t.quote)}>{t.quote ?? copy.quotePending}</blockquote>
           <figcaption>
-            <b className={mark(t.author_name)}>{t.author_name ?? '[الاسم]'}</b>
+            <b className={mark(t.author_name)}>{t.author_name ?? copy.namePending}</b>
             <span>
               {isShown(t.author_title) && (
                 <>
-                  <span className={mark(t.author_title)}>{t.author_title ?? '[المنصب]'}</span> ·{' '}
+                  <span className={mark(t.author_title)}>{t.author_title ?? copy.rolePending}</span> ·{' '}
                 </>
               )}
               {t.organization}

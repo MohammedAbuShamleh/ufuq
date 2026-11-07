@@ -19,6 +19,9 @@ class TeamMember extends Model implements HasMedia
 
     public array $translatable = ['name', 'role', 'bio'];
 
+    /** What must have text in a language before the site shows this member in it. */
+    public const REQUIRED_TEXT = ['name', 'role'];
+
     protected function casts(): array
     {
         return ['is_founder' => 'boolean', 'is_visible' => 'boolean'];

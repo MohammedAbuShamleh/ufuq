@@ -1,17 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import { arNum } from '@/lib/format'
+import { fill } from '@/i18n/config'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
+import { useLocale } from '@/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/format'
 import type { ProjectCard, ProjectSector, ProjectType } from '@/lib/types'
 import { FilterButton } from './FilterButton'
-import { SECTOR_FILTERS, TYPE_FILTERS } from './labels'
+import { SECTORS, TYPES } from './labels'
 import { cardTones, gridSpans, WorkCard } from './WorkCard'
 
 /**
  * Every published project, filtered by kind and by sector together. Each
  * count says how many cards that choice would show given the other filter.
  */
-export function AllWork({ projects }: { projects: ProjectCard[] }) {
+export function AllWork({ projects, copy }: { projects: ProjectCard[]; copy: Dictionary['work'] }) {
+  const { locale } = useLocale()
   const [type, setType] = useState<ProjectType | null>(null)
   const [sector, setSector] = useState<ProjectSector | null>(null)
   const tones = cardTones(projects)
@@ -24,25 +28,25 @@ export function AllWork({ projects }: { projects: ProjectCard[] }) {
   return (
     <>
       <div className="wk-filters">
-        <div className="pj-filter" role="group" aria-label="نوع العمل">
-          <FilterButton on={!type} onClick={() => setType(null)} label="كل الأنواع" count={count(null, sector)} />
-          {TYPE_FILTERS.map(({ type: t, label }) => (
-            <FilterButton key={t} on={type === t} onClick={() => setType(t)} label={label} count={count(t, sector)} />
+        <div className="pj-filter" role="group" aria-label={copy.typeGroup}>
+          <FilterButton on={!type} onClick={() => setType(null)} label={copy.allTypes} count={count(null, sector)} />
+          {TYPES.map((t) => (
+            <FilterButton key={t} on={type === t} onClick={() => setType(t)} label={copy.types[t]} count={count(t, sector)} />
           ))}
         </div>
-        <div className="pj-filter" role="group" aria-label="القطاع">
-          <FilterButton on={!sector} onClick={() => setSector(null)} label="كل القطاعات" count={count(type, null)} />
-          {SECTOR_FILTERS.map(({ sector: s, label }) => (
-            <FilterButton key={s} on={sector === s} onClick={() => setSector(s)} label={label} count={count(type, s)} />
+        <div className="pj-filter" role="group" aria-label={copy.sectorGroup}>
+          <FilterButton on={!sector} onClick={() => setSector(null)} label={copy.allSectors} count={count(type, null)} />
+          {SECTORS.map((s) => (
+            <FilterButton key={s} on={sector === s} onClick={() => setSector(s)} label={copy.sectors[s]} count={count(type, s)} />
           ))}
         </div>
       </div>
       <p className="wk-count" role="status">
-        {shown ? `عدد الأعمال: ${arNum(shown)}` : 'لا أعمال بهذا التصنيف بعد.'}
+        {shown ? fill(copy.count, { count: formatNumber(locale, shown) }) : copy.none}
       </p>
       <div className="pjt-grid">
         {projects.map((p, i) => (
-          <WorkCard key={p.slug} project={p} tone={tones[i]} hidden={!match(p)} spans={spans.get(p.slug)} />
+          <WorkCard key={p.slug} project={p} tone={tones[i]} hidden={!match(p)} spans={spans.get(p.slug)} locale={locale} />
         ))}
       </div>
     </>

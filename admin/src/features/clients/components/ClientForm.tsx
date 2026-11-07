@@ -34,7 +34,7 @@ export function ClientForm() {
           }}
           className="grid gap-6"
         >
-          <Translated>
+          <Translated errors={errors} fields={['name', 'sector_label', 'location']}>
             {(l) => (
               <>
                 <TextField label="اسم العميل" required max={120} value={values.name[l] ?? ''} onChange={(v) => set('name', { ...values.name, [l]: v })} error={errors[`name.${l}`]} />

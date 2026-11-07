@@ -160,6 +160,9 @@
   font-size: 0.7rem;
   color: var(--muted);
 }
+.pjt-tech:dir(ltr) {
+  text-align: left;
+}
 .pjt-media {
   position: relative;
   flex: 1;
@@ -247,6 +250,10 @@
   background: radial-gradient(120% 120% at 100% 0%, var(--night-3), var(--night));
   border-color: rgb(var(--white-rgb) / 0.06);
   color: var(--on-night);
+}
+/* LTR: the warm corner moves to the top left, where reading starts. */
+.pjt.t-ink:dir(ltr) {
+  background: radial-gradient(120% 120% at 0% 0%, var(--night-3), var(--night));
 }
 .pjt.t-ink :is(p, .pjt-tech) {
   color: var(--on-night-muted);

@@ -3,10 +3,14 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useInView } from '@/hooks/useInView'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { arNum } from '@/lib/format'
+import { fill } from '@/i18n/config'
+import { useLocale } from '@/i18n/LocaleProvider'
+import { formatNumber } from '@/lib/format'
 
 /** A test run: the dots turn green one by one while the count climbs to the total. */
-export function TestsGrid({ total }: { total: number }) {
+export function TestsGrid({ total, copy }: { total: number; copy: { label: string; passed: string } }) {
+  const { locale } = useLocale()
+  const n = (value: number) => formatNumber(locale, value)
   const ref = useRef<HTMLSpanElement>(null)
   const run = useInView(ref, { threshold: 0.8, once: true })
   const still = useReducedMotion()
@@ -26,14 +30,14 @@ export function TestsGrid({ total }: { total: number }) {
   const shown = run && still ? total : passed
 
   return (
-    <span ref={ref} className={`tests${run ? ' run' : ''}`} role="img" aria-label={`${arNum(total)} اختباراً ناجحاً من ${arNum(total)}`}>
+    <span ref={ref} className={`tests${run ? ' run' : ''}`} role="img" aria-label={fill(copy.label, { total: n(total) })}>
       <span className="tests-grid" aria-hidden="true">
         {Array.from({ length: total }, (_, d) => (
           <i key={d} style={{ '--d': d } as CSSProperties} />
         ))}
       </span>
       <b className="tests-n" aria-hidden="true">
-        {arNum(shown)}/{arNum(total)} ناجحة
+        {n(shown)}/{n(total)} {copy.passed}
       </b>
     </span>
   )

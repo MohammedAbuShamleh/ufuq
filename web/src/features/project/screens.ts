@@ -1,4 +1,4 @@
-import type { ProjectType, Screen } from '@/lib/types'
+import type { Screen } from '@/lib/types'
 
 /** A screen whose file is uploaded. */
 export type Shot = Screen & { file: NonNullable<Screen['file']> }
@@ -30,12 +30,4 @@ export function rowsOf<T>(items: T[]): T[][] {
     pair = !pair
   }
   return rows
-}
-
-/** The section headings speak of the kind of work by its name. */
-export const KIND_WORDS: Record<ProjectType, { offers: string; inside: string }> = {
-  system: { offers: 'ما يقدّمه النظام', inside: 'داخل النظام' },
-  platform: { offers: 'ما تقدّمه المنصة', inside: 'داخل المنصة' },
-  app: { offers: 'ما يقدّمه التطبيق', inside: 'داخل التطبيق' },
-  website: { offers: 'ما يقدّمه الموقع', inside: 'داخل الموقع' },
 }

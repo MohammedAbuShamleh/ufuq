@@ -19,6 +19,9 @@ class Client extends Model implements HasMedia
 
     public array $translatable = ['name', 'sector_label', 'location'];
 
+    /** What must have text in a language before the site shows this client in it. */
+    public const REQUIRED_TEXT = ['name', 'sector_label', 'location'];
+
     protected function casts(): array
     {
         return ['is_visible' => 'boolean'];

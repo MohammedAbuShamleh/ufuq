@@ -2,14 +2,10 @@
 
 import { useRef, useState } from 'react'
 import { useInView } from '@/hooks/useInView'
+import type { Dictionary, MarkPart } from '@/i18n/dictionaries/ar'
 
-type Part = 'arch' | 'key' | 'road'
-
-const NOTES: { part: Part; title: string; text: string }[] = [
-  { part: 'arch', title: 'القوس', text: 'من العمارة الفلسطينية: بوابة تُفتح، لا جدار يُغلق' },
-  { part: 'key', title: 'المفتاح', text: 'الأمان من أول سطر، لا إضافة في النهاية' },
-  { part: 'road', title: 'الطريق', text: 'يمتد نحو الأفق، كما نبقى مع المؤسسة بعد الإطلاق' },
-]
+/** The notes around the mark, in order; their words are in logoStory.notes. */
+const PARTS: MarkPart[] = ['arch', 'key', 'road']
 
 // The mark: an arch with a keyhole, and the road through it.
 const MARK =
@@ -22,13 +18,13 @@ const ROAD = 'M124 160 L132 160 L152.48 236 L103.52 236 Z'
  * «قصة الاسم»: the mark draws itself when it comes into view, and each note
  * lights up its part of the mark on hover, focus or tap.
  */
-export function LogoStory() {
+export function LogoStory({ copy }: { copy: Dictionary['logoStory'] }) {
   const ref = useRef<HTMLElement>(null)
   const seen = useInView(ref, { threshold: 0.3, once: true })
-  const [lit, setLit] = useState<Part | null>(null)
+  const [lit, setLit] = useState<MarkPart | null>(null)
 
   return (
-    <figure ref={ref} className={`ab-mark${seen ? ' in' : ''}`} aria-label="قصة الشعار: القوس والمفتاح والطريق">
+    <figure ref={ref} className={`ab-mark${seen ? ' in' : ''}`} aria-label={copy.label}>
       <div className="ab-stage" onMouseLeave={() => setLit(null)}>
         <svg className={`ab-svg${lit ? ` h-${lit}` : ''}`} viewBox="20 0 216 252" aria-hidden="true">
           <defs>
@@ -48,23 +44,23 @@ export function LogoStory() {
           <circle className="hl hl-key" cx="128" cy="142" r="22" />
           <path className="hl hl-road" d={ROAD} />
         </svg>
-        {NOTES.map((n, i) => (
+        {PARTS.map((part, i) => (
           <button
-            key={n.part}
+            key={part}
             type="button"
-            className={`ab-note n${i + 1}${lit === n.part ? ' on' : ''}`}
-            aria-pressed={lit === n.part}
-            onMouseEnter={() => setLit(n.part)}
-            onFocus={() => setLit(n.part)}
+            className={`ab-note n${i + 1}${lit === part ? ' on' : ''}`}
+            aria-pressed={lit === part}
+            onMouseEnter={() => setLit(part)}
+            onFocus={() => setLit(part)}
             // Not a toggle: focus (or the hover) has already lit it, so a tap must not undo that.
-            onClick={() => setLit(n.part)}
+            onClick={() => setLit(part)}
           >
-            <b>{n.title}</b>
-            <span>{n.text}</span>
+            <b>{copy.notes[part].title}</b>
+            <span>{copy.notes[part].text}</span>
           </button>
         ))}
       </div>
-      <figcaption>قصة الاسم</figcaption>
+      <figcaption>{copy.caption}</figcaption>
     </figure>
   )
 }

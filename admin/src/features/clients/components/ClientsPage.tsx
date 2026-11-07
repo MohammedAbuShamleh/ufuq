@@ -1,3 +1,4 @@
+import { EnglishBadge } from '@/components/EnglishBadge'
 import { MediaThumb } from '@/components/MediaThumb'
 import { Badge, PageHeader } from '@/components/Page'
 import { ResourceList } from '@/components/ResourceList'
@@ -30,6 +31,7 @@ export function ClientsPage() {
                 {[ar(c.sector_label), ar(c.location)].filter(Boolean).join(' · ')}
               </span>
             </span>
+            <EnglishBadge locales={c.locales} />
             {!c.is_visible && <Badge>مخفي</Badge>}
           </>
         )}

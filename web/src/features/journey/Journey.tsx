@@ -5,43 +5,26 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArchClip } from '@/components/ArchClip'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
+import { fillNodes } from '@/i18n/config'
 import { keepInPlace } from '@/lib/keepInPlace'
 import './journey.css'
 
-// Where the camera looks in the road picture at each step.
-const STEPS = [
-  {
-    title: 'جلسة أولى مجانية',
-    text: 'نسمع كيف تعملون اليوم، ونقترح النظام المناسب لكم.',
-    points: ['مكالمة أو لقاء لمدة ٣٠ دقيقة', 'نفهم طريقة عملكم الحالية وأين تتعبون', 'اقتراح أولي لشكل النظام'],
-    view: { x: '50%', y: '50%', zoom: 1 },
-  },
-  {
-    title: 'اتفاق واضح',
-    text: 'نحدد معاً ما سيُبنى ومتى، قبل أن نبدأ.',
-    points: ['قائمة مكتوبة بما سيُبنى', 'مراحل التسليم ومواعيدها', 'لا عمل قبل أن نتفق'],
-    view: { x: '48%', y: '88%', zoom: 1.6 },
-  },
-  {
-    title: 'نبني على دفعات',
-    text: 'مع كل دفعة نسخة تجريبية تجربها بيدك، فلا مفاجآت في النهاية.',
-    points: ['نسخة تعمل مع كل دفعة', 'ملاحظاتك تدخل الدفعة التالية', 'ترى التقدّم بعينك، لا في تقرير'],
-    view: { x: '72%', y: '63%', zoom: 1.85 },
-  },
-  {
-    title: 'نُطلق ونرافق',
-    text: 'نسلّمك الكود والتوثيق كاملين، ونبقى معك حتى يستقر النظام.',
-    points: ['الكود والتوثيق وبيانات الخوادم', 'دعم فني بعد الإطلاق حتى يستقر النظام'],
-    view: { x: '68%', y: '46%', zoom: 2.3 },
-  },
+// Where the camera looks in the road picture at each step (journey.steps, in order).
+const VIEWS = [
+  { x: '50%', y: '50%', zoom: 1 },
+  { x: '48%', y: '88%', zoom: 1.6 },
+  { x: '72%', y: '63%', zoom: 1.85 },
+  { x: '68%', y: '46%', zoom: 2.3 },
 ]
 
-const ORDINALS = ['١', '٢', '٣', '٤']
+
 /**
  * «ماذا يحدث بعدها؟»: four steps, the camera moving along the road to the one
  * the visitor opens. Nothing advances by itself.
  */
-export function Journey() {
+export function Journey({ copy }: { copy: Dictionary['journey'] }) {
+  const { steps, ordinals } = copy
   const [active, setActive] = useState(0)
   const [caption, setCaption] = useState(0)
   const listRef = useRef<HTMLOListElement>(null)
@@ -58,8 +41,8 @@ export function Journey() {
     return () => clearTimeout(t)
   }, [active])
 
-  const view = STEPS[active].view
-  const progress = active / (STEPS.length - 1)
+  const view = VIEWS[active]
+  const progress = active / (steps.length - 1)
 
   return (
     <section className="nx3" id="next" aria-labelledby="nx-title">
@@ -71,15 +54,15 @@ export function Journey() {
               width={1122}
               height={1402}
               sizes="(max-width: 960px) 300px, 420px"
-              alt="بوابة طوبية مدبّبة يمر منها طريق بين تلال الزيتون والسرو نحو الشمس عند الغروب"
+              alt={copy.alt}
               style={{ '--ox': view.x, '--oy': view.y, '--zs': view.zoom } as CSSProperties}
             />
           </ArchClip>
           <figcaption className={`nx3-cap${caption === active ? '' : ' swap'}`}>
-            {ORDINALS[caption]} من {ORDINALS[STEPS.length - 1]} — {STEPS[caption].title}
+            {fillNodes(copy.caption, { n: ordinals[caption], total: ordinals[steps.length - 1], title: steps[caption].title })}
           </figcaption>
           <div className="nx3-prog" aria-hidden="true">
-            {STEPS.map((s, i) => (
+            {steps.map((s, i) => (
               <i key={s.title} className={i <= active ? 'on' : undefined} />
             ))}
           </div>
@@ -87,9 +70,9 @@ export function Journey() {
 
         <div className="nx3-body">
           <div className="nx-head">
-            <Kicker>بعد أن تتواصل معنا</Kicker>
-            <Reveal as="h2" id="nx-title" words="ماذا يحدث بعدها؟" />
-            <p className="nx3-hint">اضغط على أي خطوة</p>
+            <Kicker>{copy.kicker}</Kicker>
+            <Reveal as="h2" id="nx-title" words={copy.title} />
+            <p className="nx3-hint">{copy.hint}</p>
           </div>
           <div className="nx3-list" style={{ '--lp': progress.toFixed(3) } as CSSProperties}>
             <span className="nx3-line" aria-hidden="true">
@@ -97,7 +80,7 @@ export function Journey() {
               <b />
             </span>
             <ol ref={listRef}>
-              {STEPS.map((s, i) => (
+              {steps.map((s, i) => (
                 <li key={s.title} className={`nx3-step${i === active ? ' on' : ''}${i < active ? ' done' : ''}`}>
                   <button
                     type="button"
@@ -107,7 +90,7 @@ export function Journey() {
                     data-moves-page
                     onClick={(e) => open(i, e.currentTarget)}
                   >
-                    <span className="nx-n">{ORDINALS[i]}</span>
+                    <span className="nx-n">{ordinals[i]}</span>
                     <span className="nx3-t">{s.title}</span>
                   </button>
                   <div className="nx3-det" id={`nx3-det-${i}`}>

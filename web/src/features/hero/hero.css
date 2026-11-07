@@ -143,6 +143,12 @@
   line-height: 1.45;
   margin-block: -0.15em;
 }
+/* English has no marks to make room for: ordinary display leading. */
+.hx-title:lang(en) {
+  line-height: 1.08;
+  margin-block: 0;
+  letter-spacing: -0.02em;
+}
 .hx-title span {
   display: block;
   animation: rise 0.9s var(--ease) both;
@@ -304,6 +310,10 @@ html.motion-off .mo-ic::before {
   border-width: 5px 8px 5px 0;
   border-color: transparent currentColor transparent transparent;
   border-radius: 0;
+}
+html.motion-off .mo-ic:dir(ltr)::before {
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent currentColor;
 }
 html.motion-off .mo-ic::after {
   display: none;

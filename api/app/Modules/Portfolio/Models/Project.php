@@ -25,6 +25,9 @@ class Project extends Model
 
     public array $translatable = ['title', 'client_name', 'summary', 'tag', 'challenge', 'solution', 'results'];
 
+    /** What must have text in a language before the site shows this project in it. */
+    public const REQUIRED_TEXT = ['title', 'client_name', 'summary', 'tag'];
+
     protected function casts(): array
     {
         return [

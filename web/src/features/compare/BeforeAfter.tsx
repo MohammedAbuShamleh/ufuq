@@ -6,6 +6,7 @@ import { Arrow } from '@/components/Button'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
 import { useInView } from '@/hooks/useInView'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
 import { ExcelSheet } from './ExcelSheet'
 import './compare.css'
 
@@ -14,7 +15,7 @@ import './compare.css'
  * moves the dividing line. It is a real <input type=range>, so arrow keys and
  * screen readers work without extra code.
  */
-export function BeforeAfter() {
+export function BeforeAfter({ copy }: { copy: Dictionary['compare'] }) {
   const [pos, setPos] = useState(50)
   const stageRef = useRef<HTMLDivElement>(null)
   // One nudge of the handle the first time the stage is well in view.
@@ -25,10 +26,10 @@ export function BeforeAfter() {
       <div className="wrap">
         <div className="ba-head">
           <div>
-            <Kicker>الفرق الذي نصنعه</Kicker>
-            <Reveal as="h2" id="ba-title" words={['من ٥٨ ورقة Excel', 'إلى نظام واحد.']} />
+            <Kicker>{copy.kicker}</Kicker>
+            <Reveal as="h2" id="ba-title" words={copy.title} />
           </div>
-          <p className="muted">هكذا كانت مدرسة شعاع تدير رسومها ورواتبها ومخزنها، وهكذا تديرها اليوم. اسحب الخط لترى الفرق.</p>
+          <p className="muted">{copy.lead}</p>
         </div>
 
         <div ref={stageRef} className={`ba-stage${hint ? ' hint' : ''}`} style={{ '--pos': `${pos}%` } as CSSProperties}>
@@ -38,13 +39,13 @@ export function BeforeAfter() {
               width={1600}
               height={1000}
               sizes="(max-width: 1240px) 100vw, 1240px"
-              alt="لوحة نظام إدارة المدارس الذي يعمل اليوم في مدرسة شعاع"
+              alt={copy.afterAlt}
             />
-            <span className="ba-tag after">بعد — نظام واحد</span>
+            <span className="ba-tag after">{copy.afterTag}</span>
           </div>
           <div className="ba-before">
-            <ExcelSheet />
-            <span className="ba-tag before">قبل — ٥٨ ورقة</span>
+            <ExcelSheet copy={copy.sheet} />
+            <span className="ba-tag before">{copy.beforeTag}</span>
           </div>
           <div className="ba-handle" aria-hidden="true">
             <span>
@@ -60,14 +61,14 @@ export function BeforeAfter() {
             max={100}
             value={pos}
             onChange={(e) => setPos(Number(e.target.value))}
-            aria-label="قارن بين ملف Excel والنظام: حرّك الخط لليسار لرؤية الملف، ولليمين لرؤية النظام"
+            aria-label={copy.range}
           />
         </div>
 
         <div className="ba-foot">
-          <span className="ba-note">صورة ملف Excel توضيحية، والشاشة على اليسار من النظام الفعلي ببيانات تجريبية.</span>
+          <span className="ba-note">{copy.note}</span>
           <a className="sx-go" href="#other-work">
-            النظام في قائمة أعمالنا <Arrow />
+            {copy.link} <Arrow />
           </a>
         </div>
       </div>

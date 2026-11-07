@@ -49,6 +49,7 @@ function LeadBody({ lead }: { lead: Lead }) {
               {lead.source_page ?? '—'}
             </span>
           </Item>
+          {lead.locale === 'en' && <Item label="اللغة">من النسخة الإنجليزية من الموقع، فالرد بالإنجليزية أنسب.</Item>}
         </dl>
         <div>
           <p className="mb-1.5 font-display text-sm text-muted">الرسالة</p>

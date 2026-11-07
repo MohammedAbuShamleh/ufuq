@@ -284,6 +284,17 @@
   h2 {
     font-size: var(--text-h2);
   }
+  /*
+   * English: Latin letters carry no marks above or below, so the leading
+   * Arabic needs reads loose; large type also sits a touch tighter.
+   */
+  html:lang(en) body {
+    line-height: 1.65;
+  }
+  html:lang(en) :is(h1, h2, h3) {
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;

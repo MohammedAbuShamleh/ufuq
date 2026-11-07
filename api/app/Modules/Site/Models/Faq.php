@@ -15,6 +15,9 @@ class Faq extends Model
 
     public array $translatable = ['question', 'answer'];
 
+    /** What must have text in a language before the site shows this question in it. */
+    public const REQUIRED_TEXT = ['question', 'answer'];
+
     protected function casts(): array
     {
         return ['is_visible' => 'boolean'];

@@ -5,6 +5,8 @@ import { DemoPill } from '@/components/DemoPill'
 import { MediaImage } from '@/components/MediaImage'
 import { useInView } from '@/hooks/useInView'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { fill } from '@/i18n/config'
+import type { Dictionary } from '@/i18n/dictionaries/ar'
 import { isVideo } from '@/lib/media'
 import type { Media } from '@/lib/types'
 import { rowsOf, type Shot } from './screens'
@@ -15,14 +17,18 @@ const HALF_SIZES = '(max-width: 760px) calc(100vw - 3rem), 620px'
 const PHONE_SIZES = '(max-width: 760px) 46vw, 230px'
 const BOX_SIZES = '(max-width: 1170px) 94vw, 1100px'
 
+type Copy = Dictionary['project']['media']
+
 type Props = {
   title: string
   cover: Shot | null
   wide: Shot[]
   phones: Shot[]
-  demo: boolean
+  /** The «sample data» mark, when the screens were taken with sample data. */
+  demo: string | null
   /** «داخل المنصة»: the walk-through's heading. */
   inside: string
+  copy: Copy
   /** The band between the cover and the walk-through (what the work offers), drawn on the server. */
   children?: ReactNode
 }
@@ -32,7 +38,7 @@ type Props = {
  * cover across the page, then the band passed in as children, then the
  * walk-through of the other screens and the phones. Any image opens full size.
  */
-export function ProjectMedia({ title, cover, wide, phones, demo, inside, children }: Props) {
+export function ProjectMedia({ title, cover, wide, phones, demo, inside, copy, children }: Props) {
   const [open, setOpen] = useState<Shot | null>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   // A project with phones only opens on them, so the walk-through has nothing left to show.
@@ -47,7 +53,7 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
   return (
     <>
       {cover && (
-        <section className={`pp-stage${children ? ' pp-stage-band' : ''}`} aria-label={`واجهة ${title}`}>
+        <section className={`pp-stage${children ? ' pp-stage-band' : ''}`} aria-label={fill(copy.cover, { title })}>
           <figure className="pp-cover">
             <div className="pp-cover-frame" style={ratio(cover.file)}>
               {isVideo(cover.file) ? (
@@ -55,7 +61,7 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
               ) : (
                 <MediaImage media={cover.file} alt={cover.alt ?? ''} fill sizes={COVER_SIZES} />
               )}
-              {demo && <DemoPill />}
+              {demo && <DemoPill label={demo} />}
             </div>
             <Caption shot={cover} />
           </figure>
@@ -63,10 +69,10 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
       )}
 
       {phoneStage && (
-        <section className="pp-stage pp-stage-phones" aria-label={`شاشات ${title}`}>
+        <section className="pp-stage pp-stage-phones" aria-label={fill(copy.stage, { title })}>
           <div className="wrap">
-            <Niches shots={phones} title={title} onOpen={setOpen} />
-            {demo && <DemoPill />}
+            <Niches shots={phones} title={title} copy={copy} onOpen={setOpen} />
+            {demo && <DemoPill label={demo} />}
           </div>
         </section>
       )}
@@ -78,7 +84,7 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
           <div className="wrap">
             <div className="pp-head2">
               <h2 id="walk-title">{inside}</h2>
-              <p>اضغط أي شاشة لتراها بحجمها.</p>
+              <p>{copy.hint}</p>
             </div>
 
             {wide.length > 0 && (
@@ -97,7 +103,7 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
                             className="pp-frame"
                             style={row.length === 1 ? ratio(s.file) : undefined}
                             aria-haspopup="dialog"
-                            aria-label={`تكبير ${s.label ?? s.alt ?? 'الشاشة'}`}
+                            aria-label={fill(copy.zoom, { name: s.label ?? s.alt ?? copy.screen })}
                             onClick={() => setOpen(s)}
                           >
                             <MediaImage media={s.file} alt={s.alt ?? ''} fill sizes={row.length === 2 ? HALF_SIZES : FULL_SIZES} />
@@ -113,8 +119,8 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
 
             {!phoneStage && phones.length > 0 && (
               <div className="pp-phones">
-                {wide.length > 0 && <h3>على الجوال</h3>}
-                <Niches shots={phones} title={title} onOpen={setOpen} />
+                {wide.length > 0 && <h3>{copy.onPhone}</h3>}
+                <Niches shots={phones} title={title} copy={copy} onOpen={setOpen} />
               </div>
             )}
           </div>
@@ -125,13 +131,13 @@ export function ProjectMedia({ title, cover, wide, phones, demo, inside, childre
       <dialog
         ref={dialog}
         className="pp-box"
-        aria-label={`شاشة من ${title}`}
+        aria-label={fill(copy.box, { title })}
         onClose={() => setOpen(null)}
         onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
       >
         {open && (
           <>
-            <button type="button" className="pp-box-x" aria-label="إغلاق" onClick={() => dialog.current?.close()}>
+            <button type="button" className="pp-box-x" aria-label={copy.close} onClick={() => dialog.current?.close()}>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
@@ -174,10 +180,10 @@ const ARCH = 'M0 1V.44C0 .2.28.06.5 0 .72.06 1 .2 1 .44V1Z'
 const ARCH_EDGE = 'M0 1V.44C0 .2.28.06.5 0 .72.06 1 .2 1 .44V1'
 
 /** Phones standing in arches, the logo's shape: a row that scrolls sideways when it outgrows the page. */
-function Niches({ shots, title, onOpen }: { shots: Shot[]; title: string; onOpen: (s: Shot) => void }) {
+function Niches({ shots, title, copy, onOpen }: { shots: Shot[]; title: string; copy: Copy; onOpen: (s: Shot) => void }) {
   return (
     // More than two scroll on a phone, and a row that scrolls has to take focus so the keyboard can move it.
-    <ul className="pp-niches" tabIndex={shots.length > 2 ? 0 : undefined} aria-label={`شاشات ${title} على الجوال`}>
+    <ul className="pp-niches" tabIndex={shots.length > 2 ? 0 : undefined} aria-label={fill(copy.phones, { title })}>
       {shots.map((s) => (
         <li key={s.file.url} className="pp-niche">
           <span className="pp-niche-box">
@@ -190,7 +196,7 @@ function Niches({ shots, title, onOpen }: { shots: Shot[]; title: string; onOpen
                 <ScreenVideo media={s.file} label={s.alt} />
               </span>
             ) : (
-              <button type="button" className="pp-ph" aria-haspopup="dialog" aria-label={`تكبير ${s.label ?? s.alt ?? 'الشاشة'}`} onClick={() => onOpen(s)}>
+              <button type="button" className="pp-ph" aria-haspopup="dialog" aria-label={fill(copy.zoom, { name: s.label ?? s.alt ?? copy.screen })} onClick={() => onOpen(s)}>
                 <MediaImage media={s.file} alt={s.alt ?? ''} fill sizes={PHONE_SIZES} />
               </button>
             )}
