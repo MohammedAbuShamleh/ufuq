@@ -13,10 +13,12 @@
   justify-self: end;
 }
 
-/* --pos is where the line stands, from the left edge. */
+/* --pos is where the line stands, from the left edge. Wide and capped by the
+   viewport, so the heading and the whole stage fit on one screen. */
 .ba-stage {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 2 / 1;
+  max-height: min(68svh, 600px);
   border-radius: 22px;
   overflow: hidden;
   background: var(--frame);
