@@ -34,7 +34,8 @@ export async function ProjectHero({ project }: { project: ProjectDetail }) {
   const t = await getDictionary(locale)
   const { facts: label } = t.project
   const facts = [
-    { label: label.client, value: project.client_name },
+    // «العميل: منظومة رشيد» under «منظومة رشيد» says nothing new.
+    { label: label.client, value: project.client_name?.trim() === project.title.trim() ? null : project.client_name },
     { label: label.sector, value: t.work.sectors[project.sector] },
     { label: label.country, value: countryName(t.work.countries, project.country) },
     { label: label.type, value: t.work.type[project.type] },
