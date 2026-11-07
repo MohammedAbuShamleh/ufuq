@@ -1,23 +1,31 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { ArchClip } from '@/components/ArchClip'
 import { Button } from '@/components/Button'
 import { Kicker } from '@/components/Kicker'
 import { useMotionToggle } from '@/hooks/useMotionToggle'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { href } from '@/i18n/config'
 import type { Dictionary } from '@/i18n/dictionaries/ar'
+import { useLocale } from '@/i18n/LocaleProvider'
+import type { FeaturedProject } from '@/lib/types'
 import './hero.css'
 
 export type HeroCopy = Dictionary['hero'] & { startProject: string; motion: Dictionary['common']['motion'] }
+
+/** «أنظمة تعمل اليوم»: the featured projects, as the dashboard orders them. */
+export type LiveSystem = Pick<FeaturedProject, 'slug' | 'title' | 'tag'>
 
 /**
  * The visitor walks through the arch: as the page scrolls, --p goes 0→1 and
  * the arch grows past the screen while the copy lifts away. Without motion the
  * hero is a single still screen.
  */
-export function Hero({ tagline, copy }: { tagline: string | null; copy: HeroCopy }) {
+export function Hero({ tagline, live, copy }: { tagline: string | null; live: LiveSystem[]; copy: HeroCopy }) {
+  const { locale } = useLocale()
   const ref = useRef<HTMLElement>(null)
   const still = useReducedMotion()
 
@@ -35,6 +43,8 @@ export function Hero({ tagline, copy }: { tagline: string | null; copy: HeroCopy
       let p = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / span))
       p = p * p * (3 - 2 * p)
       hero.style.setProperty('--p', p.toFixed(4))
+      // Faded out, the list's links stop catching clicks on the scene behind them.
+      hero.toggleAttribute('data-crossed', p > 0.3)
     }
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update)
@@ -87,20 +97,24 @@ export function Hero({ tagline, copy }: { tagline: string | null; copy: HeroCopy
           {tagline && <p className="hx-niche">{tagline}</p>}
         </div>
 
-        <div className="hx-live">
-          <span className="hx-live-t" id="hx-live-t">
-            {copy.liveTitle}
-          </span>
-          <ul aria-labelledby="hx-live-t">
-            {copy.live.map(({ name, what }) => (
-              <li key={name}>
-                <i aria-hidden="true" />
-                <b>{name}</b>
-                <span>{what}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {live.length > 0 && (
+          <div className="hx-live">
+            <span className="hx-live-t" id="hx-live-t">
+              {copy.liveTitle}
+            </span>
+            <ul aria-labelledby="hx-live-t">
+              {live.map(({ slug, title, tag }) => (
+                <li key={slug}>
+                  <i aria-hidden="true" />
+                  <Link href={href(locale, `/work/${slug}`)}>
+                    <b>{title}</b>
+                    {tag && <span>{tag}</span>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="hx-side">
           <p>

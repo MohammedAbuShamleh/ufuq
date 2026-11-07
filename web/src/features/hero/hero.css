@@ -222,17 +222,29 @@
 }
 .hx-live li {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 0.6rem;
-  align-items: baseline;
   padding-block: 0.42rem;
   padding-inline: 0.9rem 0;
 }
+/* The name, and what it is under it; the whole item is the link. */
+.hx-live li a {
+  display: grid;
+  gap: 0.1rem;
+  color: inherit;
+  text-decoration: none;
+}
+.hx-live li a:hover b {
+  color: var(--accent);
+}
+.hx-live li a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* On the rule, level with the name. */
 .hx-live li i {
   position: absolute;
   inset-inline-start: -4px;
-  top: 50%;
+  top: calc(0.42rem + 0.7em);
   width: 7px;
   height: 7px;
   margin-top: -3.5px;
@@ -244,13 +256,15 @@
   font-weight: 600;
   font-size: 0.92rem;
   color: var(--text);
+  transition: color 0.2s;
 }
 .hx-live li span {
   font-size: 0.75rem;
+  line-height: 1.6;
   color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+.hx[data-crossed] .hx-live {
+  visibility: hidden;
 }
 
 /* Corners: stop motion, and the scroll cue */

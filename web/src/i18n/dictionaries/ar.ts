@@ -92,15 +92,8 @@ export const ar = {
   hero: {
     kicker: 'أفق للبرمجيات',
     title: ['نبني برمجيات', 'تفتح أفقاً أوسع.'],
+    // Over the featured projects, each a link to its page (Hero.tsx).
     liveTitle: 'أنظمة تعمل اليوم',
-    // Systems running today, named the way their users know them.
-    live: [
-      { name: 'ساعد', what: 'إدارة المشاريع الإنسانية' },
-      { name: 'دار الإتقان', what: 'حلقات التحفيظ وتطبيق المحفّظين' },
-      { name: 'مدرسة شعاع', what: 'إدارة المدرسة' },
-      { name: 'رصرص', what: 'ERP · مصر' },
-      { name: 'NexaBridge', what: 'منصة منتجات · دبي' },
-    ],
     /** The line beside the title; `ltr` sits between the two halves, read left to right. */
     side: { before: 'مواقع وأنظمة ', ltr: 'ERP', after: ' ومنصات، عربية من الأساس.' },
     work: 'أعمالنا',

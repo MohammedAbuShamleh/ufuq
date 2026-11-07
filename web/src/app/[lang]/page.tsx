@@ -26,7 +26,7 @@ export default async function HomePage() {
   return (
     <>
       <main id="top">
-        <Hero tagline={home.settings.hero_tagline} copy={{ ...t.hero, startProject: t.common.startProject, motion: t.common.motion }} />
+        <Hero tagline={home.settings.hero_tagline} live={home.featured.map(({ slug, title, tag }) => ({ slug, title, tag }))} copy={{ ...t.hero, startProject: t.common.startProject, motion: t.common.motion }} />
         <BeforeAfter copy={t.compare} />
         <FeaturedProjects projects={home.featured} />
         {/* The rest of the work is named under the service it belongs to; its cards are on /work. */}

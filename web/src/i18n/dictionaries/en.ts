@@ -76,13 +76,6 @@ export const en: Dictionary = {
     kicker: 'UFUQ Software',
     title: ['We build software', 'that opens a wider horizon.'],
     liveTitle: 'Systems running today',
-    live: [
-      { name: 'Saaed', what: 'Humanitarian project management' },
-      { name: 'Dar Al-Itqan', what: 'Quran circles and the teachers’ app' },
-      { name: 'Shuaa School', what: 'School management' },
-      { name: 'Rasras', what: 'ERP · Egypt' },
-      { name: 'NexaBridge', what: 'Product platform · Dubai' },
-    ],
     side: { before: 'Websites, ', ltr: 'ERP', after: ' systems and platforms. Arabic-first, by design.' },
     work: 'Our work',
     cue: 'Scroll to pass through the gate',
