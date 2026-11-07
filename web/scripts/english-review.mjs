@@ -35,7 +35,6 @@ const LABELS = {
   compare: 'Home · Excel and the system',
   featured: 'Home · featured work',
   layouts: 'Featured work · labels',
-  otherWork: 'Home · other projects',
   work: 'Kinds, sectors and countries',
   stats: 'Figures',
   aboutTeaser: 'Home · about us',

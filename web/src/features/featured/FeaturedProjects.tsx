@@ -1,6 +1,8 @@
-import type { ComponentType, ReactNode } from 'react'
+import Link from 'next/link'
+import type { ComponentType } from 'react'
+import { Arrow } from '@/components/Button'
 import { Reveal } from '@/components/Reveal'
-import { fillNodes } from '@/i18n/config'
+import { fillNodes, href } from '@/i18n/config'
 import { getDictionary, getLocale } from '@/i18n/server'
 import type { FeaturedLayout, FeaturedProject as Project } from '@/lib/types'
 import { PhonesLayout } from './layouts/PhonesLayout'
@@ -31,10 +33,10 @@ export function FeaturedProject(props: LayoutProps) {
 }
 
 /**
- * «أعمالنا»: the featured systems, each as it is used; the rest of the work
- * follows as children. The giant word stands in for the section's kicker.
+ * «أعمالنا»: the featured systems, each as it is used, then a link to the
+ * rest of the work on /work. The giant word stands in for the section's kicker.
  */
-export async function FeaturedProjects({ projects, children }: { projects: Project[]; children?: ReactNode }) {
+export async function FeaturedProjects({ projects }: { projects: Project[] }) {
   const locale = await getLocale()
   const t = await getDictionary(locale)
   const copy = t.featured
@@ -55,7 +57,11 @@ export async function FeaturedProjects({ projects, children }: { projects: Proje
           </div>
         </div>
       </WordStage>
-      {children && <div className="wrap">{children}</div>}
+      <div className="wrap">
+        <Link className="sx-go pj-all" href={href(locale, '/work')}>
+          {copy.allWork} <Arrow />
+        </Link>
+      </div>
     </section>
   )
 }

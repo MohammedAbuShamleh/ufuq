@@ -9,7 +9,6 @@ import { Hero } from '@/features/hero/Hero'
 import { Journey } from '@/features/journey/Journey'
 import { Services } from '@/features/services/Services'
 import { Voices } from '@/features/voices/Voices'
-import { OtherWork } from '@/features/work/OtherWork'
 import { getDictionary, getLocale } from '@/i18n/server'
 import { API_URL, getHome } from '@/lib/api'
 import { alternates } from '@/lib/seo'
@@ -29,12 +28,11 @@ export default async function HomePage() {
       <main id="top">
         <Hero tagline={home.settings.hero_tagline} copy={{ ...t.hero, startProject: t.common.startProject, motion: t.common.motion }} />
         <BeforeAfter copy={t.compare} />
-        <FeaturedProjects projects={home.featured}>
-          <OtherWork projects={home.projects} copy={{ ...t.otherWork, types: t.work.types }} />
-        </FeaturedProjects>
-        <AboutTeaser team={home.team} whyWeStarted={home.settings.why_we_started} />
+        <FeaturedProjects projects={home.featured} />
+        {/* The rest of the work is named under the service it belongs to; its cards are on /work. */}
+        <Services copy={t.services} projects={[...home.featured, ...home.projects].map(({ slug, title, type }) => ({ slug, title, type }))} />
         <Voices testimonials={home.testimonials} clients={home.clients} copy={t.voices} />
-        <Services copy={t.services} />
+        <AboutTeaser team={home.team} whyWeStarted={home.settings.why_we_started} />
         <Approach />
         <Journey copy={t.journey} />
         <Contact settings={home.settings} faqs={home.faqs} leadsEndpoint={`${API_URL}/leads`} />

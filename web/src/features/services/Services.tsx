@@ -1,15 +1,22 @@
 'use client'
 
-import { useRef, useState, type ReactNode } from 'react'
+import Link from 'next/link'
+import { Fragment, useRef, useState, type ReactNode } from 'react'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
+import { href, type Locale } from '@/i18n/config'
 import type { Dictionary } from '@/i18n/dictionaries/ar'
+import { useLocale } from '@/i18n/LocaleProvider'
 import { keepInPlace } from '@/lib/keepInPlace'
+import type { ProjectCard, ProjectType } from '@/lib/types'
 import './services.css'
 
 const ICON = { viewBox: '0 0 32 32', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' } as const
 
-// One per service, in the dictionary's order (services.items).
+// One per service, in the dictionary's order (services.items): the kind of
+// project it lists under «من أعمالنا», and its icon.
+const KINDS: ProjectType[] = ['website', 'system', 'finance', 'platform', 'app']
+
 const ICONS: ReactNode[] = [
   <svg key="web" {...ICON}>
     <rect x="3" y="6" width="26" height="20" rx="3" />
@@ -45,7 +52,10 @@ const ICONS: ReactNode[] = [
  * accordion, which opens on a press only: there, opening one moves the others
  * up or down, and on hover the panel under a still pointer would keep changing.
  */
-export function Services({ copy }: { copy: Dictionary['services'] }) {
+export type ServiceProject = Pick<ProjectCard, 'slug' | 'title' | 'type'>
+
+export function Services({ copy, projects }: { copy: Dictionary['services']; projects: ServiceProject[] }) {
+  const { locale } = useLocale()
   const [open, setOpen] = useState(0)
   const listRef = useRef<HTMLUListElement>(null)
   const hoverOpens = () => matchMedia('(hover: hover) and (pointer: fine) and (min-width: 961px)').matches
@@ -87,7 +97,8 @@ export function Services({ copy }: { copy: Dictionary['services'] }) {
               </div>
               <div className="sv-bot">
                 <h3 id={`sv-t-${i}`}>{s.title}</h3>
-                <div className="sv-more" id={`sv-more-${i}`}>
+                {/* Closed, its links stay out of the tab order: focus opens a panel through its button. */}
+                <div className="sv-more" id={`sv-more-${i}`} inert={open !== i}>
                   <div>
                     <p>{s.text}</p>
                     <ul>
@@ -95,6 +106,7 @@ export function Services({ copy }: { copy: Dictionary['services'] }) {
                         <li key={p}>{p}</li>
                       ))}
                     </ul>
+                    <Examples projects={projects.filter((p) => p.type === KINDS[i])} label={copy.ourWork} separator={copy.separator} locale={locale} />
                     <span className="sv-tech">{s.tech}</span>
                   </div>
                 </div>
@@ -104,5 +116,21 @@ export function Services({ copy }: { copy: Dictionary['services'] }) {
         </ul>
       </div>
     </section>
+  )
+}
+
+/** «من أعمالنا»: the projects of a service's kind, each a link to its page. */
+function Examples({ projects, label, separator, locale }: { projects: ServiceProject[]; label: string; separator: string; locale: Locale }) {
+  if (projects.length === 0) return null
+  return (
+    <div className="sv-work">
+      <span>{label}</span>{' '}
+      {projects.map((p, i) => (
+        <Fragment key={p.slug}>
+          {i > 0 && separator}
+          <Link href={href(locale, `/work/${p.slug}`)}>{p.title}</Link>
+        </Fragment>
+      ))}
+    </div>
   )
 }

@@ -187,6 +187,37 @@
 .sv-p.on .sv-more li:nth-child(3) {
   transition-delay: 0.44s;
 }
+/* «من أعمالنا»: the service's projects, each a link to its page. */
+.sv-work {
+  margin: 0 0 1rem;
+  max-width: 52ch;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--on-night-soft);
+  opacity: 0;
+  transition: opacity 0.5s 0.5s;
+}
+.sv-work a {
+  color: var(--on-night);
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--rose-rgb) / 0.45);
+  text-underline-offset: 0.35em;
+  transition:
+    color 0.2s,
+    text-decoration-color 0.2s;
+}
+.sv-work a:hover {
+  color: var(--rose);
+  text-decoration-color: currentColor;
+}
+.sv-work a:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.sv-p.on .sv-work {
+  opacity: 1;
+}
 .sv-tech {
   display: inline-block;
   direction: ltr;

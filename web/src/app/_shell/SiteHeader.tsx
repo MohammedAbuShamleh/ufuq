@@ -12,7 +12,7 @@ import { Logo } from './Logo'
 import { ThemeToggle } from './ThemeToggle'
 
 /** The home sections the header links to, in order. */
-const LINKS: NavId[] = ['top', 'projects', 'about', 'services', 'approach', 'contact']
+const LINKS: NavId[] = ['top', 'projects', 'services', 'about', 'approach', 'contact']
 
 // Home sections that also have a page of their own; on that page the link marks it.
 // Paths without the language prefix (see stripLocale).

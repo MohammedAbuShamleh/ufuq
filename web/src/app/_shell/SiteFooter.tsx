@@ -55,8 +55,8 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
         <nav className="foot-col" aria-label={f.site}>
           <h2>{f.site}</h2>
           <Link href={link('/work')}>{t.nav.links.projects}</Link>
-          <Link href={link('/about')}>{t.nav.links.about}</Link>
           <Link href={link('/#services')}>{t.nav.links.services}</Link>
+          <Link href={link('/about')}>{t.nav.links.about}</Link>
           <Link href={link('/#approach')}>{t.nav.links.approach}</Link>
           <Link href={link('/#contact')}>{t.nav.links.contact}</Link>
         </nav>

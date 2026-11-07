@@ -116,7 +116,7 @@ export const ar = {
     beforeTag: 'قبل — ٥٨ ورقة',
     range: 'قارن بين ملف Excel والنظام: حرّك الخط لليسار لرؤية الملف، ولليمين لرؤية النظام',
     note: 'صورة ملف Excel توضيحية، والشاشة على اليسار من النظام الفعلي ببيانات تجريبية.',
-    link: 'النظام في قائمة أعمالنا',
+    link: 'صفحة النظام',
     // The school's fees workbook as it was.
     sheet: {
       file: 'رسوم_الطلاب_2026_نهائي_معدّل3.xlsx',
@@ -153,6 +153,7 @@ export const ar = {
     howMany: { 2: 'منظومتان', 3: 'ثلاث منظومات', 4: 'أربع منظومات', 5: 'خمس منظومات', 6: 'ست منظومات' } as Record<number, string>,
     someSystems: 'منظومات مختارة',
     lead: '{count} من بين ما بنيناه، كلٌّ منها كما يُستخدم فعلاً.',
+    allWork: 'كل أعمالنا',
   },
 
   /** What every featured layout writes around a project's screens. */
@@ -171,14 +172,6 @@ export const ar = {
     enlarge: 'اضغط أي شاشة لتكبيرها.',
     close: 'إغلاق',
     demoData: 'بيانات تجريبية',
-  },
-
-  otherWork: {
-    title: 'مشاريع أخرى',
-    sample: 'ما تراه هنا عيّنة من أكثر من ٥٠ نظاماً بنيناها منذ ٢٠٢٢.',
-    filter: 'تصفية الأعمال',
-    all: 'الكل',
-    allWork: 'كل الأعمال',
   },
 
   work: {
@@ -248,6 +241,8 @@ export const ar = {
     kicker: 'خدماتنا',
     title: 'ما نبنيه.',
     lead: 'خمسة أنواع من البرمجيات، نبني كلاً منها حول طريقة عملكم.',
+    ourWork: 'من أعمالنا:',
+    separator: '، ',
     // In the order of their icons (Services.tsx), and of the footer's list.
     items: [
       {

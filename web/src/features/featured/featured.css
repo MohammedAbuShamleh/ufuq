@@ -15,6 +15,10 @@
   justify-self: end;
   max-width: 40ch;
 }
+/* After the featured systems: the rest of the work is on /work. */
+.pj-all {
+  margin-top: 2.5rem;
+}
 
 /* ---------- The giant word (WordStage) ----------
    Sized to span most of the content width (the Serif's «أعمالنا» is about

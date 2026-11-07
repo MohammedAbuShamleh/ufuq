@@ -110,7 +110,7 @@
   --paper-tab-on: #ffffff;
   --paper-tab-on-text: #23231c;
 
-  /* Tiles: other-work cards without a screenshot */
+  /* Tiles: work cards without a screenshot */
   --tile-olive: linear-gradient(160deg, #f2f2ec, #e9e8df);
   --tile-terra: linear-gradient(160deg, #fbf1ef, #f4e2de);
   --tile-stone: linear-gradient(160deg, #f6f6f4, #ecece9);

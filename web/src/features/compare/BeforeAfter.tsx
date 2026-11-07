@@ -1,12 +1,15 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRef, useState, type CSSProperties } from 'react'
 import { Arrow } from '@/components/Button'
 import { Kicker } from '@/components/Kicker'
 import { Reveal } from '@/components/Reveal'
 import { useInView } from '@/hooks/useInView'
+import { href } from '@/i18n/config'
 import type { Dictionary } from '@/i18n/dictionaries/ar'
+import { useLocale } from '@/i18n/LocaleProvider'
 import { ExcelSheet } from './ExcelSheet'
 import './compare.css'
 
@@ -15,7 +18,12 @@ import './compare.css'
  * moves the dividing line. It is a real <input type=range>, so arrow keys and
  * screen readers work without extra code.
  */
+
+/** The system this section shows, in the portfolio. */
+const SYSTEM_SLUG = 'school-management'
+
 export function BeforeAfter({ copy }: { copy: Dictionary['compare'] }) {
+  const { locale } = useLocale()
   const [pos, setPos] = useState(50)
   const stageRef = useRef<HTMLDivElement>(null)
   // One nudge of the handle the first time the stage is well in view.
@@ -67,9 +75,9 @@ export function BeforeAfter({ copy }: { copy: Dictionary['compare'] }) {
 
         <div className="ba-foot">
           <span className="ba-note">{copy.note}</span>
-          <a className="sx-go" href="#other-work">
+          <Link className="sx-go" href={href(locale, `/work/${SYSTEM_SLUG}`)}>
             {copy.link} <Arrow />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

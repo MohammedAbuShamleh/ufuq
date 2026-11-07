@@ -97,7 +97,7 @@ export const en: Dictionary = {
     beforeTag: 'Before — 58 sheets',
     range: 'Compare the Excel file with the system: move the line right to see the file, and left to see the system',
     note: 'The Excel file is an illustration; the screen on the right is from the real system, with sample data.',
-    link: 'The system in our work',
+    link: "The system's page",
     sheet: {
       file: 'student_fees_2026_FINAL_edited3.xlsx',
       warn: 'Edited by 4 people',
@@ -132,6 +132,7 @@ export const en: Dictionary = {
     howMany: { 2: 'Two systems', 3: 'Three systems', 4: 'Four systems', 5: 'Five systems', 6: 'Six systems' },
     someSystems: 'Selected systems',
     lead: '{count} we built, each shown the way it is really used.',
+    allWork: 'All our work',
   },
 
   layouts: {
@@ -148,14 +149,6 @@ export const en: Dictionary = {
     enlarge: 'Click any screen to enlarge it.',
     close: 'Close',
     demoData: 'Sample data',
-  },
-
-  otherWork: {
-    title: 'Other projects',
-    sample: 'What you see here is a sample of more than 50 systems we have built since 2022.',
-    filter: 'Filter the work',
-    all: 'All',
-    allWork: 'All work',
   },
 
   work: {
@@ -219,6 +212,8 @@ export const en: Dictionary = {
     kicker: 'Services',
     title: 'What we build.',
     lead: 'Five kinds of software, each built around the way you work.',
+    ourWork: 'From our work:',
+    separator: ', ',
     items: [
       {
         title: 'Creative websites',
