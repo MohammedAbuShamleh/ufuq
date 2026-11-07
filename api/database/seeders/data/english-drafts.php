@@ -51,6 +51,8 @@ return [
     'نظام إدارة' => 'Management system',
     'موقع تعريفي' => 'Profile website',
     'موقع ومنصة' => 'Website and platform',
+    'نظام مالي · صناديق مؤسسة إغاثية' => 'Financial system · A relief organization’s funds',
+    'نظام · تكليفات المكتب الإعلامي' => 'System · Media office assignments',
 
     // Project summaries
     'منصة تدير بها جمعية ساعد مشاريعها الإنسانية، من تبرّع الجهة المانحة إلى وصول المساعدة وتقريرها.' => 'The platform Saaed runs its humanitarian projects on, from the donor’s contribution to the aid reaching people and the report on it.',
@@ -66,6 +68,13 @@ return [
     'متابعة الأنشطة الدعوية.' => 'Tracking dawah activities.',
     'موقع ومنصة الرابطة.' => 'The league’s website and platform.',
     'شركة تنسيق حدائق.' => 'A landscaping company.',
+    'نظام ويب يدير صناديق المشاريع الخيرية ومخزونها يوماً بيوم: كان ملف Excel ضخماً، وصار يُدخَل فيه وارد كل مشروع ومصروفه، فيحسب النسبة الإدارية والخصم التشغيلي، ويغطّي العجز، ويتابع الديون حتى تُسدَّد.' => 'A web system that runs a charity’s project funds and inventory day by day. It used to be a huge Excel file. Now staff enter each project’s income and spending, and the system works out the admin share and the operating deduction, covers shortfalls and tracks debts until they are repaid.',
+    'نظام داخلي للمكتب الإعلامي: تطلب الجهات تغطية نشاط أو تصميماً، ويكلّف مدير الإعلام فريقه، وتتابع الجهة طلبها مرحلةً مرحلة حتى يُنشر.' => 'An internal system for a media office: departments request coverage of an event or a design, the media manager assigns the team, and the department follows its request stage by stage until it is published.',
+
+    // Project stories: the challenge, the solution and the results
+    'كانت حسابات الصناديق ملف Excel ضخماً: شيت لكل يوم من الشهر، في كل شيت ٢٦ مشروعاً و١٩ عموداً، وكل يوم يعتمد على الذي قبله. تاريخ مكتوب خطأً في شيت واحد كان كافياً ليُسقط مصروفاً حقيقياً من الحساب دون أن ينتبه أحد.' => 'The funds’ accounts lived in one huge Excel file: a sheet for every day of the month, 26 projects and 19 columns on each, and every day depending on the one before. One mistyped date on a single sheet was enough to drop a real expense from the books without anyone noticing.',
+    'نظام يحفظ قواعد الملف نفسها ويحسبها بترتيبها الصحيح: يُدخل الموظف الوارد والمصروف، ويحسب النظام النسب والخصومات وسداد العجز وقيمة ما يخرج من المخزن. التاريخ يُختار من تقويم، ولا تُحفظ حركة مخزون بلا تاريخ صالح.' => 'A system that keeps the file’s own rules and applies them in the right order: staff enter income and spending, and the system calculates the percentages, the deductions, the shortfall repayments and the value of what leaves the warehouse. Dates are picked from a calendar, and no stock movement is saved without a valid date.',
+    'أُعيد شهر فبراير ٢٠٢٦ كاملاً على النظام وقورنت كل خلية بالملف: ٤٩٤ خلية يومية من ٤٩٤ متطابقة، و٢٥ صندوقاً من ٢٦، والصندوق الباقي سببه خطأ تاريخ في الملف نفسه. ولكل قاعدة محاسبية اختبار آلي يوقف البناء إن انكسرت.' => 'We replayed all of February 2026 on the system and compared every cell with the file: 494 of 494 daily cells matched, and 25 of 26 funds. The one left over came from a date error in the file itself. Every accounting rule has an automated test that stops the build if it breaks.',
 
     // Highlights
     'مسار كامل للمشروع: التوريد والترسية والتوزيع والتنفيذ والمونتاج' => 'The whole project path: procurement, awarding, distribution, delivery and video editing',
@@ -80,6 +89,18 @@ return [
     'بلغتين وبوضعين فاتح وداكن، يتبدّلان دون إعادة تحميل' => 'Two languages, light and dark modes, all switching without a reload',
     'مصمّم ألواح Aurora وكتالوج بمقارنة المنتجات' => 'An Aurora panel designer, and a catalog that compares products',
     'منتجات تتحكم بلونها وحرارتها وسطوعها مباشرة' => 'Products whose color, temperature and brightness you control live',
+    'إدخالان لكل مشروع في اليوم، الوارد والمصروف، ويحسب النظام البقية: النسبة الإدارية ١٢٪ والخصم التشغيلي والصافي، ويعيد حساب ما بعد أي يوم يُعدَّل.' => 'Two entries per project per day, income and spending, and the system works out the rest: the 12% admin share, the operating deduction and the net. Edit any day and every day after it is recalculated.',
+    'سداد العجز على أربعة مستويات بالترتيب: من رصيد الصندوق، ثم من الإداري ديناً عليه، ثم مساهمة يدوية. والدين يُسترد وحده من أول فائض.' => 'Shortfalls are covered in four steps, in order: from the fund’s own balance, then from the admin fund as a debt, then by a manual contribution. The debt is repaid automatically from the first surplus.',
+    'بلا فوائد: يُغطّى العجز أو الدين بمساهمة من صندوق فيه فائض، لا تُسترد، ولا تتجاوز فائض المصدر ولا حاجة المستفيد.' => 'No interest: a shortfall or a debt is covered by a contribution from a fund with a surplus. It is never paid back, and it never exceeds the giving fund’s surplus or the receiving fund’s need.',
+    'مخزون بطريقة الوارد أولاً صادر أولاً: كل صادر بسعر دفعته، ويصل المصروف الإداري إلى الصحيفة اليومية وحده.' => 'First-in, first-out inventory: everything issued is priced at its own batch, and the admin expense reaches the daily ledger by itself.',
+    'إغلاق الشهر يرحّل الأرصدة والديون ويجمّده. ولا يُعدَّل بعدها إلا بمدير مخوَّل وسبب مكتوب، في نافذة ثلاثين دقيقة تُسجَّل في سجل التدقيق.' => 'Closing the month carries balances and debts forward and locks it. After that, only an authorized manager can change it, with a written reason, in a thirty-minute window recorded in the audit log.',
+    'تنبيهات للعجز والديون ونواقص المخزون، وسجل تدقيق يحفظ كل تعديل بقيمته قبل وبعد، وتقارير تُنزَّل PDF.' => 'Alerts for shortfalls, debts and low stock, an audit log that keeps every change with its value before and after, and reports that download as PDF.',
+    'لكل طلب مسار من أربع مراحل: أُرسل، التكليف، التنفيذ، مكتمل. وتُحسب حالته من تكليفاته، لا تُكتب باليد.' => 'Every request moves through four stages: Sent, Assigned, In progress, Done. Its status comes from its assignments and is never typed by hand.',
+    'لوحة تكليفات بخانات: «تم» ينقل العمل إلى صاحب الخطوة التالية، فتتحدّث حالة الطلب عند الجهة وحدها.' => 'An assignments board in columns: “Done” hands the work to whoever owns the next step, and the department sees the request’s status update by itself.',
+    'مواعيد تسليم بالساعة يقترحها النظام من يوم النشاط ونوع العمل وجدول العضو، ويعدّلها مدير الإعلام.' => 'Deadlines to the hour, suggested by the system from the event date, the type of work and the team member’s schedule, and adjusted by the media manager.',
+    'رسالة تكليف جاهزة للواتساب، فيها كل ما يحتاجه العضو ليبدأ.' => 'A ready-to-send WhatsApp assignment message with everything the team member needs to start.',
+    'نسبة تأخير لكل عضو تُحسب بالساعة، وإنجاز شهري يُصدَّر إلى Excel.' => 'A lateness rate for each team member, measured in hours, and a monthly output report that exports to Excel.',
+    'تقويم يتحدّث وحده: يشترك العضو مرة فتصل تكليفاته إلى تقويم جواله.' => 'A calendar that keeps itself up to date: team members subscribe once, and their assignments show up in their phone’s calendar.',
 
     // Facts (the number comes from the fact's value)
     'حالة لكل مشروع' => 'statuses per project',
@@ -94,6 +115,11 @@ return [
     'لغتان' => 'languages',
     'وضعان' => 'display modes',
     'منتجاً في الكتالوج' => 'products in the catalog',
+    'مشروعاً: ٤ ثابتة و٢٢ موسمية' => 'projects: 4 year-round and 22 seasonal',
+    'أدوار بصلاحيات منفصلة: مدير وصناديق ومخزن' => 'roles with separate permissions: manager, funds and warehouse',
+    'اختباراً آلياً' => 'automated tests',
+    'أدوار، لكلٍّ منها صفحته الأولى' => 'roles, each with its own home page',
+    'أنواع عمل: تصوير ومونتاج وتصميم وكتابة ونشر' => 'types of work: photography, video editing, design, writing and publishing',
 
     // Screen labels
     'الرئيسية' => 'Home',
@@ -129,6 +155,27 @@ return [
     'نوابغ الإتقان' => 'Itqan’s standouts',
     'الأقسام' => 'Departments',
     'الوضع الداكن' => 'Dark mode',
+    'الصحيفة اليومية' => 'Daily ledger',
+    'الملخص الشهري' => 'Monthly summary',
+    'مركز التقارير' => 'Reports center',
+    'صندوق الإداري' => 'Admin fund',
+    'حركات المخزون' => 'Stock movements',
+    'التنبيهات' => 'Alerts',
+    'لوحة التحكم على الجوال' => 'Dashboard on mobile',
+    'الصحيفة على الجوال' => 'Ledger on mobile',
+    'المخزون على الجوال' => 'Inventory on mobile',
+    'الطلبات الواردة' => 'Incoming requests',
+    'جدول الأسبوع' => 'The week',
+    'طلب قيد التنفيذ' => 'Request in progress',
+    'الإنجاز الشهري' => 'Monthly output',
+    'طلب مكتمل' => 'Completed request',
+    'لوحة التكليفات ليلاً' => 'The board in dark mode',
+    'طلب جديد' => 'New request',
+    'من يعمل على طلبك' => 'Who’s on your request',
+    'تقييم الجهة' => 'Department’s rating',
+    'أعمالي ليلاً' => 'My work in dark mode',
+    'نافذة «تم»' => 'The “Done” dialog',
+    'الطلبات على الجوال' => 'Requests on mobile',
 
     // Screen descriptions (alt text)
     'لوحة مدير المشاريع: المشاريع حسب الحالة والقيمة الإجمالية' => 'Project manager’s dashboard: projects by status and total value',
@@ -167,6 +214,29 @@ return [
     'نوابغ الإتقان: قصة طالب متميز بصورته ونبذة عنه' => 'Itqan’s standouts: a top student’s story, with a photo and a short profile',
     'صفحة قسم تحفيظ القرآن الكريم بصوره وآخر منشوراته' => 'The Quran memorization department’s page, with its photos and latest posts',
     'الرئيسية بالوضع الداكن: مصحف بين يدين على خلفية خضراء' => 'The homepage in dark mode: a Mushaf held in two hands on a green background',
+    'لوحة التحكم المالية: وارد اليوم ومصروفه والنسبة الإدارية والاستقطاع التشغيلي، وحالة الصناديق وحركتها في آخر سبعة أيام' => 'The financial dashboard: today’s income and spending, the admin share and the operating deduction, with each fund’s status and movement over the last seven days',
+    'الصحيفة اليومية: دخل كل مشروع ومصروفه، وبجانبهما ما يحسبه النظام من نسبة إدارية واستقطاع تشغيلي وصافٍ ودين' => 'The daily ledger: each project’s income and spending, beside what the system works out from them: admin share, operating deduction, net and debt',
+    'الملخص الشهري: بطاقة لكل صندوق فيها فائضه أو عجزه، وديونه الإدارية المتبقية، والمساهمات التي استلمها' => 'The monthly summary: a card for each fund with its surplus or shortfall, its remaining admin debts and the contributions it received',
+    'مركز التقارير: إجمالي الوارد والمصروف وصافي الصناديق، وحركة كل يوم، وتوزيع المصروفات، ووارد أعلى عشرة مشاريع' => 'The reports center: total income and spending, the funds’ net, each day’s movement, how spending breaks down, and income for the top ten projects',
+    'صندوق الإداري: ما يرده من النسبة الإدارية واستردادات الديون، وما يُصرف منه، وصافيه التراكمي يوماً بيوم' => 'The admin fund: what comes in from the admin share and debt repayments, what is spent from it, and its running net day by day',
+    'حركات المخزون: كل وارد وصادر بكميته وسعر وحدته وقيمته، ونوع المصروف تشغيلياً أو إدارياً' => 'Stock movements: every item in and out with its quantity, unit price and value, and whether the expense is operating or administrative',
+    'التنبيهات: عجز اليوم في الصناديق بالأحمر، والديون الإدارية المتبقية بالأصفر' => 'Alerts: today’s fund shortfalls in red, and the remaining admin debts in yellow',
+    'لوحة التحكم على الجوال: وارد اليوم ومصروفه والنسبة الإدارية، بطاقة تحت بطاقة' => 'The dashboard on mobile: today’s income, spending and admin share, one card under another',
+    'الصحيفة اليومية على الجوال: دخل كل مشروع في خانته، والمشاريع المعفاة والمدينة معلَّمة' => 'The daily ledger on mobile: each project’s income in its own field, with exempt and indebted projects marked',
+    'إدارة المخزون على الجوال: الأصناف بأكوادها وتصنيفها، وتنبيهات النواقص وحركات اليوم' => 'Inventory on mobile: items with their codes and categories, low-stock alerts and today’s movements',
+    'إحصائيات المدير التنفيذي لشهر نوفمبر: عشرة طلبات، ونسبة التأخير، والطلبات يوماً بيوم، وما سلّمه كل عضو في الفريق' => 'The executive director’s statistics for November: ten requests, the lateness rate, requests day by day, and what each team member delivered',
+    'الطلبات الواردة إلى مدير الإعلام: بطاقة لكل طلب فيها موعده وجهته والمرحلة التي بلغها' => 'Requests coming in to the media manager: a card for each with its date, its department and the stage it has reached',
+    'جدول الأسبوع: أنشطة كل يوم ومن كُلّف بكلٍّ منها، وبجانبه التسليمات المتأخرة مع زر واتساب للتذكير' => 'The week’s schedule: each day’s events and who is assigned to each, beside the late deliveries with a WhatsApp button for a reminder',
+    'طلب «لقاء أولياء الأمور» في مرحلة التنفيذ: مسار تصوير ثم مونتاج ثم نشر، والعمل الآن عند صاحب المونتاج' => 'The “Parents’ meeting” request in progress: photography, then editing, then publishing, with the work now with the editor',
+    'الإنجاز الشهري لكل عضو: ما سلّمه في موعده وما تأخّر ونسبة تأخيره، مع طباعة وتصدير إلى Excel' => 'Each team member’s monthly output: what they delivered on time, what was late and their lateness rate, with printing and export to Excel',
+    'طلب «حفل ختام دورة التجويد» مكتمل بمراحله الأربع، ومعه تقييم الجهة بالنجوم' => 'The “Tajweed course closing ceremony” request, complete through all four stages, with the department’s star rating',
+    'لوحة التكليفات بالوضع الليلي: خانة لكل خطوة من انتظار البدء إلى تم، وكل بطاقة عند العضو الذي عليه دوره' => 'The assignments board in dark mode: a column for each step from Waiting to Done, with each card under the team member whose turn it is',
+    'الجهة تطلب من جوالها: تغطية نشاط أو تصميم، ثم اسم النشاط وموعده ومكانه' => 'A department places a request from its phone: event coverage or a design, then the event’s name, date and place',
+    'الجهة تتابع «لقاء أولياء الأمور»: المرحلة التي بلغها ومن يعمل عليه الآن' => 'A department follows the “Parents’ meeting” request: the stage it has reached and who is working on it now',
+    'طلب مكتمل تقيّمه الجهة بالنجوم وبملاحظة تصل إلى المكتب الإعلامي' => 'A completed request that the department rates with stars and a note to the media office',
+    'صفحة عضو الفريق بالوضع الليلي: ربط تقويم الجوال، وأعماله القادمة وزر «تم» لكل منها' => 'A team member’s page in dark mode: linking the phone calendar, upcoming work and a “Done” button on each item',
+    '«تم» على المونتاج: يختار العضو من يستلم النشر ويضع رابط الملف' => '“Done” on an edit: the team member picks who takes over publishing and adds the file link',
+    'الطلبات الواردة على جوال مدير الإعلام: الجديدة والجارية والمكتملة، بطاقة لكل طلب' => 'Incoming requests on the media manager’s phone: new, ongoing and completed, a card for each',
 
     // Team
     'م. محمد أبو شمله' => 'Mohammed Abu Shamleh',
@@ -176,7 +246,9 @@ return [
     'مبرمج واجهات أمامية' => 'Front-end developer',
     'مصمم واجهات وتجربة مستخدم' => 'UI and UX designer',
 
-    // Testimonials (still pending)
+    // Testimonials (the quotes are still pending; confirm the English spelling of each name with its owner)
+    'أ.إسلام أبو هويشل' => 'Islam Abu Huwaishel',
+    'مدير المدرسة' => 'School principal',
     '[شهادة من إدارة مدرسة شعاع الخاصة: ماذا تغيّر بعد الانتقال من ملف Excel إلى النظام؟]' => '[A testimonial from Shuaa Private School’s management: what changed after moving from the Excel file to the system?]',
     '[شهادة من ساعد: كيف صارت متابعة المشاريع والتقارير بعد المنصة؟]' => '[A testimonial from Saaed: how has tracking projects and reports changed with the platform?]',
     '[شهادة من دار الإتقان: تجربتهم مع المنصة والموقع.]' => '[A testimonial from Dar Al-Itqan: their experience with the platform and the website.]',
@@ -200,6 +272,8 @@ return [
 
     // Settings
     'أنظمة وبرمجيات للجمعيات والمدارس والشركات' => 'Systems and software for charities, schools and companies',
+    'شركة مسجلة لدى وزارة الاتصالات وتكنولوجيا المعلومات برقم 777' => 'A company registered with the Ministry of Telecommunications and Information Technology, no. 777',
+    'عضو اتحاد شركات أنظمة المعلومات - بيتا' => 'Member of the Palestinian Information Technology Association of Companies (PITA)',
 
     // Privacy policy: a legal text, so a person must review the English before launch
     'ما نجمعه عبر هذا الموقع' => 'What we collect through this site',
