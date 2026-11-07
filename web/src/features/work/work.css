@@ -267,6 +267,31 @@
   }
 }
 @media (max-width: 600px) {
+  /* Wrapped, the twelve filters took six lines and most of the first screen.
+     Each group is one row instead, swiped sideways from edge to edge; the
+     fade at its far end says there is more. */
+  .wk-filters .pj-filter {
+    /* The page's side margin at this width (globals.css --wrap: 100% - 3rem). */
+    --gutter: 1.5rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    mask-image: linear-gradient(to left, #000 calc(100% - 3rem), transparent);
+  }
+  .wk-filters .pj-filter:dir(ltr) {
+    mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent);
+  }
+  .wk-filters .pj-filter::-webkit-scrollbar {
+    display: none;
+  }
+  .wk-filters .pj-filter button {
+    flex: none;
+    white-space: nowrap;
+  }
   .pjt-grid {
     grid-template-columns: 1fr;
   }
