@@ -1,7 +1,7 @@
 import type { Locale, T } from '@/lib/i18n'
 import type { Media, PublishStatus } from '@/lib/types'
 
-export type ProjectType = 'system' | 'website' | 'platform' | 'app'
+export type ProjectType = 'system' | 'finance' | 'website' | 'platform' | 'app'
 export type ProjectSector = 'charity' | 'education' | 'government' | 'dawah' | 'business'
 export type FeaturedLayout = 'showcase' | 'phones' | 'sheet' | 'reel'
 export type ScreenKind = 'desktop' | 'mobile' | 'video'

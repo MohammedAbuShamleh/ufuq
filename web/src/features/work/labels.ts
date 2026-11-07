@@ -3,7 +3,7 @@ import type { ProjectSector, ProjectType } from '@/lib/types'
 // The order the filters show the kinds and sectors in. Their names are in the
 // dictionary: work.types (plural, as the visitor reads a shelf of work),
 // work.sectors, and work.type for one project's kind.
-export const TYPES: ProjectType[] = ['system', 'website', 'platform', 'app']
+export const TYPES: ProjectType[] = ['system', 'finance', 'website', 'platform', 'app']
 
 export const SECTORS: ProjectSector[] = ['charity', 'education', 'government', 'dawah', 'business']
 

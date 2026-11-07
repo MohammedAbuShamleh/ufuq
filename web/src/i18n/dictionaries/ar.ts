@@ -163,6 +163,7 @@ export const ar = {
       app: 'أريد تطبيقاً مشابهاً',
       website: 'أريد موقعاً مشابهاً',
       system: 'أريد نظاماً مشابهاً',
+      finance: 'أريد نظاماً مالياً مشابهاً',
     } satisfies Record<ProjectType, string>,
     screens: 'شاشات {title}',
     clips: 'مقاطع {title}',
@@ -182,7 +183,7 @@ export const ar = {
 
   work: {
     // Filter names: plural, as the visitor reads a shelf of work.
-    types: { system: 'أنظمة', website: 'مواقع', platform: 'منصات', app: 'تطبيقات' } satisfies Record<ProjectType, string>,
+    types: { system: 'أنظمة', finance: 'أنظمة مالية', website: 'مواقع', platform: 'منصات', app: 'تطبيقات' } satisfies Record<ProjectType, string>,
     sectors: {
       charity: 'جمعيات خيرية',
       education: 'مدارس وتعليم',
@@ -191,7 +192,7 @@ export const ar = {
       business: 'شركات',
     } satisfies Record<ProjectSector, string>,
     /** One project's kind, singular. */
-    type: { system: 'نظام', website: 'موقع', platform: 'منصة', app: 'تطبيق جوال' } satisfies Record<ProjectType, string>,
+    type: { system: 'نظام', finance: 'نظام مالي', website: 'موقع', platform: 'منصة', app: 'تطبيق جوال' } satisfies Record<ProjectType, string>,
     /** The four countries the work runs in today; any other code shows as is. */
     countries: { PS: 'فلسطين', EG: 'مصر', AE: 'الإمارات', TR: 'تركيا' } as Record<string, string>,
     typeGroup: 'نوع العمل',
@@ -460,6 +461,7 @@ export const ar = {
     /** The section headings speak of the kind of work by its name. */
     kinds: {
       system: { offers: 'ما يقدّمه النظام', inside: 'داخل النظام' },
+      finance: { offers: 'ما يقدّمه النظام', inside: 'داخل النظام' },
       platform: { offers: 'ما تقدّمه المنصة', inside: 'داخل المنصة' },
       app: { offers: 'ما يقدّمه التطبيق', inside: 'داخل التطبيق' },
       website: { offers: 'ما يقدّمه الموقع', inside: 'داخل الموقع' },

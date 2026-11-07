@@ -21,7 +21,7 @@ export type Screen = {
   file: Media | null
 }
 
-export type ProjectType = 'system' | 'website' | 'platform' | 'app'
+export type ProjectType = 'system' | 'finance' | 'website' | 'platform' | 'app'
 export type ProjectSector = 'charity' | 'education' | 'government' | 'dawah' | 'business'
 /** How a featured project is drawn in «أعمالنا»: each has a layout of its own. */
 export type FeaturedLayout = 'showcase' | 'phones' | 'sheet' | 'reel'

@@ -11,6 +11,7 @@ export const SIMILAR: Record<ProjectType, LeadType> = {
   app: 'app',
   website: 'website',
   system: 'system',
+  finance: 'finance',
 }
 
 /** From another page: the home contact form, with the project kind picked through ?type=. */

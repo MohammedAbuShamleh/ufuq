@@ -140,6 +140,7 @@ export const en: Dictionary = {
       app: 'I want an app like this',
       website: 'I want a website like this',
       system: 'I want a system like this',
+      finance: 'I want a financial system like this',
     },
     screens: '{title} screens',
     clips: '{title} clips',
@@ -158,7 +159,7 @@ export const en: Dictionary = {
   },
 
   work: {
-    types: { system: 'Systems', website: 'Websites', platform: 'Platforms', app: 'Apps' },
+    types: { system: 'Systems', finance: 'Financial systems', website: 'Websites', platform: 'Platforms', app: 'Apps' },
     sectors: {
       charity: 'Charities',
       education: 'Schools and education',
@@ -166,7 +167,7 @@ export const en: Dictionary = {
       dawah: 'Dawah and Quran',
       business: 'Companies',
     },
-    type: { system: 'System', website: 'Website', platform: 'Platform', app: 'Mobile app' },
+    type: { system: 'System', finance: 'Financial system', website: 'Website', platform: 'Platform', app: 'Mobile app' },
     countries: { PS: 'Palestine', EG: 'Egypt', AE: 'UAE', TR: 'Türkiye' },
     typeGroup: 'Kind of work',
     allTypes: 'All kinds',
@@ -427,6 +428,7 @@ export const en: Dictionary = {
     facts: { client: 'Client', sector: 'Sector', country: 'Country', type: 'Kind of work', stack: 'Stack' },
     kinds: {
       system: { offers: 'What the system does', inside: 'Inside the system' },
+      finance: { offers: 'What the system does', inside: 'Inside the system' },
       platform: { offers: 'What the platform does', inside: 'Inside the platform' },
       app: { offers: 'What the app does', inside: 'Inside the app' },
       website: { offers: 'What the website does', inside: 'Inside the website' },

@@ -2,6 +2,7 @@ import type { FeaturedLayout, ProjectSector, ProjectType, ScreenKind } from './t
 
 export const TYPE_OPTIONS: readonly { value: ProjectType; label: string }[] = [
   { value: 'system', label: 'نظام' },
+  { value: 'finance', label: 'نظام مالي' },
   { value: 'website', label: 'موقع' },
   { value: 'platform', label: 'منصة' },
   { value: 'app', label: 'تطبيق جوال' },
