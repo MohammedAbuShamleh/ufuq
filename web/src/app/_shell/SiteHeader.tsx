@@ -158,6 +158,12 @@ export function SiteHeader({ copy }: { copy: Copy }) {
               </Link>
             </li>
           ))}
+          {/* The bar's own «ابدأ مشروعك» has no room on a phone; the open menu ends with it. */}
+          <li className="nav-cta">
+            <Button href={href(locale, '/#contact')} arrow onClick={() => setOpen(false)}>
+              {copy.startProject}
+            </Button>
+          </li>
         </ul>
         </nav>
         <div className="nav-end">

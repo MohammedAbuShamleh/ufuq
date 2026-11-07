@@ -166,7 +166,7 @@ body::before {
   font-family: var(--font-display);
   font-size: 0.95rem;
 }
-.nav-links a {
+.nav-links a:not(.btn) {
   position: relative;
   z-index: 1;
   display: block;
@@ -176,7 +176,7 @@ body::before {
   transition: color 0.25s;
 }
 .nav-links a.on,
-.nav-links a:hover {
+.nav-links a:not(.btn):hover {
   color: var(--text);
 }
 .nav-ind {
@@ -197,6 +197,9 @@ body::before {
 }
 .nav-ind.show {
   opacity: 1;
+}
+.nav-cta {
+  display: none;
 }
 .nav-end {
   display: flex;
@@ -261,7 +264,7 @@ body::before {
     padding: 0.5rem 1.25rem;
     box-shadow: 0 24px 50px -24px rgb(var(--ink-rgb) / 0.45);
   }
-  .nav-links.open a {
+  .nav-links.open a:not(.btn) {
     padding: 0.8rem 0.6rem;
     border-radius: 12px;
   }
@@ -270,6 +273,14 @@ body::before {
   }
   .nav-links.open li:not(.nav-ind) ~ li {
     border-top: 1px solid var(--line);
+  }
+  .nav-links.open .nav-cta {
+    display: block;
+    padding: 0.85rem 0 0.75rem;
+  }
+  .nav-cta .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
