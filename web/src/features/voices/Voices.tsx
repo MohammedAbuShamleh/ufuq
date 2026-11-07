@@ -24,6 +24,7 @@ function initial(organization: string) {
 /**
  * «قالوا عنّا»: one testimonial at a time, word by word; the visitor picks the
  * next one (nothing turns by itself, so a screen reader is never interrupted).
+ * A single testimonial stands alone, at its own height, with nothing to pick.
  * Then the wall of organizations we work with.
  */
 export function Voices({ testimonials: all, clients, copy }: { testimonials: Testimonial[]; clients: Client[]; copy: Copy }) {
@@ -48,6 +49,7 @@ export function Voices({ testimonials: all, clients, copy }: { testimonials: Tes
   if (testimonials.length === 0 && clients.length === 0) return null
   // Until the first testimonial arrives the section is the wall of organizations alone.
   const quotes = testimonials.length > 0
+  const several = testimonials.length > 1
 
   return (
     <section className="tm" id="voices" aria-labelledby="tm-title">
@@ -62,7 +64,7 @@ export function Voices({ testimonials: all, clients, copy }: { testimonials: Tes
 
         {quotes && (
           <>
-            <div className="tm-stage" aria-live="polite">
+            <div className={`tm-stage${several ? '' : ' tm-one'}`} aria-live={several ? 'polite' : undefined}>
               <span className="tm-q" aria-hidden="true">
                 ”
               </span>
@@ -70,16 +72,18 @@ export function Voices({ testimonials: all, clients, copy }: { testimonials: Tes
                 <Quote key={i} testimonial={t} state={i === current ? 'on' : i === leaving ? 'out' : null} copy={copy} />
               ))}
             </div>
-            <div className="tm-sels" role="group" aria-label={copy.pick}>
-              {testimonials.map((t, i) => (
-                <button key={i} type="button" aria-pressed={i === current} className={`tq-sel${i === current ? ' on' : ''}`} onClick={() => show(i)}>
-                  <span>{t.organization}</span>
-                  <i aria-hidden="true">
-                    <b />
-                  </i>
-                </button>
-              ))}
-            </div>
+            {several && (
+              <div className="tm-sels" role="group" aria-label={copy.pick}>
+                {testimonials.map((t, i) => (
+                  <button key={i} type="button" aria-pressed={i === current} className={`tq-sel${i === current ? ' on' : ''}`} onClick={() => show(i)}>
+                    <span>{t.organization}</span>
+                    <i aria-hidden="true">
+                      <b />
+                    </i>
+                  </button>
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

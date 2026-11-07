@@ -44,6 +44,16 @@
   margin: 2.5rem auto 0;
   min-height: clamp(300px, 34vw, 360px);
 }
+/* One testimonial: no others to stack under it, so it takes its own height,
+   with room above for the quotation mark. */
+.tm-stage.tm-one {
+  min-height: 0;
+  padding-top: 4.5rem;
+}
+.tm-one .tq {
+  position: relative;
+  inset: auto;
+}
 .tm-q {
   position: absolute;
   top: -2.2rem;
